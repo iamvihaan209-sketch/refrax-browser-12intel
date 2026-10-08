@@ -139,6 +139,10 @@ final class WKUIDelegateAdapter: NSObject, WKUIDelegatePrivate {
                 }
             }
 
+            contextMenuBuilder.searchEngine = { [weak self] in
+                self?.pagePool?.state.settings.defaultSearchEngine ?? .google
+            }
+
             contextMenuBuilder.isYTDLPEnabled = { [weak self] in
                 guard let self, let pagePool else { return true }
                 return pagePool.state.settings.ytdlpEnabled

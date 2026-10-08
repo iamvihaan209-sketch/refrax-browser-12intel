@@ -57,6 +57,9 @@ final class WebPageContextMenuBuilder: NSObject {
     /// Returns whether yt-dlp downloads are enabled. Set by the caller.
     var isYTDLPEnabled: (() -> Bool)?
 
+    /// Returns the search engine selected in Refrax's settings. Set by the caller.
+    var searchEngine: (() -> SearchEngine)?
+
     /// Minimum character count for showing "Speed Read Selection" option.
     /// Assumes ~6 chars per word (5 letter avg + space), so 300 chars ≈ 50 words.
     private let speedReadMinCharCount = 300
@@ -94,6 +97,8 @@ final class WebPageContextMenuBuilder: NSObject {
                 proposedMenu.removeItem(item)
             }
         }
+
+        replaceSystemWebSearchItem(in: proposedMenu, selectedText: elementInfo.selectedText)
 
         // Collect custom item groups, each group separated from others
         var itemGroups: [[NSMenuItem]] = []
@@ -196,6 +201,32 @@ final class WebPageContextMenuBuilder: NSObject {
 
         return finalMenu
     }
+
+    /// Swaps WebKit's "Search with <engine>" item for one that searches in a new Refrax tab.
+    ///
+    /// WebKit's item hands the selection to the system "Search With" service, which
+    /// opens Safari's search engine in the system default browser handler — Safari's
+    /// settings, not Refrax's, even when Refrax is the default browser.
+    private func replaceSystemWebSearchItem(in menu: NSMenu, selectedText: String?) {
+        guard let engine = searchEngine?(), onOpenInNewTab != nil,
+              let query = selectedText?.trimmingCharacters(in: .whitespacesAndNewlines), !query.isEmpty,
+              let url = engine.searchURL(for: query),
+              let index = menu.items.firstIndex(where: { $0.identifier?.rawValue == Self.searchWebIdentifier })
+        else { return }
+
+        let item = NSMenuItem(
+            title: "Search with \(engine.name)",
+            action: #selector(openInNewTab(_:)),
+            keyEquivalent: "",
+        )
+        item.target = self
+        item.representedObject = url
+        menu.removeItem(at: index)
+        menu.insertItem(item, at: index)
+    }
+
+    /// WebKit's stable identifier for its "Search with <engine>" item (`_WKMenuItemIdentifierSearchWeb`).
+    private static let searchWebIdentifier = "WKMenuItemIdentifierSearchWeb"
 
     // MARK: - Menu Item Groups
 
