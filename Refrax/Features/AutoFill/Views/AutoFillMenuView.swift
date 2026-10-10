@@ -117,27 +117,9 @@ struct AutoFillMenuView: View {
         }
     }
 
-    /// Saved credential rows. The expanded list scrolls once it outgrows the height cap.
     private var credentialList: some View {
-        ViewThatFits(in: .vertical) {
-            credentialRows
-            ScrollView {
-                credentialRows
-            }
-        }
-        .frame(maxHeight: Constants.credentialListMaxHeight)
-    }
-
-    private var credentialRows: some View {
-        VStack(spacing: Constants.itemSpacing) {
-            ForEach(visibleCredentials) { credential in
-                AutoFillCredentialItemView(
-                    credential: credential,
-                    showTouchIDIcon: false,
-                ) {
-                    selectCredential(credential)
-                }
-            }
+        AutoFillCredentialList(credentials: visibleCredentials) { credential in
+            selectCredential(credential)
         }
     }
 
@@ -274,10 +256,51 @@ struct AutoFillMenuView: View {
     private enum Constants {
         static let menuWidth: CGFloat = 300
         static let maxVisibleCredentials = 3
-        /// About six credential rows.
-        static let credentialListMaxHeight: CGFloat = 276
         static let outerCornerRadius: CGFloat = 14
         static let contentPadding: CGFloat = 8
+        static let itemSpacing: CGFloat = 2
+    }
+}
+
+// MARK: - Credential List
+
+/// Saved credential rows, sized to their content.
+///
+/// Renders nothing for an empty list, so a login field with no saved credentials shows only the
+/// rows around it. Past ``Constants/maxRowsBeforeScrolling`` rows the list scrolls inside a fixed
+/// height; a `ScrollView` is greedy, so it is used only when the rows actually overflow.
+struct AutoFillCredentialList: View {
+    let credentials: ArraySlice<PasswordsManager.StoredCredential>
+    let onSelect: (PasswordsManager.StoredCredential) -> Void
+
+    var body: some View {
+        if credentials.count > Constants.maxRowsBeforeScrolling {
+            ScrollView {
+                rows
+            }
+            .frame(height: Constants.scrollingHeight)
+        } else if !credentials.isEmpty {
+            rows
+        }
+    }
+
+    private var rows: some View {
+        VStack(spacing: Constants.itemSpacing) {
+            ForEach(credentials) { credential in
+                AutoFillCredentialItemView(
+                    credential: credential,
+                    showTouchIDIcon: false,
+                ) {
+                    onSelect(credential)
+                }
+            }
+        }
+    }
+
+    enum Constants {
+        static let maxRowsBeforeScrolling = 6
+        /// Six 44 pt credential rows and their spacing, plus a sliver of the seventh as a scroll cue.
+        static let scrollingHeight: CGFloat = 290
         static let itemSpacing: CGFloat = 2
     }
 }
