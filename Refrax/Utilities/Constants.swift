@@ -150,15 +150,12 @@ enum Constants {
         static let autoFillFocusHandlerName = "refraxAutoFillFocus"
     }
 
-    /// Backend service endpoints hosted at refrax.website.
-    ///
-    /// The token path component provides lightweight obscurity against
-    /// crawlers — not a security boundary.
+    /// Backend service endpoints.
     ///
     /// ## Update Channels
     ///
     /// The active ``UpdateChannel`` is selected at compile time:
-    /// - **Production** (release builds): Production server at `refrax.website`
+    /// - **Production** (release builds): GitHub Releases
     /// - **Localhost** (debug builds): Local dev server at `localhost:8080`,
     ///   with ``UpdateChannel/forceUpdate`` enabled (skips version comparison)
     nonisolated enum API: Sendable {
@@ -166,19 +163,10 @@ enum Constants {
         ///
         /// Determines which server the app checks for updates.
         enum UpdateChannel: Sendable {
-            /// Production update server at refrax.website (release builds).
+            /// GitHub Releases (release builds).
             case production
             /// Local development server for testing (debug builds).
             case localhost
-
-            var baseURL: String? {
-                switch self {
-                case .production:
-                    API.token.map { "https://refrax.website/api/\($0)" }
-                case .localhost:
-                    "http://localhost:8080/api"
-                }
-            }
 
             /// Localhost channel skips version comparison for force-update testing.
             var forceUpdate: Bool {
@@ -186,48 +174,14 @@ enum Constants {
             }
         }
 
-        /// API path token, resolved at runtime — never committed to source.
-        ///
-        /// Release archives inject `REFRAX_API_TOKEN` into Info.plist at build
-        /// time (`kagerou publish`); dev runs may provide it via the scheme's
-        /// `REFRAX_API_TOKEN` environment variable. When absent, every
-        /// server-channel feature (updates, telemetry, feedback)
-        /// disables itself — see ``hasServerAccess``.
-        private static let token: String? = {
-            if let value = Bundle.main.object(forInfoDictionaryKey: "RefraxAPIToken") as? String,
-               !value.isEmpty {
-                return value
-            }
-            if let value = ProcessInfo.processInfo.environment["REFRAX_API_TOKEN"],
-               !value.isEmpty {
-                return value
-            }
-            return nil
-        }()
-
-        /// Whether a server token is available for this build.
-        ///
-        /// False in builds without an injected token (e.g. open-source clones),
-        /// where all server-backed endpoints below resolve to `nil`.
-        static var hasServerAccess: Bool { token != nil }
-
         #if DEBUG
         static let channel: UpdateChannel = .localhost
         #else
         static let channel: UpdateChannel = .production
         #endif
 
-        private static func endpoint(base: String?, path: String, context: String) -> Foundation.URL? {
-            guard let base else { return nil }
-            guard let url = Foundation.URL(string: "\(base)\(path)") else {
-                Logger.warning(
-                    "Malformed API endpoint for \(context): \"\(base)\(path)\"",
-                    category: Logger.network,
-                )
-                return nil
-            }
-            return url
-        }
+        /// The local dev server's update manifest, used by the localhost channel.
+        private static let localhostReleasesLatest = Foundation.URL(string: "http://localhost:8080/api/releases/latest")!
 
         /// GitHub repository serving release builds and update checks.
         static let githubRepo = "kageroumado/refrax-browser"
@@ -239,7 +193,7 @@ enum Constants {
         /// keeps the self-hosted JSON shape for force-update testing.
         static var releasesLatest: Foundation.URL? {
             if channel.forceUpdate {
-                return endpoint(base: channel.baseURL, path: "/releases/latest", context: "releasesLatest")
+                return localhostReleasesLatest
             }
             return Foundation.URL(string: "https://api.github.com/repos/\(githubRepo)/releases/latest")
         }
@@ -253,9 +207,9 @@ enum Constants {
             "objects.githubusercontent.com",
         ]
 
-        static var feedback: Foundation.URL? {
-            endpoint(base: UpdateChannel.production.baseURL, path: "/feedback", context: "feedback")
-        }
+        /// In-app feedback intake, for every build: release, debug and
+        /// open-source clones alike.
+        static let feedback = Foundation.URL(string: "https://kagerou.glass/api/refrax/feedback")!
     }
     
     enum AddressBar {

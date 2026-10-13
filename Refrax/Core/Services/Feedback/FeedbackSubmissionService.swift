@@ -108,10 +108,7 @@ nonisolated enum FeedbackSubmissionService: Sendable {
             ))
         }
 
-        guard let feedback = Constants.API.feedback else {
-            throw URLError(.unsupportedURL)
-        }
-        try await HTTPClient.uploadMultipart(feedback, parts: parts)
+        try await HTTPClient.uploadMultipart(Constants.API.feedback, parts: parts)
     }
 
     private static func mimeType(for url: URL) -> String {
