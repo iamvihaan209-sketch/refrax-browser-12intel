@@ -44,5 +44,6 @@ jobs:
             -scheme Refrax \
             -destination 'platform=macOS,arch=x86_64' \
             -derivedDataPath "$RUNNER_TEMP/RefraxDerivedData" \
+            MACOSX_DEPLOYMENT_TARGET=12.0 \
             CODE_SIGNING_ALLOWED=NO \
             build 2>&1 | tee "$RUNNER_TEMP/refrax-intel-build.log"
