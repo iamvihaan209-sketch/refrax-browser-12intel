@@ -1,25 +1,23 @@
-# Rift Browser — Monterey Intel compatibility port
+# Refrax — macOS Monterey Intel port
 
-This fork explores a native browser build for Intel Macs running macOS 12 Monterey.
+This branch is for porting the **actual Refrax application** to Intel Macs running macOS 12 Monterey. It is not a replacement browser.
 
-## Monterey build
+## Current status
 
-The upstream Refrax application targets macOS 26 and uses APIs that Monterey does not provide, including SwiftData and the Observation framework. Lowering `MACOSX_DEPLOYMENT_TARGET` does not backport those frameworks. To avoid pretending the full upstream application can run just by changing a version number, this branch adds an independent compatibility app in `MontereyBrowser/`.
+The upstream app uses APIs and frameworks unavailable on Monterey, including SwiftData and the Observation framework. Lowering the deployment target alone does not make those APIs available. The port must replace them with older equivalents while preserving Refrax's existing architecture and features.
 
-The current compatibility app is **Rift Browser**, a small native AppKit + WebKit baseline that can be built for x86_64 with a macOS 12.0 minimum. It currently includes:
+The first migration work is still in progress. The CI workflow now builds the real `Refrax.xcodeproj` / `Refrax` scheme for `x86_64` with a macOS 12 deployment target. It does not build the former standalone compatibility app.
 
-- Native WebKit page rendering
-- Address/search field, back, forward, reload, and home controls
-- Multiple tabs
-- Local bookmarks and a capped browsing history list
-- GitHub Actions packaging of an Intel `.app` bundle
+## Compatibility plan
 
-The build workflow uploads `rift-browser-macos12-intel` as an Actions artifact when compilation succeeds. The workflow checks the executable architecture and app metadata; it does not claim that a build succeeded until the Actions run is green.
+- Replace SwiftData persistence with a Monterey-supported persistence layer (Core Data is the primary candidate), preserving model relationships and migration behavior.
+- Replace Observation macros and property wrappers with `ObservableObject`, `@Published`, and compatible SwiftUI state/environment wrappers.
+- Audit SwiftUI, WebKit, AppKit, AuthenticationServices, WidgetKit, and other APIs against macOS 12 availability.
+- Audit Swift package dependencies, build tools, helper processes, extensions, and bundled engines for Intel/Monterey support.
+- Use the real Refrax build and tests in GitHub Actions to drive each fix; do not treat a deployment-target change or a substitute app as a completed port.
 
-## Upstream project
+## CI artifact
 
-The original Refrax source remains in `Refrax/` and is based on a newer macOS architecture. Full feature parity is not yet implemented in the Monterey compatibility app; porting the entire upstream codebase would require replacing SwiftData persistence and migrating Observation-driven state, plus auditing newer SwiftUI and WebKit APIs.
+When the real Refrax scheme successfully builds, Actions uploads `refrax-macos12-intel`. A successful compile is not by itself proof that every feature works on Monterey; runtime testing on macOS 12 is still required.
 
 Upstream project: https://github.com/kageroumado/refrax-browser
-
-This fork uses a distinct name in line with the upstream trademark policy for redistributed forks. The source is GPL-3.0; see the upstream license and trademark policy before redistributing.
