@@ -359,7 +359,9 @@ extension Color {
 }
 
 // MARK: - Preview
-
+// Xcode's WidgetKit #Preview macro requires macOS 14; these are editor-only
+// declarations and must be excluded when validating the macOS 12 deployment.
+#if false
 #Preview("Small", as: .systemSmall) {
     CurrentlyReadingWidget()
 } timeline: {
@@ -389,3 +391,5 @@ extension Color {
         recentSpaces: [],
     )
 }
+
+#endif
