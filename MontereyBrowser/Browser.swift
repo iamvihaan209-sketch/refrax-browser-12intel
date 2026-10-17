@@ -49,13 +49,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         let home = button("⌂", #selector(goHome))
         let addTab = button("+", #selector(newTabAction))
         let bookmark = button("☆", #selector(showBookmarks))
+        let historyButton = button("History", #selector(showHistory))
+        let closeTab = button("×", #selector(closeCurrentTab))
         tabPicker.target = self
         tabPicker.action = #selector(changeTab)
         tabPicker.widthAnchor.constraint(greaterThanOrEqualToConstant: 125).isActive = true
         addressField.placeholderString = "Search or enter website address"
         addressField.target = self
         addressField.action = #selector(navigateFromAddress)
-        let row = NSStackView(views: [back, forward, reload, home, addressField, bookmark, tabPicker, addTab])
+        let row = NSStackView(views: [back, forward, reload, home, addressField, bookmark, historyButton, tabPicker, closeTab, addTab])
         row.orientation = .horizontal
         row.alignment = .centerY
         row.spacing = 6
@@ -86,6 +88,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     }
 
     @objc private func newTabAction() { newTab() }
+
+    @objc private func closeCurrentTab() {
+        guard let id = selectedTabID, let index = tabs.firstIndex(where: { $0.id == id }) else { return }
+        tabs.remove(at: index)
+        if tabs.isEmpty {
+            selectedTabID = nil
+            pageHost.subviews.forEach { $0.removeFromSuperview() }
+            newTab()
+            return
+        }
+        selectedTabID = tabs[min(index, tabs.count - 1)].id
+        showSelectedTab()
+    }
 
     private func newTab() {
         let tab = BrowserTab()
@@ -169,8 +184,31 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
             }
         }
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Bookmark This Page", action: #selector(addBookmark), keyEquivalent: "d"))
-        menu.popUp(positioning: nil, at: NSPoint(x: 0, y: 0), in: window.contentView)
+        let addItem = NSMenuItem(title: "Bookmark This Page", action: #selector(addBookmark), keyEquivalent: "d")
+        addItem.target = self
+        menu.addItem(addItem)
+        menu.popUp(positioning: nil, at: NSPoint(x: 0, y: 0), in: pageHost)
+    }
+
+    @objc private func showHistory() {
+        let menu = NSMenu()
+        if history.isEmpty {
+            menu.addItem(NSMenuItem(title: "No history yet", action: nil, keyEquivalent: ""))
+        } else {
+            for url in history.prefix(40) {
+                let item = NSMenuItem(title: url, action: #selector(openHistoryItem(_:)), keyEquivalent: "")
+                item.target = self
+                item.representedObject = url
+                menu.addItem(item)
+            }
+        }
+        menu.popUp(positioning: nil, at: NSPoint(x: 0, y: 0), in: pageHost)
+    }
+
+    @objc private func openHistoryItem(_ sender: NSMenuItem) {
+        guard let url = sender.representedObject as? String else { return }
+        addressField.stringValue = url
+        navigateFromAddress()
     }
 
     @objc private func addBookmark() {
