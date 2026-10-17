@@ -9,6 +9,10 @@ on:
       - monterey-intel-port
   workflow_dispatch:
 
+concurrency:
+  group: monterey-intel-port-build
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -21,17 +25,19 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
+      - name: Verify Apple toolchain
+        run: |
+          set -euxo pipefail
+          xcrun --find swiftc
+          swift --version
+          xcrun --sdk macosx --show-sdk-version
+
       - name: Compile native app for macOS 12 Intel
         run: |
           set -euxo pipefail
-          DEV="/Applications/Xcode_26.5.app/Contents/Developer"
-          SWIFTC="$DEV/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
-          SDK="$DEV/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-          test -x "$SWIFTC"
-          test -d "$SDK"
           APP="$RUNNER_TEMP/RiftBrowser.app"
           mkdir -p "$APP/Contents/MacOS"
-          "$SWIFTC" -sdk "$SDK" -parse-as-library \
+          xcrun swiftc -parse-as-library \
             -target x86_64-apple-macosx12.0 \
             -framework AppKit -framework WebKit \
             MontereyBrowser/Browser.swift \
