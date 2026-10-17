@@ -21,23 +21,19 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Select Xcode
+      - name: Verify Apple toolchain
         run: |
           set -euxo pipefail
-          XCODE_PATH="/Applications/Xcode_26.5.app/Contents/Developer"
-          if [ ! -d "$XCODE_PATH" ]; then
-            XCODE_PATH="$(xcode-select -p)"
-          fi
-          sudo xcode-select --switch "$XCODE_PATH"
-          xcodebuild -version
+          xcrun --find swiftc
           swift --version
+          xcrun --sdk macosx --show-sdk-version
 
       - name: Compile native app for macOS 12 Intel
         run: |
           set -euxo pipefail
           APP="$RUNNER_TEMP/RiftBrowser.app"
           mkdir -p "$APP/Contents/MacOS"
-          swiftc -parse-as-library \
+          xcrun swiftc -parse-as-library \
             -target x86_64-apple-macosx12.0 \
             -framework AppKit -framework WebKit \
             MontereyBrowser/Browser.swift \
