@@ -302,13 +302,27 @@ public actor Digoxin {
     }
 
     /// `2026-10-05 00:10:46.5678 +0200`, the fraction of any length.
+    /// Uses NSRegularExpression because Swift Regex requires macOS 13.
     static func ipsDate(_ text: String) -> Date? {
-        guard let match = text.wholeMatch(of: /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})(\.\d+)? ([+-]\d{4})/) else { return nil }
+        let pattern = #"^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})(\\.\\d+)? ([+-]\\d{4})$"#
+        guard let regex = try? NSRegularExpression(pattern: pattern),
+              let match = regex.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)),
+              let dateRange = Range(match.range(at: 1), in: text),
+              let zoneRange = Range(match.range(at: 3), in: text)
+        else { return nil }
+
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        guard let whole = formatter.date(from: "\(match.output.1) \(match.output.3)") else { return nil }
-        return whole.addingTimeInterval(match.output.2.flatMap { Double("0" + $0) } ?? 0)
+        guard let whole = formatter.date(from: "\\(text[dateRange]) \\(text[zoneRange])") else { return nil }
+
+        let fraction: Double
+        if let fractionRange = Range(match.range(at: 2), in: text) {
+            fraction = Double("0" + text[fractionRange]) ?? 0
+        } else {
+            fraction = 0
+        }
+        return whole.addingTimeInterval(fraction)
     }
 
     // MARK: - Turning off
