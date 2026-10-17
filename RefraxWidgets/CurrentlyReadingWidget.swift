@@ -12,7 +12,7 @@ struct CurrentlyReadingWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: CurrentlyReadingProvider()) { entry in
             CurrentlyReadingWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .background(Color.gray.opacity(0.15))
         }
         .configurationDisplayName("Currently Reading")
         .description("See what page you're currently viewing in Refrax.")
