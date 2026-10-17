@@ -33,9 +33,6 @@ jobs:
           sudo xcode-select --switch "$XCODE_PATH"
           xcodebuild -version
 
-      - name: List project schemes
-        run: xcodebuild -list -project Refrax.xcodeproj
-
       - name: Attempt Intel build
         run: |
           set -o pipefail
