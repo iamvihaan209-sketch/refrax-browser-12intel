@@ -380,7 +380,7 @@ actor FaviconCache {
         saveTask?.cancel()
         let delay = saveDebounceDelay
         saveTask = Task(priority: .utility) { [weak self] in
-            try await Task.sleep(for: .seconds(delay))
+            try await Task.sleep(nanoseconds: UInt64(max(0, delay) * 1_000_000_000))
             // Re-enter actor context for modelContext access
             await self?.performSave()
         }
