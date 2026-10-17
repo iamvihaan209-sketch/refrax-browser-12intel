@@ -1,4 +1,4 @@
-name: Monterey Intel compatibility build
+name: Refrax Monterey Intel port
 
 on:
   push:
@@ -10,47 +10,71 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: monterey-intel-port-build
+  group: refrax-monterey-intel-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  build-intel:
-    name: Build Monterey-compatible Rift Browser (x86_64)
+  build-refrax:
+    name: Build actual Refrax app for Monterey Intel
     runs-on: macos-26-intel
-    timeout-minutes: 15
+    timeout-minutes: 45
     steps:
-      - name: Check out source
+      - name: Check out Refrax source
         uses: actions/checkout@v4
 
       - name: Verify Apple toolchain
         run: |
           set -euxo pipefail
-          xcrun --find swiftc
-          swift --version
+          xcodebuild -version
+          xcodebuild -list -project Refrax.xcodeproj
           xcrun --sdk macosx --show-sdk-version
 
-      - name: Compile native app for macOS 12 Intel
+      - name: Resolve Swift package dependencies
         run: |
           set -euxo pipefail
-          APP="$RUNNER_TEMP/RiftBrowser.app"
-          mkdir -p "$APP/Contents/MacOS"
-          xcrun swiftc -parse-as-library \
-            -target x86_64-apple-macosx12.0 \
-            -framework AppKit -framework WebKit \
-            MontereyBrowser/Browser.swift \
-            -o "$APP/Contents/MacOS/RiftBrowser"
-          cp MontereyBrowser/Info.plist "$APP/Contents/Info.plist"
-          plutil -lint "$APP/Contents/Info.plist"
-          file "$APP/Contents/MacOS/RiftBrowser"
-          codesign --force --sign - "$APP"
-          ditto -c -k --sequesterRsrc --keepParent "$APP" "$RUNNER_TEMP/RiftBrowser-macOS12-Intel.zip"
+          xcodebuild -resolvePackageDependencies -project Refrax.xcodeproj -scheme Refrax
 
-      - name: Upload app bundle
+      - name: Build actual Refrax for Intel macOS 12
+        run: |
+          set -euxo pipefail
+          xcodebuild \
+            -project Refrax.xcodeproj \
+            -scheme Refrax \
+            -configuration Release \
+            -destination 'platform=macOS,arch=x86_64' \
+            -derivedDataPath "$RUNNER_TEMP/RefraxDerivedData" \
+            MACOSX_DEPLOYMENT_TARGET=12.0 \
+            ARCHS=x86_64 \
+            ONLY_ACTIVE_ARCH=YES \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee "$RUNNER_TEMP/refrax-build.log"
+
+      - name: Upload build log on failure
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: rift-browser-macos12-intel
-          path: ${{ runner.temp }}/RiftBrowser-macOS12-Intel.zip
+          name: refrax-monterey-intel-build-log
+          path: ${{ runner.temp }}/refrax-build.log
+          if-no-files-found: ignore
+
+      - name: Verify built Refrax executable architecture
+        if: success()
+        run: |
+          set -euxo pipefail
+          APP="$RUNNER_TEMP/RefraxDerivedData/Build/Products/Release/Refrax.app"
+          test -d "$APP"
+          /usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$APP/Contents/Info.plist" || true
+          file "$APP/Contents/MacOS/Refrax"
+          lipo -archs "$APP/Contents/MacOS/Refrax"
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "$RUNNER_TEMP/Refrax-macOS12-Intel.zip"
+
+      - name: Upload actual Refrax app
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: refrax-macos12-intel
+          path: ${{ runner.temp }}/Refrax-macOS12-Intel.zip
           if-no-files-found: error
