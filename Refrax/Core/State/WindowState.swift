@@ -42,6 +42,15 @@ import SwiftUI
 ///   states are saved via `@SceneStorage` in ``ContentView`` for restoration.
 @Observable
 final class WindowState {
+    /// Convert Swift Duration to the nanosecond sleep API supported by macOS 12.
+    private static func nanoseconds(for duration: Duration) -> UInt64 {
+        let components = duration.components
+        guard components.seconds >= 0, components.attoseconds >= 0 else { return 0 }
+        let seconds = UInt64(components.seconds)
+        let fractionalNanoseconds = UInt64(components.attoseconds / 1_000_000_000)
+        return seconds &* 1_000_000_000 &+ fractionalNanoseconds
+    }
+
     private let settings: BrowserSettings
 
     /// Reference to the browser state for O(1) tab lookups.
@@ -162,7 +171,7 @@ final class WindowState {
 
         websiteColorDebounceTask = Task { @MainActor [weak self] in
             do {
-                try await Task.sleep(for: .milliseconds(200))
+                try await Task.sleep(nanoseconds: 200_000_000)
             } catch {
                 return // Cancelled
             }
@@ -545,7 +554,7 @@ final class WindowState {
 
         let capturedTitle = title
         compactTabTooltipTask = Task {
-            try? await Task.sleep(for: Self.compactTabTooltipDelay)
+            try? await Task.sleep(nanoseconds: Self.nanoseconds(for: Self.compactTabTooltipDelay))
             guard !Task.isCancelled else { return }
             compactTabTooltipTitle = capturedTitle
         }
@@ -640,7 +649,7 @@ final class WindowState {
         toastMessage = message
 
         toastDismissTask = Task { [weak self] in
-            try await Task.sleep(for: duration)
+            try await Task.sleep(nanoseconds: Self.nanoseconds(for: duration))
             self?.toastMessage = nil
         }
     }
