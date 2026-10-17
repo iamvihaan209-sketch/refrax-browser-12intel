@@ -47,3 +47,11 @@ jobs:
             MACOSX_DEPLOYMENT_TARGET=12.0 \
             CODE_SIGNING_ALLOWED=NO \
             build 2>&1 | tee "$RUNNER_TEMP/refrax-intel-build.log"
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: refrax-intel-build-log
+          path: ${{ runner.temp }}/refrax-intel-build.log
+          if-no-files-found: warn
