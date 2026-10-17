@@ -205,7 +205,7 @@ public struct CrashReportScrubber: Sendable {
         guard raw.count >= 2, raw.last == UInt8(ascii: "\"") else { return nil }
         let body = raw.dropFirst().dropLast()
         guard body.contains(UInt8(ascii: "\\")) else {
-            return String(validating: body, as: UTF8.self)
+            return String(decoding: body, as: UTF8.self)
         }
         return (try? JSONDecoder().decode(String.self, from: Data(raw)))
     }
