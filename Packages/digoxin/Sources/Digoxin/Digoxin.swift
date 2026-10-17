@@ -301,10 +301,10 @@ public actor Digoxin {
         return capture.timeIntervalSince(launch)
     }
 
-    /// `2026-10-05 00:10:46.5678 +0200`, the fraction of any length.
+    /// \`2026-10-05 00:10:46.5678 +0200\`, the fraction of any length.
     /// Uses NSRegularExpression because Swift Regex requires macOS 13.
     static func ipsDate(_ text: String) -> Date? {
-        let pattern = #"^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})(\\.\\d+)? ([+-]\\d{4})$"#
+        let pattern = #"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})(\.\d+)? ([+-]\d{4})$"#
         guard let regex = try? NSRegularExpression(pattern: pattern),
               let match = regex.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)),
               let dateRange = Range(match.range(at: 1), in: text),
@@ -314,7 +314,7 @@ public actor Digoxin {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        guard let whole = formatter.date(from: "\\(text[dateRange]) \\(text[zoneRange])") else { return nil }
+        guard let whole = formatter.date(from: "\(text[dateRange]) \(text[zoneRange])") else { return nil }
 
         let fraction: Double
         if let fractionRange = Range(match.range(at: 2), in: text) {
