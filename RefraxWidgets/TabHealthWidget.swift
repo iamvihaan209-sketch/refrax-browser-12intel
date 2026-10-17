@@ -12,7 +12,7 @@ struct TabHealthWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: TabHealthProvider()) { entry in
             TabHealthWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .background(Color.gray.opacity(0.15))
         }
         .configurationDisplayName("Browser Health")
         .description("Monitor your browser's tab count, memory usage, and health status.")
@@ -186,7 +186,7 @@ struct StatItem: View {
                     .font(.caption)
                     .foregroundStyle(color)
                 Text(value)
-                    .font(.system(.callout, design: .rounded, weight: .semibold))
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
             }
             Text(label)
