@@ -88,7 +88,7 @@ struct PipeCommand: AsyncParsableCommand {
                 return
             }
             if seconds > 0 {
-                try await Task.sleep(for: .milliseconds(Int(seconds * 1_000)))
+                try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
             }
             print("Waited \(seconds)s")
 
