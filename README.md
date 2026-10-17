@@ -1,32 +1,25 @@
-# Refrax
+# Rift Browser — Monterey Intel compatibility port
 
-Refrax lets each tab use WebKit or Chromium while keeping the same spaces, history and site settings. Its `refrax-ctl` CLI gives scripts and agents control of both engines; spaces can be locked with Touch ID.
+This fork explores a native browser build for Intel Macs running macOS 12 Monterey.
 
-<a href="https://kagerou.glass/get/refrax?from=readme"><img src=".github/download.svg" alt="Download Refrax for Mac" width="360" height="80"></a>
+## Monterey build
 
-![Refrax](.github/screenshot.avif)
+The upstream Refrax application targets macOS 26 and uses APIs that Monterey does not provide, including SwiftData and the Observation framework. Lowering `MACOSX_DEPLOYMENT_TARGET` does not backport those frameworks. To avoid pretending the full upstream application can run just by changing a version number, this branch adds an independent compatibility app in `MontereyBrowser/`.
 
-## Highlights
+The current compatibility app is **Rift Browser**, a small native AppKit + WebKit baseline that can be built for x86_64 with a macOS 12.0 minimum. It currently includes:
 
-- Switch individual tabs between WebKit and Chromium while keeping shared browser state.
-- Lock spaces with Touch ID and organize tabs into spaces and groups.
-- Automate either engine through the same `refrax-ctl` interface.
+- Native WebKit page rendering
+- Address/search field, back, forward, reload, and home controls
+- Multiple tabs
+- Local bookmarks and a capped browsing history list
+- GitHub Actions packaging of an Intel `.app` bundle
 
-<details>
-<summary>Full feature list</summary>
+The build workflow uploads `rift-browser-macos12-intel` as an Actions artifact when compilation succeeds. The workflow checks the executable architecture and app metadata; it does not claim that a build succeeded until the Actions run is green.
 
-- Per-tab rendering engine selection and configurable default engine.
-- Vertical tabs, spaces, groups, shared history, and site settings.
-- Touch ID locks for spaces.
-- Content blocking, per-site settings, routing rules, and pinned-tab previews across both engines.
-- Command palette with plain-language commands.
-- CLI control of tabs, spaces, navigation, page content, and screenshots.
-- Chromium installation through **Settings → Engines**; in-app updates.
+## Upstream project
 
-</details>
+The original Refrax source remains in `Refrax/` and is based on a newer macOS architecture. Full feature parity is not yet implemented in the Monterey compatibility app; porting the entire upstream codebase would require replacing SwiftData persistence and migrating Observation-driven state, plus auditing newer SwiftUI and WebKit APIs.
 
-## Notes
+Upstream project: https://github.com/kageroumado/refrax-browser
 
-- macOS 26+; Xcode 26+ for development.
-- [Engine reference](REFERENCE.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md).
-- [Code of conduct](CODE_OF_CONDUCT.md) · [Trademark policy](TRADEMARK.md) · <mail@kagerou.glass>.
+This fork uses a distinct name in line with the upstream trademark policy for redistributed forks. The source is GPL-3.0; see the upstream license and trademark policy before redistributing.
