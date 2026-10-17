@@ -50,8 +50,12 @@ public struct BasicInfo: Codable, Sendable, Equatable {
     /// including Rosetta's `VirtualApple`, → `unknown`.
     static func chipFamily(brand: String) -> String {
         if brand.contains("Intel") { return "Intel" }
-        guard let match = brand.firstMatch(of: /Apple (M[1-9][0-9]?)\b/) else { return "unknown" }
-        return String(match.output.1)
+        let pattern = #"Apple (M[1-9][0-9]?)\b"#
+        guard let regex = try? NSRegularExpression(pattern: pattern),
+              let match = regex.firstMatch(in: brand, range: NSRange(brand.startIndex..., in: brand)),
+              let range = Range(match.range(at: 1), in: brand)
+        else { return "unknown" }
+        return String(brand[range])
     }
 
     /// The largest common size at or below the installed memory, at least 8.
@@ -62,7 +66,7 @@ public struct BasicInfo: Codable, Sendable, Equatable {
 
     static func language(preferred: [String]) -> String {
         guard let first = preferred.first,
-              let code = Locale.Language(identifier: first).languageCode?.identifier(.alpha2),
+              let code = Locale(identifier: first).languageCode,
               code.count == 2
         else { return "xx" }
         return code.lowercased()
