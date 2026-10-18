@@ -675,7 +675,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
         url: URL.staticRequired("https://github.com"),
     )
 
-    return AutoFillMenuView(context: context)
+    AutoFillMenuView(context: context)
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
@@ -697,7 +697,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
         url: URL.staticRequired("https://github.com"),
     )
 
-    return AutoFillMenuView(context: context)
+    AutoFillMenuView(context: context)
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
@@ -714,7 +714,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
         url: URL.staticRequired("https://github.com"),
     )
 
-    return AutoFillMenuView(context: context)
+    AutoFillMenuView(context: context)
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
@@ -731,7 +731,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
         url: URL.staticRequired("https://github.com"),
     )
 
-    return AutoFillMenuView(context: context)
+    AutoFillMenuView(context: context)
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
@@ -746,7 +746,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
         url: URL.staticRequired("https://example.com"),
     )
 
-    return AutoFillMenuView(context: context)
+    AutoFillMenuView(context: context)
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
@@ -760,7 +760,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
         url: URL.staticRequired("https://example.com"),
     )
 
-    return AutoFillMenuView(context: context)
+    AutoFillMenuView(context: context)
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
@@ -774,7 +774,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
         url: URL.staticRequired("https://example.com"),
     )
 
-    return AutoFillMenuView(context: context)
+    AutoFillMenuView(context: context)
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
