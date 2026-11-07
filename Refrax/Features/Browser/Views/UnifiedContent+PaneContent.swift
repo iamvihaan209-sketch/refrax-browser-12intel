@@ -22,11 +22,11 @@ struct PaneContentWrapper: View {
     let frame: CGRect
     let isLayoutMode: Bool
 
-    @Environment(DialogState.self) private var dialogState
-    @Environment(WindowState.self) private var windowState
-    @Environment(HistoryManager.self) private var historyManager
-    @Environment(HistoryActivityManager.self) private var historyActivityManager
-    @Environment(ReaderModeManager.self) private var readerModeManager
+    @EnvironmentObject private var dialogState: DialogState
+    @EnvironmentObject private var windowState: WindowState
+    @EnvironmentObject private var historyManager: HistoryManager
+    @EnvironmentObject private var historyActivityManager: HistoryActivityManager
+    @EnvironmentObject private var readerModeManager: ReaderModeManager
     @Environment(\.webViewForcedInactive) private var isForcedInactive
 
     private enum Constants {
@@ -354,7 +354,7 @@ struct PaneContentWrapper: View {
 
 /// Presents extension permission prompts.
 private struct ExtensionPermissionPromptModifier: ViewModifier {
-    @Environment(ExtensionManager.self) private var extensionManager
+    @EnvironmentObject private var extensionManager: ExtensionManager
 
     func body(content: Content) -> some View {
         @Bindable var promptManager = extensionManager.permissionPromptManager
@@ -369,7 +369,7 @@ private struct ExtensionPermissionPromptModifier: ViewModifier {
 }
 
 private struct FileInputModifier: ViewModifier {
-    @Bindable var state: DialogState
+    @ObservedObject var state: DialogState
 
     func body(content: Content) -> some View {
         content.onChange(of: state.fileInput?.id) { _, newValue in
@@ -417,7 +417,7 @@ private struct FileInputModifier: ViewModifier {
 }
 
 private struct ClientCertificateModifier: ViewModifier {
-    @Bindable var state: DialogState
+    @ObservedObject var state: DialogState
 
     func body(content: Content) -> some View {
         content.onChange(of: state.clientCertificate?.id) { _, newValue in
@@ -527,7 +527,7 @@ private final class ClientIdentityPanelBridge: NSObject {
 /// Applied to the outer view to handle file pickers and certificate choice. JavaScript
 /// dialogs and permission requests belong to their page (`PagePromptModifier`).
 private struct DialogModifiers: ViewModifier {
-    @Bindable var dialogState: DialogState
+    @ObservedObject var dialogState: DialogState
 
     func body(content: Content) -> some View {
         content

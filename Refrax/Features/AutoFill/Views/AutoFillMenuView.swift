@@ -10,8 +10,8 @@ import SwiftUI
 /// - "Other Passwords for [domain]..." when more credentials exist than displayed, expanding the list in place
 /// - "Passwords..." option to open the system Passwords app
 struct AutoFillMenuView: View {
-    @Environment(AutoFillState.self) private var autoFillState
-    @Environment(WindowState.self) private var windowState
+    @EnvironmentObject private var autoFillState: AutoFillState
+    @EnvironmentObject private var windowState: WindowState
 
     let context: AutoFillContext
 

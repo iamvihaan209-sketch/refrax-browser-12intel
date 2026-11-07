@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 
 /// Observes delete/backspace key presses for targeted handling.
 ///
@@ -34,20 +33,17 @@ import Observation
 ///
 /// - Delete (backspace): keyCode 51
 /// - Forward delete: keyCode 117
-@Observable
-final class DeleteKeyObserver {
+final class DeleteKeyObserver: ObservableObject {
     // MARK: - Callback
 
     /// Callback invoked when delete key is pressed.
     ///
     /// Return `true` to consume the event and prevent it from propagating.
     /// Return `false` to let the event through to other responders (like TextField).
-    @ObservationIgnored
     var onDeletePressed: (() -> Bool)?
 
     // MARK: - Private
 
-    @ObservationIgnored
     private nonisolated(unsafe) var monitor: Any?
 
     // MARK: - Initialization

@@ -21,12 +21,12 @@ import SwiftUI
 /// - **Long press**: Shows context menu
 /// - **Drag**: Managed by FavoritesGrid
 struct FavoriteTileView: View {
-    @Environment(BookmarksManager.self) private var bookmarksManager
-    @Environment(TabManager.self) private var tabManager
-    @Environment(WindowState.self) private var windowState
-    @Environment(DragCoordinator.self) private var dragCoordinator
-    @Environment(WebPagePool.self) private var pagePool
-    @Environment(ModifierKeysState.self) private var modifierKeysState
+    @EnvironmentObject private var bookmarksManager: BookmarksManager
+    @EnvironmentObject private var tabManager: TabManager
+    @EnvironmentObject private var windowState: WindowState
+    @EnvironmentObject private var dragCoordinator: DragCoordinator
+    @EnvironmentObject private var pagePool: WebPagePool
+    @EnvironmentObject private var modifierKeysState: ModifierKeysState
 
     let item: FavoriteItem
     let isDragging: Bool
@@ -414,9 +414,9 @@ private struct SymbolIconView: View {
 /// The view uses a callback-based approach: when a tap is detected by the parent's gesture,
 /// it calls `showMenu()` on the menu trigger stored in state.
 private struct FolderMenuTile<Content: View>: View {
-    @Environment(WindowState.self) private var windowState
-    @Environment(BookmarksManager.self) private var bookmarksManager
-    @Environment(TabManager.self) private var tabManager
+    @EnvironmentObject private var windowState: WindowState
+    @EnvironmentObject private var bookmarksManager: BookmarksManager
+    @EnvironmentObject private var tabManager: TabManager
 
     let folder: BookmarkFolder
     let content: Content
@@ -461,7 +461,7 @@ private struct FolderMenuTile<Content: View>: View {
 
 /// The underlying NSViewRepresentable that hosts content and provides menu functionality.
 private struct FolderMenuTileRepresentable<Content: View>: NSViewRepresentable {
-    @Environment(BookmarksManager.self) private var bookmarksManager
+    @EnvironmentObject private var bookmarksManager: BookmarksManager
 
     let folder: BookmarkFolder
     let content: Content
@@ -655,8 +655,8 @@ private final class Coordinator: NSObject {
 
 /// Home button for live favorites that shows background only when the button itself is hovered.
 private struct FavoriteTileHomeButton: View {
-    @Environment(TabManager.self) private var tabManager
-    @Environment(WindowState.self) private var windowState
+    @EnvironmentObject private var tabManager: TabManager
+    @EnvironmentObject private var windowState: WindowState
 
     let tab: Tab
     let homeURL: URL

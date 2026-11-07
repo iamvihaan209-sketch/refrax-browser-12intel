@@ -38,7 +38,7 @@ struct SettingsEnvironmentModifier: ViewModifier {
             .environment(environment.settings)
             .environment(environment.browserState)
             .environment(environment.historyManager)
-            .environment(environment.autoFillState)
+            .environmentObject(environment.autoFillState)
             .environment(environment.siteSettingsManager)
             .environment(environment.extensionManager)
             .environment(environment.bookmarksManager)
@@ -52,7 +52,7 @@ struct SettingsEnvironmentModifier: ViewModifier {
             .environment(environment.customSearchEngineManager)
             .environment(environment.passwordsManager)
             .environment(environment.engineRegistry)
-            .environment(environment.telemetry)
+            .environmentObject(environment.telemetry)
             .preferredColorScheme(environment.settings.theme.colorScheme)
             .tint(environment.settings.customAccentColor?.color)
     }

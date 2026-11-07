@@ -7,13 +7,12 @@ import WebKit
 ///
 /// Each holds a continuation that resumes the page with the user's choice. JavaScript dialogs
 /// and permission requests are per-page questions (`PagePrompts`).
-@Observable
-final class DialogState {
+final class DialogState: ObservableObject {
     /// Active file input panel, if any.
-    var fileInput: FileInputInfo?
+    @Published var fileInput: FileInputInfo?
 
     /// Active client certificate (mTLS) picker, if any.
-    var clientCertificate: ClientCertificateInfo?
+    @Published var clientCertificate: ClientCertificateInfo?
 
     /// Information for presenting a file input panel.
     struct FileInputInfo: Identifiable {

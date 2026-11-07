@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 
 /// Observes whether an NSWindow is being captured by an external screen sharing session.
 ///
@@ -28,21 +27,18 @@ import Observation
 /// - AirPlay mirroring
 /// - ScreenCaptureKit-based applications
 /// - QuickTime screen recording
-@Observable
-final class WindowSharingObserver {
+final class WindowSharingObserver: ObservableObject {
     // MARK: - Observable State
 
     /// Whether the window is currently being captured by an external application.
     ///
     /// When `true`, the window or screen containing it is being shared.
-    private(set) var isWindowBeingShared: Bool = false
+    @Published private(set) var isWindowBeingShared: Bool = false
 
     // MARK: - Private Properties
 
-    @ObservationIgnored
     private weak var window: NSWindow?
 
-    @ObservationIgnored
     private var kvoObservation: NSKeyValueObservation?
 
     // MARK: - Initialization

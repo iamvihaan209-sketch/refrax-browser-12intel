@@ -107,7 +107,7 @@ struct SidebarCellContent: View {
             .environment(cellEnvironment.browserState)
             .environment(cellEnvironment.dependencyContainer)
             .environment(cellEnvironment.geometryState)
-            .environment(cellEnvironment.modifierKeysState)
+            .environmentObject(cellEnvironment.modifierKeysState)
             .environment(cellEnvironment.tabPreviewManager)
             .environment(cellEnvironment.pagePool)
             .environment(cellEnvironment.historyManager)
@@ -218,7 +218,7 @@ struct RecyclingTabListView: NSViewRepresentable {
     let onScrollChange: ((_ documentToSidebarOffset: CGFloat, _ topInset: CGFloat) -> Void)?
     let emptyAreaMenuBuilder: (() -> NSMenu)?
 
-    @Environment(SidebarCellEnvironment.self) private var cellEnvironment
+    @EnvironmentObject private var cellEnvironment: SidebarCellEnvironment
 
     func makeCoordinator() -> Coordinator {
         Coordinator(scrollToProxy: scrollToProxy)

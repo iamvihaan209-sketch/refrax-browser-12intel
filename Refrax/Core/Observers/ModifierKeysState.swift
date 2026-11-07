@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 
 /// Tracks the current state of keyboard modifier keys.
 ///
@@ -13,34 +12,32 @@ import Observation
 /// @State private var modifierKeys = ModifierKeysState()
 ///
 /// ContentView()
-///     .environment(modifierKeys)
+///     .environmentObject(modifierKeys)
 ///
 /// // In a view
-/// @Environment(ModifierKeysState.self) private var modifierKeys
+/// @EnvironmentObject private var modifierKeys: ModifierKeysState
 ///
 /// if modifierKeys.isOptionPressed {
 ///     // Option key is pressed
 /// }
 /// ```
-@Observable
-final class ModifierKeysState {
+final class ModifierKeysState: ObservableObject {
     // MARK: - State
 
     /// Whether the Option (Alt) key is currently pressed.
-    private(set) var isOptionPressed: Bool = false
+    @Published private(set) var isOptionPressed: Bool = false
 
     /// Whether the Command key is currently pressed.
-    private(set) var isCommandPressed: Bool = false
+    @Published private(set) var isCommandPressed: Bool = false
 
     /// Whether the Shift key is currently pressed.
-    private(set) var isShiftPressed: Bool = false
+    @Published private(set) var isShiftPressed: Bool = false
 
     /// Whether the Control key is currently pressed.
-    private(set) var isControlPressed: Bool = false
+    @Published private(set) var isControlPressed: Bool = false
 
     // MARK: - Private
 
-    @ObservationIgnored
     private nonisolated(unsafe) var monitor: Any?
 
     // MARK: - Initialization

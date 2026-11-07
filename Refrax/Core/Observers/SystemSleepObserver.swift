@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 
 /// Observes system sleep/wake state and screen lock status.
 ///
@@ -25,28 +24,23 @@ import Observation
 ///
 /// All notification handlers dispatch to the main queue and use
 /// `MainActor.assumeIsolated` for synchronous access from main thread.
-@Observable
-final class SystemSleepObserver {
+final class SystemSleepObserver: ObservableObject {
     // MARK: - State
 
     /// Whether the system is currently sleeping.
-    private(set) var isSystemSleeping: Bool = false
+    @Published private(set) var isSystemSleeping: Bool = false
 
     /// Whether the screen is currently locked.
-    private(set) var isScreenLocked: Bool = false
+    @Published private(set) var isScreenLocked: Bool = false
 
     // MARK: - Private
 
-    @ObservationIgnored
     private nonisolated(unsafe) var sleepObserver: (any NSObjectProtocol)?
 
-    @ObservationIgnored
     private nonisolated(unsafe) var wakeObserver: (any NSObjectProtocol)?
 
-    @ObservationIgnored
     private nonisolated(unsafe) var screenLockObserver: (any NSObjectProtocol)?
 
-    @ObservationIgnored
     private nonisolated(unsafe) var screenUnlockObserver: (any NSObjectProtocol)?
 
     // MARK: - Initialization

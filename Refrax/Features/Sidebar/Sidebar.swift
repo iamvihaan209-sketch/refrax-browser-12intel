@@ -29,20 +29,20 @@ private struct LayoutVersionKey: Equatable {
 /// Layout rebuilds are triggered explicitly via `onChange` rather than on every
 /// body evaluation, ensuring performance with large tab counts.
 struct Sidebar: View {
-  @Environment(TabManager.self) private var tabManager
-  @Environment(SpaceManager.self) private var spaceManager
-  @Environment(BookmarksManager.self) private var bookmarksManager
-  @Environment(TabGroupManager.self) private var groupManager
-  @Environment(UndoRedoManager.self) private var undoRedoManager
-  @Environment(WindowState.self) private var windowState
-  @Environment(BrowserState.self) private var browserState
-  @Environment(BrowserSettings.self) private var settings
-  @Environment(ModifierKeysState.self) private var modifierKeysState
-  @Environment(TabPreviewManager.self) private var tabPreviewManager
-  @Environment(WebPagePool.self) private var pagePool
-  @Environment(HistoryManager.self) private var historyManager
-  @Environment(TabAutoArchiveManager.self) private var autoArchiveManager
-  @Environment(WindowManager.self) private var windowManager
+  @EnvironmentObject private var tabManager: TabManager
+  @EnvironmentObject private var spaceManager: SpaceManager
+  @EnvironmentObject private var bookmarksManager: BookmarksManager
+  @EnvironmentObject private var groupManager: TabGroupManager
+  @EnvironmentObject private var undoRedoManager: UndoRedoManager
+  @EnvironmentObject private var windowState: WindowState
+  @EnvironmentObject private var browserState: BrowserState
+  @EnvironmentObject private var settings: BrowserSettings
+  @EnvironmentObject private var modifierKeysState: ModifierKeysState
+  @EnvironmentObject private var tabPreviewManager: TabPreviewManager
+  @EnvironmentObject private var pagePool: WebPagePool
+  @EnvironmentObject private var historyManager: HistoryManager
+  @EnvironmentObject private var autoArchiveManager: TabAutoArchiveManager
+  @EnvironmentObject private var windowManager: WindowManager
 
   // Managers (injected from window controller, persist for window lifecycle)
   @Environment(Sidebar.LayoutManager.self) private var layoutManager
@@ -50,12 +50,12 @@ struct Sidebar: View {
   @Environment(Sidebar.FilterManager.self) private var filterManager
   @Environment(Sidebar.TabSelectionManager.self) private var selectionManager
   @Environment(Sidebar.MediaControlsManager.self) private var mediaControlsManager
-  @Environment(ShelfManager.self) private var shelfManager
+  @EnvironmentObject private var shelfManager: ShelfManager
   @Environment(Sidebar.TransitionCoordinator.self) private var transitionCoordinator
   @Environment(Sidebar.MiddleClickCoordinator.self) private var middleClickCoordinator
   @Environment(Sidebar.DependencyContainer.self) private var dependencyContainer
   @Environment(Sidebar.GeometryState.self) private var geometryState
-  @Environment(AppUpdateManager.self) private var appUpdateManager
+  @EnvironmentObject private var appUpdateManager: AppUpdateManager
 
   // UI state
   @State private var showUpdateSheet = false

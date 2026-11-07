@@ -5,10 +5,9 @@ import SwiftUI
 ///
 /// This state is observed by views to display the auto-fill popover when
 /// an autofillable field gains focus.
-@Observable
-final class AutoFillState {
+final class AutoFillState: ObservableObject {
     /// Current auto-fill context (when popover should be shown).
-    private(set) var context: AutoFillContext?
+    @Published private(set) var context: AutoFillContext?
 
     /// Whether the popover is currently visible.
     var isPopoverVisible: Bool {
@@ -16,13 +15,13 @@ final class AutoFillState {
     }
 
     /// Whether a system autofill request is in progress.
-    private(set) var isRequestingSystemAutoFill = false
+    @Published private(set) var isRequestingSystemAutoFill = false
 
     /// Pending credential save request (when user submits a login form).
     ///
     /// When set, the address bar shows a key icon that opens the save password prompt.
     /// This is set by `AutoFillManager` when a form submission is detected with credentials.
-    private(set) var pendingSaveRequest: CredentialSaveRequest?
+    @Published private(set) var pendingSaveRequest: CredentialSaveRequest?
 
     /// Whether there's a pending save request to show.
     var hasPendingSaveRequest: Bool {
@@ -62,35 +61,35 @@ final class AutoFillState {
     // MARK: - Callbacks
 
     /// Callback to execute when a credential is selected from the list.
-    @ObservationIgnored var onCredentialSelected: ((PasswordsManager.StoredCredential) -> Void)?
+    var onCredentialSelected: ((PasswordsManager.StoredCredential) -> Void)?
 
     /// Callback to execute when the user requests system Passwords app (for credentials).
-    @ObservationIgnored var onSystemPasswordsRequested: (() -> Void)?
+    var onSystemPasswordsRequested: (() -> Void)?
 
     /// Callback to execute when the user requests system Credit Cards picker.
-    @ObservationIgnored var onSystemCreditCardsRequested: (() -> Void)?
+    var onSystemCreditCardsRequested: (() -> Void)?
 
     /// Callback to execute when the user requests system Contacts app.
-    @ObservationIgnored var onSystemContactsRequested: (() -> Void)?
+    var onSystemContactsRequested: (() -> Void)?
 
     /// Callback to execute when the user wants to generate a new password.
     ///
     /// Parameters are: fieldId, usernameFieldId
-    @ObservationIgnored var onSuggestNewPassword: ((String, String?) -> Void)?
+    var onSuggestNewPassword: ((String, String?) -> Void)?
 
     /// Callback to execute when the user wants to fill a recently generated password.
     ///
     /// Parameters are: password, fieldId, usernameFieldId
-    @ObservationIgnored var onFillGeneratedPassword: ((String, String, String?) -> Void)?
+    var onFillGeneratedPassword: ((String, String, String?) -> Void)?
 
     /// Callback when user saves a credential from the save prompt.
-    @ObservationIgnored var onSaveCredential: ((CredentialSaveRequest) -> Void)?
+    var onSaveCredential: ((CredentialSaveRequest) -> Void)?
 
     /// Callback when user updates an existing credential from the save prompt.
-    @ObservationIgnored var onUpdateCredential: ((CredentialSaveRequest) -> Void)?
+    var onUpdateCredential: ((CredentialSaveRequest) -> Void)?
 
     /// Callback when user chooses "Never" for a domain.
-    @ObservationIgnored var onNeverSaveForDomain: ((String) -> Void)?
+    var onNeverSaveForDomain: ((String) -> Void)?
 }
 
 // MARK: - Credential Save Request

@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct MainContentView: View {
-    @Environment(BrowserSettings.self) private var settings
-    @Environment(ClipboardMonitor.self) private var clipboardMonitor
-    @Environment(WindowState.self) private var windowState
+    @EnvironmentObject private var settings: BrowserSettings
+    @EnvironmentObject private var clipboardMonitor: ClipboardMonitor
+    @EnvironmentObject private var windowState: WindowState
 
     @State private var showClipboardToast = false
 
@@ -138,7 +138,7 @@ private extension MainContentView {
 /// changes to autofill context only invalidate this view, not the entire
 /// MainContentView hierarchy.
 private struct AutoFillOverlayView: View {
-    @Environment(AutoFillState.self) private var autoFillState
+    @EnvironmentObject private var autoFillState: AutoFillState
 
     var body: some View {
         if let context = autoFillState.context, context.hasContent {

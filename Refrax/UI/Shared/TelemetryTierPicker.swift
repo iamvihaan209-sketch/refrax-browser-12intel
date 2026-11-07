@@ -94,7 +94,7 @@ struct TelemetryDisclosureView: View {
 struct TelemetryStatusLine: View {
     let tier: TelemetryTier
 
-    @Environment(TelemetryReporter.self) private var telemetry
+    @EnvironmentObject private var telemetry: TelemetryReporter
 
     private static let refreshInterval: Duration = .seconds(2)
 

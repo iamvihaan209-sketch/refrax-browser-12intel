@@ -9,7 +9,7 @@ import SwiftUI
 /// Uses NSPopover with `.applicationDefined` behavior to prevent auto-dismiss on outside clicks.
 /// The popover only closes when the user explicitly clicks a button (Save, Not Now, Never, etc.).
 struct AddressBarSavePasswordButton: View {
-    @Environment(AutoFillState.self) private var autoFillState
+    @EnvironmentObject private var autoFillState: AutoFillState
 
     @State private var popoverController: SavePasswordPopoverController?
 
@@ -135,7 +135,7 @@ final class SavePasswordPopoverController: NSObject, NSPopoverDelegate {
 
         // Create the content view with dismiss callback
         let contentView = SavePasswordPromptView(request: request)
-            .environment(autoFillState)
+            .environmentObject(autoFillState)
 
         let hostingController = NSHostingController(rootView: contentView)
         newPopover.contentViewController = hostingController

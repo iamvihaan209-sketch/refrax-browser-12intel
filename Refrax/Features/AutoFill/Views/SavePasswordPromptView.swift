@@ -18,7 +18,7 @@ import SwiftUI
 struct SavePasswordPromptView: View {
     let request: CredentialSaveRequest
 
-    @Environment(AutoFillState.self) private var autoFillState
+    @EnvironmentObject private var autoFillState: AutoFillState
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {

@@ -3,10 +3,10 @@ import SwiftUI
 // MARK: - Privacy Settings
 
 struct PrivacySettingsView: View {
-    @Environment(BrowserSettings.self) private var settings
-    @Environment(HistoryManager.self) private var historyManager
-    @Environment(AutoFillState.self) private var autoFillState
-    @Environment(SiteSettingsManager.self) private var siteSettingsManager
+    @EnvironmentObject private var settings: BrowserSettings
+    @EnvironmentObject private var historyManager: HistoryManager
+    @EnvironmentObject private var autoFillState: AutoFillState
+    @EnvironmentObject private var siteSettingsManager: SiteSettingsManager
 
     let highlightedItemId: String?
 

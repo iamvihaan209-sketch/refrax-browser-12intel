@@ -8,8 +8,7 @@ import Foundation
 /// The client is an actor doing file I/O, Secure Enclave signing, and network;
 /// every call here hands it work with `await` and returns to the main actor.
 @MainActor
-@Observable
-final class TelemetryReporter {
+final class TelemetryReporter: ObservableObject {
     /// The service root for this build. Debug builds talk to a local server,
     /// or to `REFRAX_DIGOXIN_URL` when set, so they never reach production.
     nonisolated static let baseURL: URL = {
@@ -28,13 +27,13 @@ final class TelemetryReporter {
     nonisolated static let maxEnginesLength = 64
 
     /// Where the client stands, as of the last ``refreshStatus()``.
-    private(set) var status: DigoxinStatus = .off
+    @Published private(set) var status: DigoxinStatus = .off
 
-    @ObservationIgnored private let client: Digoxin
-    @ObservationIgnored private let registry: EngineRegistry
+    private let client: Digoxin
+    private let registry: EngineRegistry
     /// Applies the tier stored in settings before anything else reaches the client.
-    @ObservationIgnored private var initialTier: Task<Void, Never>?
-    @ObservationIgnored private var tierChanges: Task<Void, Never>?
+    private var initialTier: Task<Void, Never>?
+    private var tierChanges: Task<Void, Never>?
 
     init(registry: EngineRegistry) {
         self.registry = registry

@@ -9,7 +9,7 @@ struct AddressBar: View {
     @Environment(SharingCoordinator.self) private var sharingCoordinator: SharingCoordinator
     @Environment(ExtensionManager.self) private var extensionManager: ExtensionManager
     @Environment(ReaderModeManager.self) private var readerModeManager: ReaderModeManager
-    @Environment(AutoFillState.self) private var autoFillState: AutoFillState
+    @EnvironmentObject private var autoFillState: AutoFillState
     @Environment(SiteSettingsManager.self) private var siteSettingsManager: SiteSettingsManager
     @Environment(ScreenshotCoordinator.self) private var screenshotCoordinator: ScreenshotCoordinator
     @Environment(RecordingCoordinator.self) private var recordingCoordinator: RecordingCoordinator

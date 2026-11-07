@@ -14,10 +14,10 @@ import SwiftUI
 /// Tooltips are positioned via direct frame reporting from cells
 /// to `WindowState.compactTabTooltipFrame`.
 struct CompactSidebarContent: View {
-    @Environment(WindowState.self) private var windowState
-    @Environment(BrowserState.self) private var browserState
+    @EnvironmentObject private var windowState: WindowState
+    @EnvironmentObject private var browserState: BrowserState
     @Environment(Sidebar.LayoutManager.self) private var layoutManager
-    @Environment(SpaceManager.self) private var spaceManager
+    @EnvironmentObject private var spaceManager: SpaceManager
     @Environment(Sidebar.DependencyContainer.self) private var dependencyContainer
 
     @State private var showingFavoritesPopover = false
@@ -394,8 +394,8 @@ struct CompactSidebarContent: View {
 /// Navigation state changes frequently during browsing (canGoBack, canGoForward, isLoading).
 /// By isolating these observations here, the parent view and 100+ tab buttons don't re-evaluate.
 private struct CompactNavigationControls: View {
-    @Environment(WindowState.self) private var windowState
-    @Environment(ModifierKeysState.self) private var modifierKeys
+    @EnvironmentObject private var windowState: WindowState
+    @EnvironmentObject private var modifierKeys: ModifierKeysState
 
     @State private var showsCopiedFeedback = false
     @State private var addressBarDismissTask: Task<Void, Never>?
@@ -602,7 +602,7 @@ private struct CompactNavigationControls: View {
 /// Background color changes with website theme colors. By isolating this observation,
 /// the sidebar content doesn't re-render when the background tint changes.
 private struct CompactControlsBackground: View {
-    @Environment(WindowState.self) private var windowState
+    @EnvironmentObject private var windowState: WindowState
     let edge: VariableBlurEdge
 
     var body: some View {

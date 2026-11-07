@@ -7,7 +7,7 @@ import SwiftUI
 ///
 /// Hold Option to copy as a Markdown link: `[Title](URL)`
 struct AddressBarCopyLinkButton: View {
-    @Environment(ModifierKeysState.self) private var modifierKeys
+    @EnvironmentObject private var modifierKeys: ModifierKeysState
 
     let copyURL: () -> Void
     let copyMarkdown: () -> Void
