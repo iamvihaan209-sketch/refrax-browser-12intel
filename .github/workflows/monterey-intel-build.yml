@@ -21,7 +21,7 @@ permissions:
 jobs:
   build-refrax:
     name: Build actual Refrax app for Monterey Intel
-    runs-on: macos-15-intel
+    runs-on: macos-26-intel
     timeout-minutes: 45
     steps:
       - name: Check out Refrax source
