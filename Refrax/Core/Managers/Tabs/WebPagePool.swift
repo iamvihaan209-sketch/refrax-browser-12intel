@@ -206,7 +206,7 @@ final class WebPagePool {
 
         warmUpTask = Task(priority: .utility) { [weak self] in
             // Small delay to ensure UI is fully settled
-            try? await Task.sleep(for: .milliseconds(50))
+            try? await Task.sleep(nanoseconds: 50 * 1_000_000)
 
             guard !Task.isCancelled else { return }
 
@@ -218,7 +218,7 @@ final class WebPagePool {
             warmUpView.load(URLRequest(url: .blank))
 
             // Brief wait to ensure initialization completes
-            try? await Task.sleep(for: .milliseconds(150))
+            try? await Task.sleep(nanoseconds: 150 * 1_000_000)
 
             // View deallocates here, but WebKit process stays warm
             _ = warmUpView

@@ -74,7 +74,7 @@ private struct SearchEngineDetectedPill: View {
         .compatGlassEffect()
         .task(id: detection.domain) {
             do {
-                try await Task.sleep(for: .seconds(8))
+                try await Task.sleep(nanoseconds: 8 * 1_000_000_000)
                 dismiss()
             } catch {
                 // Cancelled — view removed before timer fired

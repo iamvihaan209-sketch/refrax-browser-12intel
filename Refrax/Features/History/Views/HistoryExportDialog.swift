@@ -207,7 +207,7 @@ struct HistoryExportDialog: View {
     private func updateEntryCount() async {
         isCalculating = true
         // Small delay to debounce rapid date changes
-        try? await Task.sleep(for: .milliseconds(100))
+        try? await Task.sleep(nanoseconds: 100 * 1_000_000)
 
         // Check if cancelled during debounce
         guard !Task.isCancelled else {

@@ -482,7 +482,7 @@ final class WebPage: Identifiable {
                 return
             }
             // Brief sleep to avoid busy-waiting
-            try? await Task.sleep(for: .milliseconds(300))
+            try? await Task.sleep(nanoseconds: 300 * 1_000_000)
         }
 
         // Additional wait for rendering to complete after load finishes

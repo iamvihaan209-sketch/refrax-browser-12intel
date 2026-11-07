@@ -14,7 +14,7 @@
 //    func schedulePerformanceTest() {
 //        Task {
 //            // Wait for app to fully launch and settle
-//            try? await Task.sleep(for: .seconds(2))
+//            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
 //            await runPerformanceTestSequence()
 //        }
 //    }
@@ -51,17 +51,17 @@
 //        print("🔬 [PerfTest] Phase 1: Rapid tab switching...")
 //        for i in 0 ..< min(tabs.count, 6) {
 //            tabManager.setActiveTab(tabs[i], in: windowState)
-//            try? await Task.sleep(for: .milliseconds(300))
+//            try? await Task.sleep(nanoseconds: 300 * 1_000_000)
 //        }
 //
 //        // Switch back through in reverse
 //        for i in stride(from: min(tabs.count - 1, 5), through: 0, by: -1) {
 //            tabManager.setActiveTab(tabs[i], in: windowState)
-//            try? await Task.sleep(for: .milliseconds(200))
+//            try? await Task.sleep(nanoseconds: 200 * 1_000_000)
 //        }
 //
 //        print("🔬 [PerfTest] Phase 1 complete")
-//        try? await Task.sleep(for: .milliseconds(400))
+//        try? await Task.sleep(nanoseconds: 400 * 1_000_000)
 //
 //        // MARK: - Phase 2: Filter Changes (triggers layout rebuilds)
 //
@@ -69,13 +69,13 @@
 //
 //        for i in 0 ..< 4 {
 //            filterManager.searchText = "test\(i)"
-//            try? await Task.sleep(for: .milliseconds(150))
+//            try? await Task.sleep(nanoseconds: 150 * 1_000_000)
 //            filterManager.searchText = ""
-//            try? await Task.sleep(for: .milliseconds(150))
+//            try? await Task.sleep(nanoseconds: 150 * 1_000_000)
 //        }
 //
 //        print("🔬 [PerfTest] Phase 2 complete")
-//        try? await Task.sleep(for: .milliseconds(400))
+//        try? await Task.sleep(nanoseconds: 400 * 1_000_000)
 //
 //        // MARK: - Phase 3: Tab Reordering with Commit
 //
@@ -109,21 +109,21 @@
 //                    offset: offset,
 //                    location: CGPoint(x: firstFrame.midX, y: currentY),
 //                )
-//                try? await Task.sleep(for: .milliseconds(30))
+//                try? await Task.sleep(nanoseconds: 30 * 1_000_000)
 //            }
 //
 //            // Commit the reorder
 //            let didReorder = dragCoordinator.commitDrag()
 //            print("🔬 [PerfTest] Reorder commit: \(didReorder)")
-//            try? await Task.sleep(for: .milliseconds(300))
+//            try? await Task.sleep(nanoseconds: 300 * 1_000_000)
 //
 //            // Wait for animation
 //            dragCoordinator.reset()
-//            try? await Task.sleep(for: .milliseconds(200))
+//            try? await Task.sleep(nanoseconds: 200 * 1_000_000)
 //        }
 //
 //        print("🔬 [PerfTest] Phase 3 complete")
-//        try? await Task.sleep(for: .milliseconds(400))
+//        try? await Task.sleep(nanoseconds: 400 * 1_000_000)
 //
 //        // MARK: - Phase 4: Cross-Section Drag (Tab to Favorites)
 //
@@ -158,14 +158,14 @@
 //                    offset: currentY - startY,
 //                    location: CGPoint(x: tabFrame.midX, y: currentY),
 //                )
-//                try? await Task.sleep(for: .milliseconds(25))
+//                try? await Task.sleep(nanoseconds: 25 * 1_000_000)
 //            }
 //
 //            // Commit (converts to favorite)
 //            let didConvert = dragCoordinator.commitDrag()
 //            print("🔬 [PerfTest] Tab to favorites: \(didConvert)")
 //            dragCoordinator.reset()
-//            try? await Task.sleep(for: .milliseconds(400))
+//            try? await Task.sleep(nanoseconds: 400 * 1_000_000)
 //        }
 //
 //        // Favorites to Tab: drag a favorite back to tab list
@@ -194,18 +194,18 @@
 //                    offset: currentY - startY,
 //                    location: CGPoint(x: favFrame.midX, y: currentY),
 //                )
-//                try? await Task.sleep(for: .milliseconds(25))
+//                try? await Task.sleep(nanoseconds: 25 * 1_000_000)
 //            }
 //
 //            // Commit (converts to tab)
 //            let didConvert = dragCoordinator.commitDrag()
 //            print("🔬 [PerfTest] Favorites to tab: \(didConvert)")
 //            dragCoordinator.reset()
-//            try? await Task.sleep(for: .milliseconds(400))
+//            try? await Task.sleep(nanoseconds: 400 * 1_000_000)
 //        }
 //
 //        print("🔬 [PerfTest] Phase 4 complete")
-//        try? await Task.sleep(for: .milliseconds(400))
+//        try? await Task.sleep(nanoseconds: 400 * 1_000_000)
 //
 //        // MARK: - Phase 5: Tab Renaming (reduced)
 //
@@ -220,17 +220,17 @@
 //        for (index, tab) in renameTabs.enumerated() {
 //            tab.customName = "PerfTest \(index)"
 //            tabManager.state.incrementContentVersion()
-//            try? await Task.sleep(for: .milliseconds(150))
+//            try? await Task.sleep(nanoseconds: 150 * 1_000_000)
 //        }
 //
 //        for tab in renameTabs {
 //            tab.customName = originalNames[tab.id] ?? nil
 //            tabManager.state.incrementContentVersion()
-//            try? await Task.sleep(for: .milliseconds(100))
+//            try? await Task.sleep(nanoseconds: 100 * 1_000_000)
 //        }
 //
 //        print("🔬 [PerfTest] Phase 5 complete")
-//        try? await Task.sleep(for: .milliseconds(400))
+//        try? await Task.sleep(nanoseconds: 400 * 1_000_000)
 //
 //        // MARK: - Phase 6: Combined Operations
 //
@@ -240,14 +240,14 @@
 //        for i in 0 ..< 3 {
 //            let tabIndex = i % finalTabs.count
 //            tabManager.setActiveTab(finalTabs[tabIndex], in: windowState)
-//            try? await Task.sleep(for: .milliseconds(300))
+//            try? await Task.sleep(nanoseconds: 300 * 1_000_000)
 //
 //            if i % 2 == 0 {
 //                filterManager.searchText = "a"
-//                try? await Task.sleep(for: .milliseconds(100))
+//                try? await Task.sleep(nanoseconds: 100 * 1_000_000)
 //                filterManager.searchText = ""
 //            }
-//            try? await Task.sleep(for: .milliseconds(150))
+//            try? await Task.sleep(nanoseconds: 150 * 1_000_000)
 //        }
 //
 //        print("🔬 [PerfTest] Phase 6 complete")
@@ -260,7 +260,7 @@
 //    /// Schedules drag overlay mode tests to debug tile↔tab transitions.
 //    func scheduleDragOverlayTest() {
 //        Task {
-//            try? await Task.sleep(for: .seconds(3))
+//            try? await Task.sleep(nanoseconds: 3 * 1_000_000_000)
 //            await runDragOverlayTest()
 //        }
 //    }
@@ -277,7 +277,7 @@
 //        let layoutManager = sidebarManagers.layoutManager
 //
 //        // Wait for layout to be ready
-//        try? await Task.sleep(for: .milliseconds(500))
+//        try? await Task.sleep(nanoseconds: 500 * 1_000_000)
 //
 //        let favorites = layoutManager.favoritesLayout
 //        let pinnedItems = layoutManager.pinnedItems
@@ -324,7 +324,7 @@
 //                expectedIsPinned: true,
 //                expectedIndex: 0,
 //            )
-//            try? await Task.sleep(for: .seconds(1))
+//            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 //        }
 //
 //        // Test 2: Favorite → Pinned section (index 1, between first and second)
@@ -339,7 +339,7 @@
 //                expectedIsPinned: true,
 //                expectedIndex: 1,
 //            )
-//            try? await Task.sleep(for: .seconds(1))
+//            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 //        }
 //
 //        // Test 3: Favorite → End of pinned (after all pinned items)
@@ -354,7 +354,7 @@
 //                expectedIsPinned: true,
 //                expectedIndex: pinnedItems.count,
 //            )
-//            try? await Task.sleep(for: .seconds(1))
+//            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 //        }
 //
 //        // Test 4: Favorite → Normal section (index 0)
@@ -368,7 +368,7 @@
 //                expectedIsPinned: false,
 //                expectedIndex: 0,
 //            )
-//            try? await Task.sleep(for: .seconds(1))
+//            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 //        }
 //
 //        // Test 5: Favorite → Normal section (index 1)
@@ -383,7 +383,7 @@
 //                expectedIsPinned: false,
 //                expectedIndex: 1,
 //            )
-//            try? await Task.sleep(for: .seconds(1))
+//            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 //        }
 //
 //        // Test 6: Tab reorder within normal (move tab 0 to position 2)
@@ -395,7 +395,7 @@
 //                sourceItem: normalItems[0],
 //                targetIndex: 2,
 //            )
-//            try? await Task.sleep(for: .seconds(1))
+//            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 //        }
 //
 //        print("🔬 [DragTest] ✅ All tests complete!")
@@ -440,7 +440,7 @@
 //                offset: currentY - startY,
 //                location: CGPoint(x: startFrame.midX, y: currentY),
 //            )
-//            try? await Task.sleep(for: .milliseconds(40))
+//            try? await Task.sleep(nanoseconds: 40 * 1_000_000)
 //        }
 //
 //        // Check drop target
@@ -520,7 +520,7 @@
 //                offset: currentY - startY,
 //                location: CGPoint(x: startFrame.midX, y: currentY),
 //            )
-//            try? await Task.sleep(for: .milliseconds(40))
+//            try? await Task.sleep(nanoseconds: 40 * 1_000_000)
 //        }
 //
 //        // Check result

@@ -175,7 +175,7 @@ struct AddressBar: View {
             checkReaderAvailability()
         }
         .task(id: windowState.focusedPageID) {
-            try? await Task.sleep(for: .milliseconds(100))
+            try? await Task.sleep(nanoseconds: 100 * 1_000_000)
             guard !Task.isCancelled else { return }
             updateCachedWebPage()
             checkReaderAvailability()
@@ -525,7 +525,7 @@ struct AddressBar: View {
 
             Task {
                 // Wait for popovers/menus to finish dismissing before capturing the window.
-                try? await Task.sleep(for: .milliseconds(500))
+                try? await Task.sleep(nanoseconds: 500 * 1_000_000)
 
                 let result = await screenshotCoordinator.captureWindow(
                     window: window,

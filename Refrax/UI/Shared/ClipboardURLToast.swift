@@ -137,7 +137,7 @@ struct ClipboardURLToast: View {
     private func scheduleAutoDismiss() {
         dismissTask?.cancel()
         dismissTask = Task { @MainActor in
-            try? await Task.sleep(for: .seconds(5))
+            try? await Task.sleep(nanoseconds: 5 * 1_000_000_000)
             guard !Task.isCancelled else { return }
             dismiss()
         }

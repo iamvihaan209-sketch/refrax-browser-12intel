@@ -1113,7 +1113,7 @@ final class RefraxControlServer {
         webPage.load(url)
 
         // Brief delay to let navigation start before polling
-        try? await Task.sleep(for: .milliseconds(100))
+        try? await Task.sleep(nanoseconds: 100 * 1_000_000)
 
         try await waitForPageLoad(webPage, timeout: params.timeout ?? 30)
 
@@ -2039,7 +2039,7 @@ final class RefraxControlServer {
             // so the after-state reflects the result. The viewer needs an active
             // playback session (a video that has started playing) — without one the
             // SPI is a silent no-op and the state will not change.
-            try? await Task.sleep(for: .milliseconds(400))
+            try? await Task.sleep(nanoseconds: 400 * 1_000_000)
             let after = await statusLine()
             return .ok("Video viewer \(params.action.rawValue): before [\(before)] → after [\(after)]")
         }
@@ -2069,7 +2069,7 @@ final class RefraxControlServer {
             }
             // PiP entry round-trips through the web process and AVKit; give it a
             // moment so the after-state reflects the result.
-            try? await Task.sleep(for: .milliseconds(400))
+            try? await Task.sleep(nanoseconds: 400 * 1_000_000)
             let after = await statusLine()
             return .ok("PiP \(params.action.rawValue): before [\(before)] → after [\(after)]")
         }
@@ -2881,7 +2881,7 @@ final class RefraxControlServer {
                 throw ControlError.timeout("Wait timed out after \(timeout)s")
             }
             if Task.isCancelled { break }
-            try? await Task.sleep(for: .milliseconds(100))
+            try? await Task.sleep(nanoseconds: 100 * 1_000_000)
         }
     }
 
@@ -3306,7 +3306,7 @@ extension RefraxControlServer {
         let webPage = try resolveWebPage(tabID: params.tabID, pageID: params.pageID)
         webPage.load(url)
 
-        try? await Task.sleep(for: .milliseconds(100))
+        try? await Task.sleep(nanoseconds: 100 * 1_000_000)
         try await waitForPageLoad(webPage, timeout: params.timeout ?? 30)
 
         return try await extractPageContent(webPage: webPage, scope: params.scope)
@@ -3328,11 +3328,11 @@ extension RefraxControlServer {
 
         // Wait for navigation if requested
         if params.waitForNavigation == true {
-            try? await Task.sleep(for: .milliseconds(200))
+            try? await Task.sleep(nanoseconds: 200 * 1_000_000)
             try await waitForPageLoad(webPage, timeout: params.timeout ?? 30)
         } else {
             // Brief delay for DOM updates after click
-            try? await Task.sleep(for: .milliseconds(300))
+            try? await Task.sleep(nanoseconds: 300 * 1_000_000)
         }
 
         return try await extractPageContent(webPage: webPage, scope: params.scope)
@@ -3391,7 +3391,7 @@ extension RefraxControlServer {
         }
 
         // Brief delay for scroll to settle
-        try? await Task.sleep(for: .milliseconds(150))
+        try? await Task.sleep(nanoseconds: 150 * 1_000_000)
 
         return try await extractPageContent(webPage: webPage, scope: params.scope)
     }
@@ -3539,7 +3539,7 @@ extension RefraxControlServer {
 
         let webPage = try resolveWebPage(tabID: tab.id.uuidString, pageID: nil)
 
-        try? await Task.sleep(for: .milliseconds(100))
+        try? await Task.sleep(nanoseconds: 100 * 1_000_000)
         try await waitForPageLoad(webPage, timeout: params.timeout ?? 30)
 
         guard params.scope != nil else {

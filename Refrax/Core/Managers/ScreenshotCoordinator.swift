@@ -166,7 +166,7 @@ final class ScreenshotCoordinator {
     /// Resumes auto-dismiss after the user stops hovering.
     func resumeAutoDismiss() {
         currentPreview?.dismissTask = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(3))
+            try? await Task.sleep(nanoseconds: 3 * 1_000_000_000)
             guard !Task.isCancelled else { return }
             self?.dismissPreview()
         }
@@ -307,7 +307,7 @@ final class ScreenshotCoordinator {
 
         // Auto-dismiss after 5 seconds
         preview.dismissTask = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(5))
+            try? await Task.sleep(nanoseconds: 5 * 1_000_000_000)
             guard !Task.isCancelled else { return }
             self?.dismissPreview()
         }

@@ -285,7 +285,7 @@ enum PageContentExtractor {
 
         return try await withCheckedThrowingContinuation { continuation in
             let timeoutTask = Task {
-                try await Task.sleep(for: .seconds(10))
+                try await Task.sleep(nanoseconds: 10 * 1_000_000_000)
                 guard guard_.claim() else { return }
                 continuation.resume(throwing: ExtractionError.timeout)
             }

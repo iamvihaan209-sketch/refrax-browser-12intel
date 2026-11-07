@@ -456,7 +456,7 @@ private struct CustomSymbolInput: View {
     private func scheduleDebounce(for value: String) {
         debounceTask?.cancel()
         debounceTask = Task {
-            try await Task.sleep(for: .milliseconds(300))
+            try await Task.sleep(nanoseconds: 300 * 1_000_000)
             debouncedName = value
         }
     }

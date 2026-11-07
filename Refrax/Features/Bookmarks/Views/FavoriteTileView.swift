@@ -333,7 +333,7 @@ struct FavoriteTileView: View {
         }
 
         Task { @MainActor in
-            try await Task.sleep(for: .milliseconds(100))
+            try await Task.sleep(nanoseconds: 100 * 1_000_000)
 
             withAnimation(.spring(response: 0.2)) {
                 isPressed = false

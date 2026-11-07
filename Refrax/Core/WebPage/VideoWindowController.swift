@@ -98,7 +98,7 @@ final class VideoWindowController: NSObject, NSWindowDelegate {
         setChromeRevealed(true)
         chromeFadeTask?.cancel()
         chromeFadeTask = Task(name: "Video window chrome fade") { [weak self] in
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
             guard !Task.isCancelled, let self, self.dragStrip?.isMouseInside != true else { return }
             self.setChromeRevealed(false)
         }

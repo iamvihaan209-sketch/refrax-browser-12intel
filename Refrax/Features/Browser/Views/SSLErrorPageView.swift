@@ -321,7 +321,7 @@ struct SSLErrorPageView: View {
 
         showCopiedToast = true
         Task {
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
             showCopiedToast = false
         }
     }

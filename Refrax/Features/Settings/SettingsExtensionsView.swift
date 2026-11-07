@@ -487,7 +487,7 @@ private struct ExtensionDetailSheet: View {
             // Load metrics initially and refresh every 5 seconds
             while !Task.isCancelled {
                 loadMetrics(for: ext)
-                try? await Task.sleep(for: .seconds(5))
+                try? await Task.sleep(nanoseconds: 5 * 1_000_000_000)
             }
 
             // Notify monitor that UI is no longer visible

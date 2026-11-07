@@ -174,7 +174,7 @@ actor Aria2Daemon {
                         state = .running
                         return
                     }
-                    try await Task.sleep(for: .milliseconds(100))
+                    try await Task.sleep(nanoseconds: 100 * 1_000_000)
                     attempts += 1
                 }
             } catch {
@@ -202,7 +202,7 @@ actor Aria2Daemon {
         do {
             try await rpc.shutdown()
             // Wait for process to exit
-            try await Task.sleep(for: .milliseconds(500))
+            try await Task.sleep(nanoseconds: 500 * 1_000_000)
         } catch {
             // RPC failed, force terminate
         }
@@ -212,7 +212,7 @@ actor Aria2Daemon {
             process.terminate()
 
             // Wait briefly for termination
-            try? await Task.sleep(for: .milliseconds(200))
+            try? await Task.sleep(nanoseconds: 200 * 1_000_000)
 
             // Force kill if still alive
             if process.isRunning {
@@ -322,7 +322,7 @@ actor Aria2Daemon {
             kill(pid, SIGTERM)
 
             // Wait briefly then force kill if needed
-            try? await Task.sleep(for: .milliseconds(500))
+            try? await Task.sleep(nanoseconds: 500 * 1_000_000)
             if isProcessRunning(pid: pid) {
                 kill(pid, SIGKILL)
             }

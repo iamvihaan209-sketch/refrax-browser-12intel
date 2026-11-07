@@ -255,7 +255,7 @@ final class Aria2DownloadTask: Identifiable {
                 }
 
                 // Poll every second
-                try await Task.sleep(for: .seconds(1))
+                try await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 
             } catch {
                 if !Task.isCancelled {

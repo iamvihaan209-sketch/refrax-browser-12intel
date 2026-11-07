@@ -203,7 +203,7 @@ struct SidebarFilter: View {
             // 50ms is sufficient: focus just needs layout to stabilize, not the full
             // 350ms animation to complete. Tested with shorter delays (20ms) which
             // occasionally failed; 50ms is reliable while minimizing unfocused window.
-            try? await Task.sleep(for: .milliseconds(50))
+            try? await Task.sleep(nanoseconds: 50 * 1_000_000)
             isTextFieldFocused = true
         }
         .onDisappear {
@@ -427,7 +427,7 @@ struct SidebarFilter: View {
         cancelCollapseTimer()
 
         collapseTask = Task {
-            try await Task.sleep(for: .seconds(15))
+            try await Task.sleep(nanoseconds: 15 * 1_000_000_000)
 
             // Re-check conditions before collapsing
             await MainActor.run {
@@ -610,7 +610,7 @@ struct FilterManagementSheet: View {
                     dismiss()
                     // Small delay to allow dismiss animation before showing new sheet
                     Task {
-                        try? await Task.sleep(for: .milliseconds(300))
+                        try? await Task.sleep(nanoseconds: 300 * 1_000_000)
                         showNewFilterSheet = true
                     }
                 } label: {

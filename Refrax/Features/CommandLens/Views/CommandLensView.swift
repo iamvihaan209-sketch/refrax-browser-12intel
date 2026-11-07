@@ -358,7 +358,7 @@ struct CommandLensView: View {
     private func startAutoShowButtonsTimer() {
         cancelAutoShowButtonsTimer()
         autoShowButtonsTask = Task {
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
             guard !Task.isCancelled, manager.inputText.isEmpty, !manager.showCategoryButtons else { return }
             withAnimation(.spring(duration: 0.3, bounce: 0.15)) {
                 manager.showCategoryButtonsForDiscoverability()

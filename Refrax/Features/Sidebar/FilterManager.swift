@@ -305,7 +305,7 @@ extension Sidebar {
         private func scheduleDebounce() {
             debounceTask?.cancel()
             debounceTask = Task {
-                try? await Task.sleep(for: .milliseconds(150))
+                try? await Task.sleep(nanoseconds: 150 * 1_000_000)
                 guard !Task.isCancelled else { return }
                 debouncedSearchText = searchText
             }

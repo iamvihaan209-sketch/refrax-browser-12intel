@@ -212,7 +212,7 @@ final class WebProcessTerminationHandler {
             guard page.terminateRenderer() else { return }
             // An intentional termination is not auto-recovered; this one reloads because
             // the user never asked for the page to go away.
-            try? await Task.sleep(for: .milliseconds(500))
+            try? await Task.sleep(nanoseconds: 500 * 1_000_000)
             page.load(page.tabPage.url)
             self?.toastPresenter?("\"\(page.tabPage.title.prefix(30))\" stopped responding and was reloaded")
         }

@@ -243,7 +243,7 @@ final class VisualFeedbackManager {
                 case .click:
                     cursorState = .clicking
                     // Brief click animation duration
-                    try? await Task.sleep(for: .milliseconds(200))
+                    try? await Task.sleep(nanoseconds: 200 * 1_000_000)
                     cursorState = .hovering
 
                 case .clearHighlights:

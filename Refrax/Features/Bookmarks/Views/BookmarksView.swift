@@ -580,7 +580,7 @@ struct BookmarksView: View {
         showError = true
 
         Task {
-            try? await Task.sleep(for: .seconds(3))
+            try? await Task.sleep(nanoseconds: 3 * 1_000_000_000)
             showError = false
         }
     }

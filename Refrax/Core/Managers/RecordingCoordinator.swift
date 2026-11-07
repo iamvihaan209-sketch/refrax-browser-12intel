@@ -186,7 +186,7 @@ final class RecordingCoordinator {
 
             // Check every second
             while !Task.isCancelled, isRecording {
-                try? await Task.sleep(for: .seconds(1))
+                try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
 
                 guard !Task.isCancelled, isRecording else { break }
 
@@ -317,7 +317,7 @@ final class RecordingCoordinator {
 
         // Auto-dismiss after 8 seconds (longer than screenshots due to potential longer review)
         preview.dismissTask = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(8))
+            try? await Task.sleep(nanoseconds: 8 * 1_000_000_000)
             guard !Task.isCancelled else { return }
             self?.dismissPreview()
         }

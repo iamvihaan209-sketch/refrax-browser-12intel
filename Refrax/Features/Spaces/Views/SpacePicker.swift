@@ -295,7 +295,7 @@ struct SpacePicker<ContextMenu: View>: View {
         cancelHoverTimer()
 
         hoverTask = Task {
-            try await Task.sleep(for: .milliseconds(300))
+            try await Task.sleep(nanoseconds: 300 * 1_000_000)
             guard hoveredSpaceID == spaceID else { return }
 
             withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {

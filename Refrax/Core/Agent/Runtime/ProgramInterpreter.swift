@@ -1197,10 +1197,10 @@ final class ProgramInterpreter {
             switch action {
             case .clicking:
                 visualFeedback.setCursorState(.clicking)
-                try? await Task.sleep(for: .milliseconds(150))
+                try? await Task.sleep(nanoseconds: 150 * 1_000_000)
             case .hovering:
                 visualFeedback.setCursorState(.hovering)
-                try? await Task.sleep(for: .milliseconds(100))
+                try? await Task.sleep(nanoseconds: 100 * 1_000_000)
             }
             visualFeedback.setCursorState(.idle)
             visualFeedback.clearHighlights()

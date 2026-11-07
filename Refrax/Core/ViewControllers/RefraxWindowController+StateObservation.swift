@@ -40,7 +40,7 @@ extension RefraxWindowController {
                             updateTrackingAreaImmediately()
                             // Schedule compact overlay appearance after collapse animation
                             Task { @MainActor [weak self] in
-                                try? await Task.sleep(for: .milliseconds(250))
+                                try? await Task.sleep(nanoseconds: 250 * 1_000_000)
                                 self?.enterCompactSidebarMode(animated: true)
                             }
                         }
@@ -63,7 +63,7 @@ extension RefraxWindowController {
 
                     sidebarExpansionTask?.cancel()
                     sidebarExpansionTask = Task { @MainActor in
-                        try await Task.sleep(for: .milliseconds(300))
+                        try await Task.sleep(nanoseconds: 300 * 1_000_000)
 
                         enterExpandedSidebarState(animated: true)
                     }
@@ -789,7 +789,7 @@ extension RefraxWindowController {
             backgroundView.setVisible(false, animated: true)
             // Hide after animation completes
             Task { @MainActor [weak self] in
-                try? await Task.sleep(for: .milliseconds(300))
+                try? await Task.sleep(nanoseconds: 300 * 1_000_000)
                 self?.edgeExtensionBackgroundView?.isHidden = true
             }
         } else {
@@ -812,7 +812,7 @@ extension RefraxWindowController {
             // Wait for WebKit's next presentation update
             await webPage.waitForPresentationUpdate()
             // Additional delay for page content to fully render (first paint may be blank)
-            try? await Task.sleep(for: .milliseconds(100))
+            try? await Task.sleep(nanoseconds: 100 * 1_000_000)
             guard let self else { return }
             edgeSampler.sampleEdgeColors(from: webPage)
         }

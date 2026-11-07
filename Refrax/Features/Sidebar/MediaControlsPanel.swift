@@ -266,7 +266,7 @@ struct MediaSectionView: View {
         .opacity(section.isFromCurrentSpace ? 1.0 : 0.7)
         .task {
             // Delay fetches to not block panel animation
-            try? await Task.sleep(for: .milliseconds(200))
+            try? await Task.sleep(nanoseconds: 200 * 1_000_000)
             // Refresh actual playback state (for accurate play/pause icon)
             await section.webPage.refreshPlaybackState()
             await section.webPage.refreshMediaSessionMetadata()

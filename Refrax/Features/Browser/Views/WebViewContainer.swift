@@ -296,7 +296,7 @@ struct WebViewContainer: View {
     private func periodicLastSeenUpdate() async throws {
         var ticksSinceTimeUpdate = 0
         while true {
-            try await Task.sleep(for: .seconds(5))
+            try await Task.sleep(nanoseconds: 5 * 1_000_000_000)
 
             // Only update when actively tracking time
             guard historyActivityManager.isPageActive(page.tabPage.id) else {

@@ -165,7 +165,7 @@ struct AddressBarTranslationButton: View {
     private func handleLoadingChange(_ wasLoading: Bool?, _ isLoading: Bool?) {
         if wasLoading == true, isLoading == false {
             Task {
-                try? await Task.sleep(for: .milliseconds(300))
+                try? await Task.sleep(nanoseconds: 300 * 1_000_000)
                 await detectLanguage()
             }
         }

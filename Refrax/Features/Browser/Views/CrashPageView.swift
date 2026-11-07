@@ -267,7 +267,7 @@ struct CrashPageView: View {
     private func showToast(_ message: String) {
         toastMessage = message
         Task {
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
             toastMessage = nil
         }
     }

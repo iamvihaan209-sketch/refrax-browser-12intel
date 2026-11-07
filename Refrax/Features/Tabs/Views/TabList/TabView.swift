@@ -433,7 +433,7 @@ struct TabView: View {
             // Start delay timer for tooltip appearance
             tooltipTask?.cancel()
             tooltipTask = Task {
-                try await Task.sleep(for: .milliseconds(400))
+                try await Task.sleep(nanoseconds: 400 * 1_000_000)
                 guard !Task.isCancelled else { return }
                 showsMultiPageTooltip = true
             }

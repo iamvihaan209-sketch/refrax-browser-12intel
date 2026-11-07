@@ -345,7 +345,7 @@ final class WebInspectorManager {
         guard wasShown else { return }
 
         Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(150))
+            try? await Task.sleep(nanoseconds: 150 * 1_000_000)
 
             guard let inspector = webView._inspector else { return }
 

@@ -42,7 +42,7 @@ struct CrashReportPanel: View {
             crashDetailSheet
         }
         .task {
-            try? await Task.sleep(for: .seconds(60))
+            try? await Task.sleep(nanoseconds: 60 * 1_000_000_000)
             guard !Task.isCancelled else { return }
             dismiss()
         }

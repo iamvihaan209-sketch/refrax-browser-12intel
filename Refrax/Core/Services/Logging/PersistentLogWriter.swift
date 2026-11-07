@@ -155,7 +155,7 @@ actor PersistentLogWriter {
     private func scheduleFlushIfNeeded() {
         guard flushTask == nil else { return }
         flushTask = Task { [weak self = self] in
-            try? await Task.sleep(for: .seconds(1))
+            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000)
             guard !Task.isCancelled else { return }
             await self?.performScheduledFlush()
         }

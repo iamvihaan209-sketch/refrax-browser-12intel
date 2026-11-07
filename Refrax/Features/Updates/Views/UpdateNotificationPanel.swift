@@ -54,7 +54,7 @@ struct UpdateNotificationPanel: View {
             UpdateCompletedSheet(info: info)
         }
         .task {
-            try? await Task.sleep(for: .seconds(60))
+            try? await Task.sleep(nanoseconds: 60 * 1_000_000_000)
             guard !Task.isCancelled else { return }
             withAnimation(.easeOut(duration: 0.3)) {
                 updateManager.justUpdated = nil

@@ -200,7 +200,7 @@ final class OfflineContentManager {
                     }
                     return
                 }
-                try? await Task.sleep(for: .milliseconds(500))
+                try? await Task.sleep(nanoseconds: 500 * 1_000_000)
                 attempts += 1
             }
 
