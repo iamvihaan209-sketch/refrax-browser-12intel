@@ -38,7 +38,7 @@ struct CommandLensView: View {
                     suggestionsArea
                 }
                 .scaleEffect(providerSwitchScale)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: currentCornerRadius))
+                .compatGlassEffect(.regular, in: RoundedRectangle(cornerRadius: currentCornerRadius))
                 .glassEffectID("textField", in: glassNamespace)
                 .overlay {
                     RoundedRectangle(cornerRadius: currentCornerRadius)
@@ -397,7 +397,7 @@ private struct CategoryButton: View {
     var body: some View {
         buttonContent
             .frame(width: height, height: height)
-            .glassEffect(.regular.interactive().tint(isSelected ? .appAccentColor : nil), in: Circle())
+            .compatGlassEffect(.regular.interactive().tint(isSelected ? .appAccentColor : nil), in: Circle())
             .glassEffectID("category-\(button.id)", in: namespace)
             .glassEffectTransition(.materialize)
             .overlay {

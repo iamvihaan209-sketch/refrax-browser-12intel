@@ -19,7 +19,7 @@ private struct ReferencePaneToolbarButtonStyle: ViewModifier {
             .font(.system(size: 16, weight: .regular))
             .foregroundStyle(.primary)
             .frame(width: width, height: height)
-            .glassEffect()
+            .compatGlassEffect()
             .background {
                 Capsule()
                     .fill(.secondary)
@@ -132,7 +132,7 @@ struct ReferencePaneWindowToolbar: View {
             .environment(\.addressBarIsFloating, true)
             .frame(height: Layout.buttonHeight)
             .frame(minWidth: 150, maxWidth: 400)
-            .glassEffect()
+            .compatGlassEffect()
     }
 
     private var trailingContent: some View {

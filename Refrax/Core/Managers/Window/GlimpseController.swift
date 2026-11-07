@@ -473,7 +473,7 @@ private struct GlimpseToolbar: View {
             .environment(\.addressBarIsFloating, true)
             .frame(height: Layout.buttonHeight)
             .frame(minWidth: 150, maxWidth: 400)
-            .glassEffect()
+            .compatGlassEffect()
     }
 
     private var trailingContent: some View {
@@ -539,7 +539,7 @@ private struct SpaceTransferButton: View {
             .menuStyle(.borderlessButton)
             .fixedSize()
             .frame(height: Layout.buttonHeight)
-            .glassEffect()
+            .compatGlassEffect()
             .help("Open this page in a new tab")
         } else {
             // Single space: show simple button
@@ -550,7 +550,7 @@ private struct SpaceTransferButton: View {
             }
             .buttonStyle(.plain)
             .frame(height: Layout.buttonHeight)
-            .glassEffect()
+            .compatGlassEffect()
             .help("Open this page in a new tab")
         }
     }

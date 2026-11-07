@@ -90,7 +90,7 @@ struct ScreenshotPreviewToast: View {
             }
         }
         .padding(Layout.padding)
-        .glassEffect(in: RoundedRectangle(cornerRadius: Layout.cornerRadius + 4))
+        .compatGlassEffect(in: RoundedRectangle(cornerRadius: Layout.cornerRadius + 4))
         .shadow(color: .black.opacity(0.3), radius: Layout.shadowRadius, y: 4)
         .onHover { hovering in
             isHovering = hovering

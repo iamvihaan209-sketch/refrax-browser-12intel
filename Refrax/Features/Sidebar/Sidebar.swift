@@ -849,6 +849,6 @@ extension View {
   /// Wraps a bottom-bar control group in the sidebar's glass platter.
   fileprivate func bottomPlatter() -> some View {
     padding(Constants.Layout.bottomPlatterPadding)
-      .glassEffect(in: Capsule())
+      .compatGlassEffect(in: Capsule())
   }
 }

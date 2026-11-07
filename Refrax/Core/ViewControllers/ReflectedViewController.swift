@@ -281,7 +281,7 @@ private struct ReflectedWindowToolbar: View {
             .environment(\.addressBarIsFloating, true)
             .frame(height: Layout.buttonHeight)
             .frame(minWidth: 150, maxWidth: 400)
-            .glassEffect()
+            .compatGlassEffect()
     }
 
     private var trailingContent: some View {

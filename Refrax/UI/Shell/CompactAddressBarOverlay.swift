@@ -13,7 +13,7 @@ struct CompactAddressBarOverlay: View {
                 clickCapture
 
                 AddressBar()
-                    .glassEffect()
+                    .compatGlassEffect()
                     .frame(width: Layout.addressBarWidth, height: Layout.addressBarHeight)
                     .padding(.top, Layout.topPadding)
                     .padding(.leading, Layout.leadingPadding)

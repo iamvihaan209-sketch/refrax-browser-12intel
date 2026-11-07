@@ -65,7 +65,7 @@ private struct PagePromptCard: View {
         }
         .padding(Layout.padding)
         .frame(width: Layout.width)
-        .glassEffect(.regular, in: .rect(cornerRadius: Layout.cornerRadius))
+        .compatGlassEffect(.regular, in: .rect(cornerRadius: Layout.cornerRadius))
         .focusable()
         .focusEffectDisabled()
         .focused($focus, equals: .card)

@@ -247,7 +247,7 @@ struct SpacePicker<ContextMenu: View>: View {
 
         return Color.clear
             .frame(width: width, height: Layout.height - (inset * 2))
-            .glassEffect(.regular.interactive(), in: Capsule())
+            .compatGlassEffect(.regular.interactive(), in: Capsule())
             .offset(x: offset)
             .animation(.spring(response: 0.3, dampingFraction: 0.8), value: selectedIndex)
     }

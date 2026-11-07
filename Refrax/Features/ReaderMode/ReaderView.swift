@@ -35,7 +35,7 @@ private extension View {
     /// A standalone reader toolbar button: hover highlight inside its own glass circle.
     func readerToolbarGlass(tintColor: Color, tintOpacity: Double) -> some View {
         modifier(ReaderToolbarHoverModifier(inset: 0))
-            .glassEffect(.regular.tint(tintColor.opacity(tintOpacity)))
+            .compatGlassEffect(.regular.tint(tintColor.opacity(tintOpacity)))
     }
 
     /// A button inside a shared glass capsule; the capsule carries the glass.
@@ -194,7 +194,7 @@ struct ReaderView: View {
             copyMarkdownButton
             saveButton
         }
-        .glassEffect(.regular.tint(tintColor.opacity(tintOpacity)))
+        .compatGlassEffect(.regular.tint(tintColor.opacity(tintOpacity)))
     }
 
     private var shareButton: some View {

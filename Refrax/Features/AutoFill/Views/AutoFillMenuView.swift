@@ -61,7 +61,7 @@ struct AutoFillMenuView: View {
                 NSCursor.arrow.set()
             }
         }
-        .glassEffect(in: menuShape)
+        .compatGlassEffect(in: menuShape)
         .onChange(of: context.fieldId) { showsAllCredentials = false }
         .onChange(of: context.url) { showsAllCredentials = false }
         .overlay {

@@ -4,13 +4,20 @@ struct SidebarContentView: View {
     @GestureState var isDraggingWindow = false
 
     var body: some View {
-        VStack {
-            Sidebar()
+        if #available(macOS 15.0, *) {
+            VStack {
+                Sidebar()
+            }
+            .gesture(dragWindow)
+            .allowsWindowActivationEvents()
+        } else {
+            VStack {
+                Sidebar()
+            }
         }
-        .gesture(dragWindow)
-        .allowsWindowActivationEvents()
     }
 
+    @available(macOS 15.0, *)
     private var dragWindow: some Gesture {
         WindowDragGesture()
             .updating($isDraggingWindow) { _, state, _ in

@@ -94,7 +94,7 @@ struct TabManagementControl: View {
             }
         }
         .padding(Layout.collapsedPadding)
-        .glassEffect()
+        .compatGlassEffect()
     }
 
     // MARK: - Expanded Tabs List
@@ -175,7 +175,7 @@ struct TabManagementControl: View {
                     .opacity(0.15)
             }
         }
-        .glassEffect(in: RoundedRectangle(cornerRadius: Layout.tabCornerRadius))
+        .compatGlassEffect(in: RoundedRectangle(cornerRadius: Layout.tabCornerRadius))
         .glassEffectUnion(id: "tabs_union", namespace: tabsNamespace)
     }
 
@@ -233,7 +233,7 @@ struct TabManagementControl: View {
                     .opacity(0.15)
             }
         }
-        .glassEffect(
+        .compatGlassEffect(
             isActive ? .regular.interactive() : .regular,
             in: RoundedRectangle(cornerRadius: Layout.tabCornerRadius),
         )

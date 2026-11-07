@@ -5,7 +5,7 @@ import SwiftUI
 /// Displays hint bubbles vertically distributed to align with their corresponding
 /// sidebar elements, with a staggered horizontal layout for visual rhythm.
 /// A keyboard shortcuts reference appears on the right side. Each bubble uses
-/// `.glassEffect()` for visual treatment.
+/// `.compatGlassEffect()` for visual treatment.
 ///
 /// Dismissed via the "Don't show again" button, which sets `BrowserSettings.showSidebarHints`
 /// to false. Can be re-enabled from Settings > General.
@@ -99,7 +99,7 @@ struct SidebarHintsView: View {
         }
         .padding(Constants.bubblePadding)
         .frame(maxWidth: Constants.bubbleMaxWidth, alignment: .leading)
-        .glassEffect(.regular, in: .rect(cornerRadius: Constants.bubbleCornerRadius))
+        .compatGlassEffect(.regular, in: .rect(cornerRadius: Constants.bubbleCornerRadius))
     }
 
     // MARK: - Icon Vignette
@@ -125,7 +125,7 @@ struct SidebarHintsView: View {
         }
         .padding(Constants.bubblePadding)
         .frame(width: Constants.shortcutsWidth, alignment: .leading)
-        .glassEffect(.regular, in: .rect(cornerRadius: Constants.bubbleCornerRadius))
+        .compatGlassEffect(.regular, in: .rect(cornerRadius: Constants.bubbleCornerRadius))
     }
 
     private var shortcutsGrid: some View {
@@ -187,7 +187,7 @@ struct SidebarHintsView: View {
             .font(.subheadline.weight(.medium))
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .glassEffect(.regular.tint(.white.opacity(0.15)), in: .capsule)
+            .compatGlassEffect(.regular.tint(.white.opacity(0.15)), in: .capsule)
 
             Button("Don't show again") {
                 settings.showSidebarHints = false
@@ -196,7 +196,7 @@ struct SidebarHintsView: View {
             .font(.subheadline)
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
-            .glassEffect(.regular, in: .capsule)
+            .compatGlassEffect(.regular, in: .capsule)
         }
         .frame(maxWidth: Constants.bubbleMaxWidth, alignment: .center)
     }

@@ -71,7 +71,7 @@ private struct SearchEngineDetectedPill: View {
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
-        .glassEffect()
+        .compatGlassEffect()
         .task(id: detection.domain) {
             do {
                 try await Task.sleep(for: .seconds(8))

@@ -28,7 +28,7 @@ struct LocalDevicesView: View {
             footer
         }
         .padding(Layout.padding)
-        .glassEffect(.regular, in: .rect(cornerRadius: Layout.cornerRadius))
+        .compatGlassEffect(.regular, in: .rect(cornerRadius: Layout.cornerRadius))
         .padding(Layout.windowInset)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(nsColor: .windowBackgroundColor))
@@ -56,7 +56,7 @@ struct LocalDevicesView: View {
             .font(.subheadline.weight(.medium))
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
-            .glassEffect(.regular, in: .capsule)
+            .compatGlassEffect(.regular, in: .capsule)
             .disabled(model.isRefreshing)
         }
     }
@@ -137,7 +137,7 @@ private struct LocalDevicesMapView: View {
                 Image(systemName: "wifi.slash")
                     .font(.system(size: 22, weight: .medium))
                     .frame(width: 56, height: 56)
-                    .glassEffect(.regular, in: .circle)
+                    .compatGlassEffect(.regular, in: .circle)
                 Text(isRefreshing ? "Looking for the router…" : "Router unknown")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -200,7 +200,7 @@ private struct GatewayNode: View {
                 Image(systemName: LocalNetworkDeviceKind.router.iconName)
                     .font(.system(size: 24, weight: .medium))
                     .frame(width: 64, height: 64)
-                    .glassEffect(.regular.tint(tint), in: .circle)
+                    .compatGlassEffect(.regular.tint(tint), in: .circle)
 
                 Text(device?.name ?? gateway.address)
                     .font(.subheadline.weight(.semibold))
@@ -241,7 +241,7 @@ private struct DeviceNode: View {
                 Image(systemName: device.kind.iconName)
                     .font(.system(size: 18, weight: .medium))
                     .frame(width: 44, height: 44)
-                    .glassEffect(.regular.tint(isHovering ? Color.appAccentColor.opacity(0.3) : .clear), in: .circle)
+                    .compatGlassEffect(.regular.tint(isHovering ? Color.appAccentColor.opacity(0.3) : .clear), in: .circle)
 
                 Text(device.name)
                     .font(.caption.weight(.medium))

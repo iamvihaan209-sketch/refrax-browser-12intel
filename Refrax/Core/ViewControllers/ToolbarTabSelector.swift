@@ -42,7 +42,7 @@ struct ToolbarTabSelector: View {
             }
             .padding(.horizontal, 8)
             .frame(height: Layout.buttonHeight)
-            .glassEffect()
+            .compatGlassEffect()
             .background {
                 Capsule()
                     .fill(.secondary)

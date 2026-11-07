@@ -47,7 +47,7 @@ struct GlassButton: View {
                 .font(.system(size: fontSize))
                 .frame(width: size, height: size)
                 .contentShape(Rectangle())
-                .glassEffect(.regular.tint(isHovered ? .primary.opacity(0.1) : .clear))
+                .compatGlassEffect(.regular.tint(isHovered ? .primary.opacity(0.1) : .clear))
         }
         .buttonStyle(.plain)
         .onHover { hovering in

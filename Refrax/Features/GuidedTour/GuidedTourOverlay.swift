@@ -94,7 +94,7 @@ struct GuidedTourOverlay: View {
         .padding(.horizontal, Layout.bubblePaddingH)
         .padding(.vertical, Layout.bubblePaddingV)
         .frame(maxWidth: Layout.maxWidth)
-        .glassEffect(.regular, in: .rect(cornerRadius: Layout.cornerRadius))
+        .compatGlassEffect(.regular, in: .rect(cornerRadius: Layout.cornerRadius))
     }
 
     // MARK: - Action Detection

@@ -51,7 +51,7 @@ struct LinkHoverPreviewView: View {
         .padding(.horizontal, Constants.horizontalPadding)
         .padding(.vertical, Constants.verticalPadding)
         .clipShape(Capsule())
-        .glassEffect(.regular, in: Capsule())
+        .compatGlassEffect(.regular, in: Capsule())
     }
 
     private var urlText: some View {

@@ -39,7 +39,7 @@ struct ToastNotificationView: View {
             .lineLimit(2)
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
-            .glassEffect()
+            .compatGlassEffect()
             .accessibilityElement(children: .combine)
             .accessibilityLabel(message)
     }

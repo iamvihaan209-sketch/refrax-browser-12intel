@@ -48,7 +48,7 @@ struct TabSwitcherOverlay: View {
             }
         }
         .padding(Layout.containerPadding)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Layout.containerCornerRadius))
+        .compatGlassEffect(.regular, in: RoundedRectangle(cornerRadius: Layout.containerCornerRadius))
         .shadow(color: .black.opacity(0.25), radius: Layout.shadowRadius, y: Layout.shadowY)
     }
 

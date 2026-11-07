@@ -50,7 +50,7 @@ struct CompactTabTitleOverlay: View {
         .padding(.horizontal, Layout.horizontalPadding)
         .padding(.vertical, Layout.verticalPadding)
         .clipShape(Capsule())
-        .glassEffect(.regular, in: Capsule())
+        .compatGlassEffect(.regular, in: Capsule())
     }
 
     private func titleText(_ title: String) -> some View {
