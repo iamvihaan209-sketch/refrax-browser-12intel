@@ -27,6 +27,13 @@ jobs:
       - name: Check out Refrax source
         uses: actions/checkout@v4
 
+      - name: Select newest installed Xcode
+        run: |
+          set -euxo pipefail
+          ls -d /Applications/Xcode*.app || true
+          NEWEST=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          sudo xcode-select -s "$NEWEST/Contents/Developer"
+
       - name: Verify Apple toolchain
         run: |
           set -euxo pipefail
