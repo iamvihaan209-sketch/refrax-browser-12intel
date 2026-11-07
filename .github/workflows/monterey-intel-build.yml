@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - monterey-intel-port
+      - monterey-observation-port
   pull_request:
     branches:
       - monterey-intel-port
+      - monterey-observation-port
   workflow_dispatch:
 
 concurrency:
