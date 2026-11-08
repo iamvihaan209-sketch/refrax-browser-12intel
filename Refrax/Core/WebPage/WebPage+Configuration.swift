@@ -1,4 +1,3 @@
-#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import WebKit
 
@@ -17,7 +16,9 @@ extension WebPage {
         var userContentController: WKUserContentController = .init()
 
         /// The web extension controller.
+#if !REFRAX_NO_EXTENSIONS
         var webExtensionController: WKWebExtensionController?
+#endif
 
         // MARK: - Navigation Preferences
 
@@ -460,4 +461,3 @@ extension WebPage {
     }
 }
 
-#endif // !REFRAX_NO_EXTENSIONS

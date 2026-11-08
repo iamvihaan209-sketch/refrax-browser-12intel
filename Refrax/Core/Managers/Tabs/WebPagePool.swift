@@ -1,4 +1,3 @@
-#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import Combine
 import WebKit
@@ -273,11 +272,15 @@ final class WebPagePool : ObservableObject {
         }
 
         let configuration = configuration(for: tabPage)
+        #if REFRAX_NO_EXTENSIONS
+        let (page, navigationDecider) = buildPage(for: tabPage, configuration: configuration)
+        #else
         let (page, navigationDecider) = if let extensionContext = extensionManager?.extensionContext(for: tabPage.url) {
             buildExtensionPage(for: tabPage, configuration: configuration, context: extensionContext)
         } else {
             buildPage(for: tabPage, configuration: configuration)
         }
+        #endif
 
         _activePages[tabPage.id] = page
         navigationDeciders[tabPage.id] = navigationDecider
@@ -290,6 +293,7 @@ final class WebPagePool : ObservableObject {
         return page
     }
 
+#if !REFRAX_NO_EXTENSIONS
     /// Builds a page for one of an extension's own pages, from the configuration WebKit
     /// requires for it: the owning context's, bound to that context's controller.
     ///
@@ -314,6 +318,7 @@ final class WebPagePool : ObservableObject {
             extensionBaseURL: context.baseURL,
         )
     }
+#endif
 
     /// Replaces `page` with a new page for `url` when `url` needs a web view bound to a
     /// different extension, or to none.
@@ -1169,9 +1174,11 @@ final class WebPagePool : ObservableObject {
             state.webNotifications.adopt(config.websiteDataStore)
             // Extensions run with the same isolation as the data store: a private space
             // gets only private-mode extensions, a separate space its own extension storage.
+#if !REFRAX_NO_EXTENSIONS
             if let extensionManager {
                 config.webExtensionController = extensionManager.controller(for: tab)
             }
+#endif
         } else {
             Logger.warning("Applying default data store: TabPage has no parent Tab", category: Logger.tabs)
             config.websiteDataStore = state.settingsApplier.defaultDataStore()
@@ -1247,4 +1254,3 @@ extension WebPagePool {
     }
 }
 
-#endif // !REFRAX_NO_EXTENSIONS
