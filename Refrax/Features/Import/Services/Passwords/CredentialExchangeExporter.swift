@@ -7,6 +7,7 @@ import Foundation
 ///
 /// The inverse of ``CredentialExchangeImporter``. Only password logins are
 /// exported; Refrax does not yet store passkeys, TOTP, or cards.
+@available(macOS 26.0, *)
 enum CredentialExchangeExporter {
     static let relyingPartyIdentifier = "website.refrax.browser"
     static let displayName = "Refrax"

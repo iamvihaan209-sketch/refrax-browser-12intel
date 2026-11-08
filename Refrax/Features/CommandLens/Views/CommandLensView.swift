@@ -31,7 +31,7 @@ struct CommandLensView: View {
     // MARK: - Body
 
     var body: some View {
-        GlassEffectContainer(spacing: Layout.containerSpacing) {
+        CompatGlassContainer(spacing: Layout.containerSpacing) {
             HStack(spacing: Layout.buttonSpacing) {
                 VStack(spacing: 0) {
                     textFieldCapsule

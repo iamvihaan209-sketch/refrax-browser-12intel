@@ -100,8 +100,10 @@ struct PasswordsListView: View {
             Menu {
                 Button("Import from Passwords App...") { showingImportGuide = true }
                 Divider()
-                Button("Export to Another App...") { exportViaCredentialExchange() }
-                    .disabled(credentials.isEmpty)
+                if #available(macOS 26.0, *) {
+                    Button("Export to Another App...") { exportViaCredentialExchange() }
+                        .disabled(credentials.isEmpty)
+                }
                 Button("Export to CSV...") { exportToCSV() }
                     .disabled(credentials.isEmpty)
                 Divider()
@@ -232,6 +234,7 @@ struct PasswordsListView: View {
     /// Hands every stored login to another password manager over Apple's
     /// encrypted Credential Exchange. The system presents the destination
     /// picker and Refrax fills in the credentials once a format is agreed.
+    @available(macOS 26.0, *)
     private func exportViaCredentialExchange() {
         guard let anchor = NSApp.keyWindow ?? NSApp.mainWindow else { return }
 

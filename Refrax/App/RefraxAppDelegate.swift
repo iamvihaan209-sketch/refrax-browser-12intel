@@ -1264,7 +1264,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func application(_: NSApplication, continue userActivity: NSUserActivity, restorationHandler _: @escaping ([any NSUserActivityRestoring]) -> Void) -> Bool {
         // Handle a Credential Exchange import: another password manager chose
         // Refrax as the destination for its exported passwords.
-        if userActivity.activityType == ASCredentialExchangeActivity {
+        if #available(macOS 26.0, *), userActivity.activityType == ASCredentialExchangeActivity {
             handleCredentialExchangeImport(userActivity)
             return true
         }
@@ -1331,6 +1331,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// Receives passwords that another manager exported into Refrax, maps them
     /// into the store, and reports the result.
+    @available(macOS 26.0, *)
     private func handleCredentialExchangeImport(_ userActivity: NSUserActivity) {
         guard let token = userActivity.userInfo?[ASCredentialImportToken] as? UUID else {
             Logger.error("Credential Exchange activity was missing its import token", category: Logger.autoFill)

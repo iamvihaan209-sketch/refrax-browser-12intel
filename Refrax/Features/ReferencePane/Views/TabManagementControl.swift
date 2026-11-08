@@ -49,7 +49,7 @@ struct TabManagementControl: View {
     }
 
     var body: some View {
-        GlassEffectContainer {
+        CompatGlassContainer {
             VStack(alignment: .leading, spacing: 0) {
                 if isExpanded {
                     expandedTabsList

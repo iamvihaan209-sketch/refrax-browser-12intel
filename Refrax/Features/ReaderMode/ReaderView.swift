@@ -130,7 +130,7 @@ struct ReaderView: View {
             Spacer()
 
             // Right: Buttons with glass effects
-            GlassEffectContainer(spacing: Layout.groupSpacing) {
+            CompatGlassContainer(spacing: Layout.groupSpacing) {
                 HStack(spacing: 16) {
                     speedReadButton
                     

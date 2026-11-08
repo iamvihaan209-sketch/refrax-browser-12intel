@@ -56,3 +56,26 @@ extension View {
         compatGlassEffect(glass, in: Capsule())
     }
 }
+
+/// Groups glass elements on macOS 26+; on older systems it just lays out its content.
+struct CompatGlassContainer<Content: View>: View {
+    var spacing: CGFloat?
+    @ViewBuilder var content: Content
+
+    init(spacing: CGFloat? = nil, @ViewBuilder content: () -> Content) {
+        self.spacing = spacing
+        self.content = content()
+    }
+
+    var body: some View {
+        if #available(macOS 26.0, *) {
+            if let spacing {
+                GlassEffectContainer(spacing: spacing) { content }
+            } else {
+                GlassEffectContainer { content }
+            }
+        } else {
+            content
+        }
+    }
+}

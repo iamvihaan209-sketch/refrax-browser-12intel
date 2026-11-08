@@ -8,6 +8,7 @@ import Foundation
 /// Only password logins (`BasicAuthentication`) are mapped. Passkeys, TOTP,
 /// notes, and card credentials are carried in the same payload but are ignored
 /// until Refrax stores those types.
+@available(macOS 26.0, *)
 enum CredentialExchangeImporter {
     /// Flattens the account → item → credential hierarchy into the flat list of
     /// password logins Refrax knows how to store.
