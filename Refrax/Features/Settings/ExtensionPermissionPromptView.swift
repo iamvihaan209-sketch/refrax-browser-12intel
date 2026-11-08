@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import SwiftUI
 import Combine
 import WebKit
@@ -366,3 +367,5 @@ private struct PermissionItemRow: View {
         .onHover { isHovered = $0 }
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

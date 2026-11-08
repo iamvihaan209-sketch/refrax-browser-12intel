@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import Observation
 import WebKit
@@ -556,3 +557,5 @@ extension ResourceMetrics {
         String(format: "%.1f%%", peakCPUUsage)
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

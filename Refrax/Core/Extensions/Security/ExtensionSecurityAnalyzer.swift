@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import WebKit
 
@@ -717,3 +718,5 @@ final class ExtensionSecurityAnalyzer {
         }
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

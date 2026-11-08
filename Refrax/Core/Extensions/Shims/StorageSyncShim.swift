@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 
 /// Shim for `browser.storage.sync` API using iCloud Key-Value Store.
@@ -322,3 +323,5 @@ final class StorageSyncShim: ExtensionShim {
         )
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

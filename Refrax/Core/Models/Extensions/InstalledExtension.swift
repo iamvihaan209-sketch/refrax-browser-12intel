@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 
 /// Persisted metadata about an installed browser extension.
@@ -247,3 +248,5 @@ struct ExtensionStateStore: Codable, Sendable, Equatable {
         lastSyncDate: nil,
     )
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

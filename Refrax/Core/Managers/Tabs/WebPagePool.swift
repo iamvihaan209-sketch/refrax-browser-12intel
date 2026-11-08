@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import Combine
 import WebKit
@@ -1245,3 +1246,5 @@ extension WebPagePool {
         }
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

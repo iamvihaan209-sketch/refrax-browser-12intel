@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import WebKit
 
@@ -208,3 +209,5 @@ actor RefraxAPIShim {
         return result
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

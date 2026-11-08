@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import Combine
 import WebKit
@@ -2138,3 +2139,5 @@ enum WebStore: String, Sendable {
     case chrome
     case firefox
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

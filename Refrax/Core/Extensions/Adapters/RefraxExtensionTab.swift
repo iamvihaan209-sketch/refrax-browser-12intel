@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import AppKit
 import Foundation
 import WebKit
@@ -294,3 +295,5 @@ final class RefraxExtensionTab: NSObject, WKWebExtensionTab {
     }
 }
 
+
+#endif // !REFRAX_NO_EXTENSIONS

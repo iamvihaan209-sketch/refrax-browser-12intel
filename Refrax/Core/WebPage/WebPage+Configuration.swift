@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import WebKit
 
@@ -458,3 +459,5 @@ extension WebPage {
         }
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

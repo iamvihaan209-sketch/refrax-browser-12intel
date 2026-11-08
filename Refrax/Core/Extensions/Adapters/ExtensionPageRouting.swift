@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 
 /// Decides which web view an extension page needs.
@@ -39,3 +40,5 @@ nonisolated enum ExtensionPageRouting {
         return "\(url.scheme?.lowercased() ?? "")://\(url.host()?.lowercased() ?? "")"
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import AppKit
 import Foundation
 import WebKit
@@ -300,3 +301,5 @@ extension ExtensionCommandHandler.CommandShortcut {
         return parts.joined()
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import AppKit
 import Foundation
 import WebKit
@@ -221,3 +222,5 @@ final class RefraxExtensionWindow: NSObject, WKWebExtensionWindow {
         return manager.installedExtensions.first { $0.uniqueIdentifier == extensionID }?.allowedInPrivateMode ?? false
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

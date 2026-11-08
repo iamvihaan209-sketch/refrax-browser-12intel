@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import AppKit
 import Foundation
 import WebKit
@@ -356,3 +357,5 @@ final class ExtensionControllerDelegate: NSObject, WKWebExtensionControllerDeleg
         return CGRect(x: frame.minX, y: bounds.height - frame.maxY, width: frame.width, height: frame.height)
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS
