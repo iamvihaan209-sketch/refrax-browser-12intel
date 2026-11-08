@@ -192,7 +192,7 @@ final class WebProcessTerminationHandler : ObservableObject {
     ///
     /// Long on purpose: WebKit's process kill also takes down every page sharing
     /// the process, so it is reserved for renderers that are truly stuck.
-    static let unresponsiveTerminationDelay: Duration = .seconds(45)
+    static let unresponsiveTerminationDelay: CompatDuration = .seconds(45)
 
     private var unresponsiveTerminations: [UUID: Task<Void, Never>] = [:]
 

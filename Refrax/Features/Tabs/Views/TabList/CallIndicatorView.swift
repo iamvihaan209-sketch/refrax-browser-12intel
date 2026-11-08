@@ -49,7 +49,7 @@ struct CallIndicatorView: View {
         static let iconSize: CGFloat = 10
         static let buttonSize: CGFloat = 16
         static let spacing: CGFloat = 2
-        static let collapseDelay: Duration = .seconds(1)
+        static let collapseDelay: CompatDuration = .seconds(1)
     }
 
     /// Aggregated state across all call pages.

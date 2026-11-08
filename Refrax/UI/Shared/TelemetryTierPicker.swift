@@ -96,7 +96,7 @@ struct TelemetryStatusLine: View {
 
     @EnvironmentObject private var telemetry: TelemetryReporter
 
-    private static let refreshInterval: Duration = .seconds(2)
+    private static let refreshInterval: CompatDuration = .seconds(2)
 
     var body: some View {
         Group {

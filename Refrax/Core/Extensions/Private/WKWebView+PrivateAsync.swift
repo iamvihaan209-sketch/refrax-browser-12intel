@@ -259,7 +259,7 @@ extension _WKThumbnailView {
     /// ## Note
     /// The actual rendering may complete before or after this delay.
     /// For guaranteed accuracy, use multiple requests or KVO on snapshotSize.
-    func requestSnapshotAsync(delay: Duration = .milliseconds(100)) async {
+    func requestSnapshotAsync(delay: CompatDuration = .milliseconds(100)) async {
         requestSnapshot()
         try? await Task.sleep(for: delay)
     }

@@ -287,14 +287,14 @@ nonisolated protocol LocalNetworkSnapshotSource: Sendable {
 actor LocalNetworkDirectory: LocalNetworkSnapshotSource {
     private enum Constants {
         /// How long a snapshot serves reads before a background refresh is scheduled.
-        static let freshness: Duration = .seconds(120)
+        static let freshness: CompatDuration = .seconds(120)
 
         /// Freshness of a snapshot that found no devices. A browse comes back empty while the
         /// local-network permission prompt is still open, so the next lens query retries soon.
-        static let emptyFreshness: Duration = .seconds(10)
+        static let emptyFreshness: CompatDuration = .seconds(10)
 
         /// How long one Bonjour browse listens for answers.
-        static let browseWindow: Duration = .milliseconds(1_500)
+        static let browseWindow: CompatDuration = .milliseconds(1_500)
     }
 
     private var cached: LocalNetworkSnapshot?

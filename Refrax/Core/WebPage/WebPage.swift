@@ -458,7 +458,7 @@ final class WebPage: Identifiable {
     ///   proper cancellation via `.task(id:)` modifiers.
     func detectStickyHeader() async {
         // Wait for page to finish loading (with timeout)
-        let timeout = Duration.seconds(10)
+        let timeout = CompatDuration.seconds(10)
         let startTime = ContinuousClock.now
 
         while isLoading {
@@ -1102,8 +1102,8 @@ final class WebPage: Identifiable {
 
     // MARK: - Constants
 
-    static let historyDebounceInterval: Duration = .milliseconds(800)
-    static let faviconLoadDelay: Duration = .milliseconds(200)
+    static let historyDebounceInterval: CompatDuration = .milliseconds(800)
+    static let faviconLoadDelay: CompatDuration = .milliseconds(200)
 
     // MARK: - Initialization
 

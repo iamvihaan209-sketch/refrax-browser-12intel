@@ -69,7 +69,7 @@ struct RemindMeSheet: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.bottom, 14)
 
-            // Duration grid
+            // CompatDuration grid
             durationGrid
                 .padding(.bottom, 12)
 
@@ -99,7 +99,7 @@ struct RemindMeSheet: View {
         .frame(width: Layout.sheetWidth)
     }
 
-    // MARK: - Duration Grid
+    // MARK: - CompatDuration Grid
 
     private var durationGrid: some View {
         LazyVGrid(columns: Layout.gridColumns, spacing: 6) {

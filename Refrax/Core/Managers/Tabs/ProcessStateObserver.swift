@@ -122,7 +122,7 @@ final class ProcessStateObserver : ObservableObject {
 
     /// Delay before reporting `notRunning` state.
     /// Long enough to span process startup race conditions including cold launches.
-    private static let notRunningDebounceDelay: Duration = .seconds(1)
+    private static let notRunningDebounceDelay: CompatDuration = .seconds(1)
 
     // MARK: - Initialization
 
@@ -232,7 +232,7 @@ final class ProcessStateObserver : ObservableObject {
     /// The `recentlyCrashed` flag is automatically cleared after a brief period.
     ///
     /// - Parameter duration: How long to show the crash indicator.
-    func showCrashIndicator(for duration: Duration = .seconds(5)) {
+    func showCrashIndicator(for duration: CompatDuration = .seconds(5)) {
         recentlyCrashed = true
 
         crashIndicatorTask?.cancel()

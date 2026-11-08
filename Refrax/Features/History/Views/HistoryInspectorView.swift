@@ -157,7 +157,7 @@ struct HistoryInspectorView: View {
                     }
                 }
 
-                InspectorDurationRow(label: "Duration", duration: entry.timeSpent)
+                InspectorDurationRow(label: "CompatDuration", duration: entry.timeSpent)
 
                 InspectorRow(label: "URL") {
                     Text(entry.url.absoluteString)

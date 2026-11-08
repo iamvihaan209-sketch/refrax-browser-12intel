@@ -69,7 +69,7 @@ final class TabPreviewProvider: ObservableObject {
 
         /// Delay before creating thumbnail after tab activation.
         /// Allows page to settle after navigation.
-        static let captureDelay: Duration = .milliseconds(300)
+        static let captureDelay: CompatDuration = .milliseconds(300)
 
         /// Maximum number of cached thumbnails.
         static let maxCachedThumbnails = 5

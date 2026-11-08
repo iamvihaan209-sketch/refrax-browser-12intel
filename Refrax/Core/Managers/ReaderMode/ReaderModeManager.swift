@@ -124,10 +124,10 @@ final class ReaderModeManager : ObservableObject {
         static let maxElements = 50_000
 
         /// How long extraction may run before Reader gives up and reports the page as too long.
-        static let extractionTimeout: Duration = .seconds(5)
+        static let extractionTimeout: CompatDuration = .seconds(5)
 
         /// How long a manual availability check may run before it reports the page as unavailable.
-        static let availabilityTimeout: Duration = .seconds(3)
+        static let availabilityTimeout: CompatDuration = .seconds(3)
     }
 
     // MARK: - Per-Page State
@@ -346,7 +346,7 @@ final class ReaderModeManager : ObservableObject {
     private func evaluate<Value: Sendable>(
         _ script: String,
         in webPage: WebPage,
-        timeout: Duration,
+        timeout: CompatDuration,
     ) async -> ScriptEvaluation<Value> {
         await withCheckedContinuation { continuation in
             let race = FirstFinisher(continuation)

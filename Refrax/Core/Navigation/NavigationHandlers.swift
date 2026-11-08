@@ -565,7 +565,7 @@ struct LinkProtectionHandler: NavigationActionHandler {
 /// The cache is lightweight and designed for low-volume navigation events.
 private actor RedirectLoopPrevention {
     private var recentRedirects: [URL: ContinuousClock.Instant] = [:]
-    private let expiration: Duration = .seconds(2)
+    private let expiration: CompatDuration = .seconds(2)
     private let maxEntries = 20
 
     /// Checks if a URL was recently used as a redirect target.

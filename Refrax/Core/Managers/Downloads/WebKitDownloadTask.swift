@@ -30,7 +30,7 @@ final class WebKitDownloadTask {
     private var lastSampleBytes: Int64 = 0
 
     /// Minimum interval between speed recalculations.
-    private static let speedSampleInterval: Duration = .milliseconds(500)
+    private static let speedSampleInterval: CompatDuration = .milliseconds(500)
 
     init(download: Download, wkDownload: WKDownload) {
         self.download = download
@@ -68,7 +68,7 @@ final class WebKitDownloadTask {
         let now = ContinuousClock.now
         var speed = download.liveBytesPerSecond
         if now - lastSampleTime >= Self.speedSampleInterval {
-            let elapsed = (now - lastSampleTime) / Duration.seconds(1)
+            let elapsed = (now - lastSampleTime) / CompatDuration.seconds(1)
             speed = Double(completed - lastSampleBytes) / elapsed
             lastSampleBytes = completed
             lastSampleTime = now

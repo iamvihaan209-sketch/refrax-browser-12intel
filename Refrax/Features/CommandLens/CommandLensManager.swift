@@ -131,7 +131,7 @@ final class CommandLensManager : ObservableObject {
     // MARK: - Constants
 
     private enum Constants {
-        static let networkDebounceInterval: Duration = .milliseconds(300)
+        static let networkDebounceInterval: CompatDuration = .milliseconds(300)
     }
 
     // MARK: - Initialization

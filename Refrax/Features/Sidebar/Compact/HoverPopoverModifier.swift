@@ -15,7 +15,7 @@ import SwiftUI
 /// feedback about the delay before the popover appears.
 struct HoverFillActionModifier<ClipShape: Shape>: ViewModifier {
     @Binding var isActive: Bool
-    let delay: Duration
+    let delay: CompatDuration
     let fillColor: Color
     let clipShape: ClipShape
     let size: CGFloat
@@ -100,7 +100,7 @@ extension View {
     ///   - action: Action to perform when hover delay completes.
     func hoverFillAction(
         isActive: Binding<Bool>,
-        delay: Duration = .milliseconds(500),
+        delay: CompatDuration = .milliseconds(500),
         fillColor: Color = .secondary.opacity(0.2),
         clipShape: some Shape,
         size: CGFloat,

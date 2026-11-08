@@ -27,7 +27,7 @@ struct RecordingIndicator: View {
                 .opacity(isPulsing ? 0.5 : 1.0)
                 .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: isPulsing)
 
-            // Duration label
+            // CompatDuration label
             if showDuration {
                 DurationLabel(startTime: startTime)
             }
@@ -41,7 +41,7 @@ struct RecordingIndicator: View {
     }
 }
 
-// MARK: - Duration Label
+// MARK: - CompatDuration Label
 
 /// Live-updating duration label using TimelineView.
 private struct DurationLabel: View {

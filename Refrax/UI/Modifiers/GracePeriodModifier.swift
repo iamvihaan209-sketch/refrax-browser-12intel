@@ -7,7 +7,7 @@ struct GracePeriodModifier: ViewModifier {
     @State private var delayTask: Task<Void, Never>?
 
     let shouldDelay: Bool
-    let gracePeriod: Duration
+    let gracePeriod: CompatDuration
 
     func body(content: Content) -> some View {
         content
@@ -40,7 +40,7 @@ extension View {
     /// - Returns: A view that delays its appearance when `shouldDelay` is true.
     func delayedAppearance(
         shouldDelay: Bool,
-        delay: Duration = .milliseconds(400),
+        delay: CompatDuration = .milliseconds(400),
     ) -> some View {
         modifier(GracePeriodModifier(shouldDelay: shouldDelay, gracePeriod: delay))
     }

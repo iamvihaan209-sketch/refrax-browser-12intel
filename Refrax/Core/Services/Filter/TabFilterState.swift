@@ -67,7 +67,7 @@ final class TabFilterState : ObservableObject {
     // MARK: - Private State
     
     @Published private var debounceTask: Task<Void, any Error>?
-    private let debounceDelay: Duration = .milliseconds(300)
+    private let debounceDelay: CompatDuration = .milliseconds(300)
     
     // MARK: - Computed Properties
     

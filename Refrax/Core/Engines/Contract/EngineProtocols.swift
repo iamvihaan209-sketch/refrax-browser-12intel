@@ -199,7 +199,7 @@ nonisolated struct EngineProcessInfo: Hashable, Sendable {
     let pid: pid_t
     let kind: Kind
     let physicalFootprint: UInt64
-    let cpuTime: Duration
+    let cpuTime: CompatDuration
     let pageIDs: [EnginePageID]
 }
 

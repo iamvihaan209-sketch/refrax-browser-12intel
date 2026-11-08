@@ -22,7 +22,7 @@ nonisolated extension RendererTerminationReason {
     }
 
     /// How long to wait before the automatic reload.
-    var recoveryDelay: Duration {
+    var recoveryDelay: CompatDuration {
         switch self {
         case .exceededMemoryLimit: .seconds(1)
         case .exceededCPULimit: .seconds(2)

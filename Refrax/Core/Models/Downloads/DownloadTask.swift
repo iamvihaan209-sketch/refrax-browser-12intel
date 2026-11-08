@@ -84,7 +84,7 @@ final class DownloadTask: NSObject, Identifiable {
     private var lastProgressUpdate: ContinuousClock.Instant = .now
 
     /// Minimum interval between progress updates.
-    private let progressThrottleInterval: Duration = .milliseconds(100)
+    private let progressThrottleInterval: CompatDuration = .milliseconds(100)
 
     /// Bytes received at last speed calculation.
     private var lastBytesForSpeed: Int64 = 0
@@ -714,9 +714,9 @@ extension DownloadTask: URLSessionDataDelegate {
     }
 }
 
-// MARK: - Duration Extension
+// MARK: - CompatDuration Extension
 
-private extension Duration {
+private extension CompatDuration {
     var asSeconds: Double {
         let (seconds, attoseconds) = components
         return Double(seconds) + Double(attoseconds) / 1e18

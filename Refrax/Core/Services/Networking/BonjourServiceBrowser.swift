@@ -25,7 +25,7 @@ nonisolated enum BonjourServiceBrowser {
 
     static let metaServiceType = "_services._dns-sd._udp"
 
-    static func browse(window: Duration) async -> [LocalNetworkService] {
+    static func browse(window: CompatDuration) async -> [LocalNetworkService] {
         await withCheckedContinuation { continuation in
             BrowseSession(window: window) { services in
                 continuation.resume(returning: services)
@@ -68,7 +68,7 @@ private final nonisolated class BrowseSession: @unchecked Sendable {
     private let loopbackInterfaceIndex = if_nametoindex("lo0")
 
     private let queue = DispatchQueue(label: "website.refrax.browser.bonjour-browse")
-    private let window: Duration
+    private let window: CompatDuration
     private let completion: @Sendable ([LocalNetworkService]) -> Void
     private var serviceRefs: [DNSServiceRef] = []
     private var resolveContexts: [ResolveContext] = []
@@ -76,7 +76,7 @@ private final nonisolated class BrowseSession: @unchecked Sendable {
     private var pending: [String: PendingService] = [:]
     private var isFinished = false
 
-    init(window: Duration, completion: @escaping @Sendable ([LocalNetworkService]) -> Void) {
+    init(window: CompatDuration, completion: @escaping @Sendable ([LocalNetworkService]) -> Void) {
         self.window = window
         self.completion = completion
     }

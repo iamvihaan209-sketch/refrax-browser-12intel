@@ -42,7 +42,7 @@ import SwiftUI
 ///   states are saved via `@SceneStorage` in ``ContentView`` for restoration.
 final class WindowState : ObservableObject {
     /// Convert Swift Duration to the nanosecond sleep API supported by macOS 12.
-    private static func nanoseconds(for duration: Duration) -> UInt64 {
+    private static func nanoseconds(for duration: CompatDuration) -> UInt64 {
         let components = duration.components
         guard components.seconds >= 0, components.attoseconds >= 0 else { return 0 }
         let seconds = UInt64(components.seconds)
@@ -533,7 +533,7 @@ final class WindowState : ObservableObject {
     private var compactTabTooltipTask: Task<Void, Never>?
 
     /// Delay before showing compact tab tooltip.
-    private static let compactTabTooltipDelay: Duration = .milliseconds(200)
+    private static let compactTabTooltipDelay: CompatDuration = .milliseconds(200)
 
     /// Starts the tooltip hover delay for a compact tab.
     ///
@@ -635,7 +635,7 @@ final class WindowState : ObservableObject {
     /// - Parameters:
     ///   - message: The message to display.
     ///   - duration: How long to show the toast (default 4 seconds).
-    func showToast(_ message: String, duration: Duration = .seconds(4)) {
+    func showToast(_ message: String, duration: CompatDuration = .seconds(4)) {
         toastDismissTask?.cancel()
         toastMessage = message
 

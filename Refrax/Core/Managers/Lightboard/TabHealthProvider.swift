@@ -61,7 +61,7 @@ final class TabHealthProvider : ObservableObject {
 
     private var refreshDebouncer: Task<Void, any Error>?
 
-    private let debounceInterval: Duration = .milliseconds(100)
+    private let debounceInterval: CompatDuration = .milliseconds(100)
 
     /// Reference count for observers. When > 0, observation is active.
     private var observerCount = 0

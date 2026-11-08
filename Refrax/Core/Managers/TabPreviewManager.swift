@@ -58,7 +58,7 @@ final class TabPreviewManager : ObservableObject {
 
     private enum Timing {
         /// Delay before showing preview to avoid flicker on quick mouse movements.
-        static let displayDelay: Duration = .milliseconds(300)
+        static let displayDelay: CompatDuration = .milliseconds(300)
     }
 
     // MARK: - Initialization

@@ -62,10 +62,10 @@ enum HeadlessFetcher {
     private static let settleThresholdMs = 1_500
 
     /// How often to poll the settle check.
-    private static let settlePollInterval: Duration = .milliseconds(200)
+    private static let settlePollInterval: CompatDuration = .milliseconds(200)
 
     /// Maximum time to spend waiting for content to settle after initial load.
-    private static let maxSettleWait: Duration = .seconds(10)
+    private static let maxSettleWait: CompatDuration = .seconds(10)
 
     /// Fetches a URL and returns its page content as formatted text.
     ///

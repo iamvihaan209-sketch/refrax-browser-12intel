@@ -10,9 +10,9 @@ enum CompactSidebarLayout {
     static let popoverPadding: CGFloat = 8
     static let addressBarPopoverWidth: CGFloat = 300
     static let favoritesGridWidth: CGFloat = 280
-    static let copiedFeedbackDuration: Duration = .seconds(1)
-    static let longHoverDelay: Duration = .milliseconds(200)
-    static let addressBarDismissDelay: Duration = .seconds(2)
+    static let copiedFeedbackDuration: CompatDuration = .seconds(1)
+    static let longHoverDelay: CompatDuration = .milliseconds(200)
+    static let addressBarDismissDelay: CompatDuration = .seconds(2)
     static let bottomControlsPadding: CGFloat = 8
     static let favoriteTabIconOffset: CGFloat = -4
 

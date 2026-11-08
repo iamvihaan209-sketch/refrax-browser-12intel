@@ -65,7 +65,7 @@ enum Constants {
 
         /// Delay before triggering auto-rename after item creation.
         /// Matches spring animation duration to ensure view is fully visible.
-        static let renameDelay: Duration = .milliseconds(Int(springDuration * 1_000))
+        static let renameDelay: CompatDuration = .milliseconds(Int(springDuration * 1_000))
     }
     
     // MARK: - Tab Drag Behavior
@@ -245,7 +245,7 @@ enum Constants {
         static let activationWidth: CGFloat = 40
 
         /// Tolerance period before hiding sidebar after mouse exit
-        static let mouseExitTolerance: Duration = .milliseconds(300)
+        static let mouseExitTolerance: CompatDuration = .milliseconds(300)
 
         /// Progress threshold that triggers snap-to-visible animation
         static let snapThreshold: CGFloat = 0.5
@@ -273,7 +273,7 @@ enum Constants {
         // MARK: Tutorial Peek Animation
 
         /// Delay before showing tutorial peek after sidebar collapse
-        static let tutorialPeekDelay: Duration = .milliseconds(600)
+        static let tutorialPeekDelay: CompatDuration = .milliseconds(600)
 
         /// Duration of the peek animation (move in)
         static let tutorialPeekInDuration: CGFloat = 0.6
@@ -282,7 +282,7 @@ enum Constants {
         static let tutorialPeekDistance: CGFloat = 60
 
         /// How long to hold the peek before hiding
-        static let tutorialPeekHoldDuration: Duration = .milliseconds(600)
+        static let tutorialPeekHoldDuration: CompatDuration = .milliseconds(600)
 
         /// Duration of the peek hide animation
         static let tutorialPeekOutDuration: CGFloat = 0.6
@@ -336,7 +336,7 @@ enum Constants {
         static let glassEffectPadding: CGFloat = 8
 
         /// Tolerance period before hiding tray after mouse exit
-        static let mouseExitTolerance: Duration = .milliseconds(400)
+        static let mouseExitTolerance: CompatDuration = .milliseconds(400)
     }
 }
 

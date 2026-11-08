@@ -162,7 +162,7 @@ struct InspectorDateRow: View {
     }
 }
 
-// MARK: - Inspector Duration Row
+// MARK: - Inspector CompatDuration Row
 
 /// A row displaying a formatted duration.
 struct InspectorDurationRow: View {

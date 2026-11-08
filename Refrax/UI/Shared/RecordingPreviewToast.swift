@@ -36,7 +36,7 @@ struct RecordingPreviewToast: View {
                             .strokeBorder(.white.opacity(0.2), lineWidth: 1)
                     }
 
-                // Duration badge
+                // CompatDuration badge
                 durationBadge
             }
 

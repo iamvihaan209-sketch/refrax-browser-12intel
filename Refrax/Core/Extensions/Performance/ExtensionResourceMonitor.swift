@@ -105,7 +105,7 @@ actor ExtensionResourceMonitor {
     }
 
     /// Sampling interval when UI is visible (frequent updates for responsiveness).
-    private let activeInterval: Duration = .seconds(5)
+    private let activeInterval: CompatDuration = .seconds(5)
 
     /// Number of historical samples to retain per extension.
     let maxHistoricalSamples = 60 // 5 minutes of data at 5s intervals
