@@ -48,10 +48,10 @@ final class RefraxWebViewManager : ObservableObject {
     // MARK: - Properties
 
     /// Active display registrations keyed by page ID.
-    private @Published var activeDisplays: [WebPage.ID: ActiveDisplay] = [:]
+    @Published private var activeDisplays: [WebPage.ID: ActiveDisplay] = [:]
 
     /// Screen share windows keyed by page ID.
-    private @Published var screenShareWindows: [WebPage.ID: NSWindow] = [:]
+    @Published private var screenShareWindows: [WebPage.ID: NSWindow] = [:]
 
     /// Shared instance for app-wide coordination.
     static let shared = RefraxWebViewManager()
@@ -208,7 +208,7 @@ final class ScreenSharePortalView: NSView {
     // MARK: - Properties
 
     private let page: WebPage
-    private @Published var portalLayer: CALayer?
+    @Published private var portalLayer: CALayer?
 
     // MARK: - Initialization
 

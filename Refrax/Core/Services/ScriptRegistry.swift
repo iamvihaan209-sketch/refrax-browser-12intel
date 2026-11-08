@@ -80,8 +80,8 @@ final class ScriptRegistry : ObservableObject {
 
     // MARK: - Properties
 
-    private @Published var registrations: [Registration] = []
-    private @Published var registrationCounter: UInt64 = 0
+    @Published private var registrations: [Registration] = []
+    @Published private var registrationCounter: UInt64 = 0
 
     /// Called after the scripts are applied, with them in injection order, for engines other than WebKit.
     @Published var onApply: (([InjectedScript]) -> Void)?

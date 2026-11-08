@@ -43,7 +43,7 @@ final class BookmarkSelectionManager : ObservableObject {
     ///
     /// When user Shift+Clicks, all bookmarks between anchor and clicked bookmark
     /// are selected.
-    private @Published var anchorID: Bookmark.ID?
+    @Published private var anchorID: Bookmark.ID?
 
     // MARK: - Computed Properties
 

@@ -34,7 +34,7 @@ final class PermissionPromptManager : ObservableObject {
     @Published var currentRequest: PermissionRequest?
 
     /// Queue of pending permission requests.
-    private @Published var requestQueue: [PermissionRequest] = []
+    @Published private var requestQueue: [PermissionRequest] = []
 
     /// Enqueues a permission request and shows the prompt if not already showing.
     func enqueue(_ request: PermissionRequest) {

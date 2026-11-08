@@ -100,11 +100,11 @@ final class CommandLensManager : ObservableObject {
 
     // MARK: - Private State
 
-    private @Published var rejectedCompletion: String?
-    private @Published var rejectedAtInputLength: Int = 0
-    private @Published var commandKeyHeldDuringCommit: Bool = false
-    private @Published var optionKeyHeldDuringCommit: Bool = false
-    private @Published var searchTask: Task<Void, any Error>?
+    @Published private var rejectedCompletion: String?
+    @Published private var rejectedAtInputLength: Int = 0
+    @Published private var commandKeyHeldDuringCommit: Bool = false
+    @Published private var optionKeyHeldDuringCommit: Bool = false
+    @Published private var searchTask: Task<Void, any Error>?
 
     // MARK: - Dependencies
 

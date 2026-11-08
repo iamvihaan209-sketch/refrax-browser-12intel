@@ -54,12 +54,12 @@ final class WebInspectorManager : ObservableObject {
     // MARK: - State
 
     /// Per-tab inspector state tracking.
-    private @Published var inspectorStates: [TabPage.ID: InspectorState] = [:]
+    @Published private var inspectorStates: [TabPage.ID: InspectorState] = [:]
 
     /// Inspector delegate handlers keyed by web view.
     ///
     /// Using NSMapTable with weak keys to automatically clean up when web views are deallocated.
-    private @Published var delegateHandlers = NSMapTable<WKWebView, InspectorDelegateHandler>.weakToStrongObjects()
+    @Published private var delegateHandlers = NSMapTable<WKWebView, InspectorDelegateHandler>.weakToStrongObjects()
 
     // MARK: - Initialization
 

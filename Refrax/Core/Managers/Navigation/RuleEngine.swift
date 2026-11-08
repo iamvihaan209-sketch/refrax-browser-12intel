@@ -28,13 +28,13 @@ final class RuleEngine : ObservableObject {
     // MARK: - Properties
 
     /// Cached rules ordered by priority (descending).
-    private @Published var rules: [RoutingRule] = []
+    @Published private var rules: [RoutingRule] = []
 
     /// The model context for fetching rules.
     private let modelContext: ModelContext
 
     /// Whether rules have been loaded.
-    private @Published var isLoaded = false
+    @Published private var isLoaded = false
 
     // MARK: - Initialization
 

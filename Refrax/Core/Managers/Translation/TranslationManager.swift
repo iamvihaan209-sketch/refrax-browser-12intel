@@ -27,10 +27,10 @@ final class TranslationManager : ObservableObject {
     // MARK: - State
 
     /// Tracks pages that are currently being translated.
-    private @Published var translatingPages: Set<UUID> = .init()
+    @Published private var translatingPages: Set<UUID> = .init()
 
     /// Cached detected languages per URL.
-    private @Published var detectedLanguageCache: [URL: Locale.Language] = .init()
+    @Published private var detectedLanguageCache: [URL: Locale.Language] = .init()
 
     // MARK: - Target Language
 

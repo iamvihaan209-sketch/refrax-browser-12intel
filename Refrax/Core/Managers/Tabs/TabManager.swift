@@ -160,7 +160,7 @@ final class TabManager : ObservableObject {
         _ruleEngine = engine
         return engine
     }
-    private @Published var _ruleEngine: RuleEngine?
+    @Published private var _ruleEngine: RuleEngine?
 
     /// Handles position arithmetic and normalization.
     let positioner = TabPositioner()

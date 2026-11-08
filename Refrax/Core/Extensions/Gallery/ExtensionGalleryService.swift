@@ -8,10 +8,10 @@ final class ExtensionGalleryService : ObservableObject {
     // MARK: - Properties
 
     /// Cached gallery data.
-    private @Published var cachedGallery: GalleryResponse?
+    @Published private var cachedGallery: GalleryResponse?
 
     /// Last time we checked for updates.
-    private @Published var lastFetchDate: Date?
+    @Published private var lastFetchDate: Date?
 
     /// Cache duration (24 hours).
     private let cacheDuration: TimeInterval = 86_400
