@@ -227,35 +227,7 @@ struct LightboardView: View {
                 ForEach(groupedSnapshots, id: \.groupKey) { group in
                     Section {
                         ForEach(group.snapshots) { snapshot in
-                            TabHealthRow(
-                                snapshot: snapshot,
-                                isExpanded: expandedIDs.contains(snapshot.id),
-                                isSelected: selectedIDs.contains(snapshot.id),
-                                isSelectionMode: isSelectionMode,
-                                isCalmed: siteSettingsManager.isCalmPage(for: snapshot.url),
-                                onTap: {
-                                    if isSelectionMode {
-                                        toggleSelection(snapshot.id)
-                                    } else {
-                                        toggleExpanded(snapshot.id)
-                                    }
-                                },
-                                onNavigate: {
-                                    navigateToTab(snapshot)
-                                },
-                                onClose: {
-                                    closeTab(snapshot)
-                                },
-                                onReload: {
-                                    reloadTab(snapshot)
-                                },
-                                onTerminate: {
-                                    terminateProcess(snapshot)
-                                },
-                                onToggleCalm: {
-                                    toggleCalm(snapshot)
-                                },
-                            )
+                            tabRow(snapshot)
                         }
                     } header: {
                         sectionHeader(for: group)
@@ -265,6 +237,28 @@ struct LightboardView: View {
             .padding(.bottom, 8)
         }
         .scrollEdgeEffectStyle(.soft, for: .all)
+    }
+
+    private func tabRow(_ snapshot: TabHealthSnapshot) -> some View {
+        TabHealthRow(
+            snapshot: snapshot,
+            isExpanded: expandedIDs.contains(snapshot.id),
+            isSelected: selectedIDs.contains(snapshot.id),
+            isSelectionMode: isSelectionMode,
+            isCalmed: siteSettingsManager.isCalmPage(for: snapshot.url),
+            onTap: {
+                if isSelectionMode {
+                    toggleSelection(snapshot.id)
+                } else {
+                    toggleExpanded(snapshot.id)
+                }
+            },
+            onNavigate: { navigateToTab(snapshot) },
+            onClose: { closeTab(snapshot) },
+            onReload: { reloadTab(snapshot) },
+            onTerminate: { terminateProcess(snapshot) },
+            onToggleCalm: { toggleCalm(snapshot) }
+        )
     }
 
     // MARK: - Empty State
