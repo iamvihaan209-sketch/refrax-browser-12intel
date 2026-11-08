@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 /// Manages cookie inspection and editing across all data stores.
@@ -11,25 +10,24 @@ import WebKit
 ///
 /// It supports viewing, editing, adding, and deleting cookies, with filtering
 /// by domain, data store, or search text.
-@Observable
-final class CookieInspectorManager {
+final class CookieInspectorManager : ObservableObject {
     // MARK: - State
 
     /// All loaded cookies grouped by their source data store.
-    private(set) var cookiesByStore: [DataStoreInfo: [HTTPCookie]] = [:] {
+    private(set) @Published var cookiesByStore: [DataStoreInfo: [HTTPCookie]] = [:] {
         didSet { invalidateCaches() }
     }
 
     // MARK: - Cached Properties
 
     /// Cached flattened and sorted cookies. Invalidated when `cookiesByStore` changes.
-    private var _allCookiesCache: [CookieEntry]?
+    private @Published var _allCookiesCache: [CookieEntry]?
 
     /// Cached sorted data stores. Invalidated when `cookiesByStore` changes.
-    private var _allStoresCache: [DataStoreInfo]?
+    private @Published var _allStoresCache: [DataStoreInfo]?
 
     /// Cached unique domains. Invalidated when `cookiesByStore` changes.
-    private var _allDomainsCache: [String]?
+    private @Published var _allDomainsCache: [String]?
 
     private func invalidateCaches() {
         _allCookiesCache = nil
@@ -90,19 +88,19 @@ final class CookieInspectorManager {
     }
 
     /// Search text for filtering.
-    var searchText: String = ""
+    @Published var searchText: String = ""
 
     /// Filter by specific data store (nil = all stores).
-    var selectedStoreFilter: DataStoreInfo?
+    @Published var selectedStoreFilter: DataStoreInfo?
 
     /// Filter by specific domain (nil = all domains).
-    var selectedDomainFilter: String?
+    @Published var selectedDomainFilter: String?
 
     /// Currently selected cookie for editing.
-    var selectedCookie: CookieEntry?
+    @Published var selectedCookie: CookieEntry?
 
     /// Whether loading is in progress.
-    var isLoading = false
+    @Published var isLoading = false
 
     /// Total cookie count across all stores.
     var totalCookieCount: Int {
@@ -328,7 +326,7 @@ struct CookieEntry: Identifiable {
     let cookie: HTTPCookie
     let storeInfo: DataStoreInfo
 
-    var id: String { "\(storeInfo.id)_\(cookie.domain)_\(cookie.name)_\(cookie.path)" }
+    @Published var id: String { "\(storeInfo.id)_\(cookie.domain)_\(cookie.name)_\(cookie.path)" }
 
     func matchesDomain(_ domain: String) -> Bool {
         cookie.matchesDomain(domain)
@@ -340,14 +338,14 @@ struct CookieEditModel {
     /// Default expiration offset: 30 days in seconds.
     static let defaultExpirationInterval: TimeInterval = 86_400 * 30
 
-    var name: String
-    var value: String
-    var domain: String
-    var path: String
-    var expiresDate: Date?
-    var isSecure: Bool
-    var isHttpOnly: Bool
-    var sameSite: SameSitePolicy
+    @Published var name: String
+    @Published var value: String
+    @Published var domain: String
+    @Published var path: String
+    @Published var expiresDate: Date?
+    @Published var isSecure: Bool
+    @Published var isHttpOnly: Bool
+    @Published var sameSite: SameSitePolicy
 
     enum SameSitePolicy: String, CaseIterable, Identifiable {
         case strict = "Strict"
@@ -389,7 +387,7 @@ struct CookieEditModel {
         self.sameSite = .lax
     }
 
-    var isValid: Bool { !name.isEmpty && !value.isEmpty && !domain.isEmpty }
+    @Published var isValid: Bool { !name.isEmpty && !value.isEmpty && !domain.isEmpty }
 
     /// Default expiration date (30 days from now).
     static var defaultExpirationDate: Date {

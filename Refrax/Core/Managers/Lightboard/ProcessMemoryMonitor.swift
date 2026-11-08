@@ -1,6 +1,5 @@
 import Darwin
 import Foundation
-import Observation
 import OSLog
 import WebKit
 
@@ -78,51 +77,50 @@ struct MemoryDataPoint: Equatable {
 /// - Maps processes to tabs via `_WKWebContentProcessInfo.webViews`
 /// - Tracks per-process snapshots, not just aggregate totals
 /// - Includes Refrax app process memory
-@Observable
-final class ProcessMemoryMonitor {
+final class ProcessMemoryMonitor : ObservableObject {
     // MARK: - Observable Properties
 
     /// Total memory used by WebContent processes (in bytes).
-    private(set) var totalWebContentMemory: UInt64 = 0
+    private(set) @Published var totalWebContentMemory: UInt64 = 0
 
     /// Memory used by the GPU process (in bytes).
-    private(set) var gpuProcessMemory: UInt64 = 0
+    private(set) @Published var gpuProcessMemory: UInt64 = 0
 
     /// Memory used by the Refrax app process (in bytes).
-    private(set) var appProcessMemory: UInt64 = 0
+    private(set) @Published var appProcessMemory: UInt64 = 0
 
     /// Number of active WebContent processes.
-    private(set) var activeWebProcessCount: Int = 0
+    private(set) @Published var activeWebProcessCount: Int = 0
 
     /// Per-process snapshots with tab mapping.
-    private(set) var processSnapshots: [WebProcessSnapshot] = []
+    private(set) @Published var processSnapshots: [WebProcessSnapshot] = []
 
     /// Memory from web processes that couldn't be mapped to any tab (prewarmed/orphan).
-    private(set) var unmappedProcessMemory: UInt64 = 0
+    private(set) @Published var unmappedProcessMemory: UInt64 = 0
 
     /// CPU usage of all web content processes combined since the previous poll,
     /// as a percentage of one core. Nil until two polls have completed.
-    private(set) var totalWebContentCPUPercent: Double?
+    private(set) @Published var totalWebContentCPUPercent: Double?
 
     /// CPU usage of the GPU process since the previous poll (% of one core).
-    private(set) var gpuProcessCPUPercent: Double?
+    private(set) @Published var gpuProcessCPUPercent: Double?
 
     /// CPU usage of the Refrax app process since the previous poll (% of one core).
-    private(set) var appProcessCPUPercent: Double?
+    private(set) @Published var appProcessCPUPercent: Double?
 
     /// Last update timestamp.
-    private(set) var lastUpdated: Date?
+    private(set) @Published var lastUpdated: Date?
 
     /// Version counter for memory history updates (triggers view rebuilds).
-    private(set) var memoryHistoryVersion: Int = 0
+    private(set) @Published var memoryHistoryVersion: Int = 0
 
     // MARK: - Deprecated compatibility
 
     /// Total memory used by WebContent processes (in MB).
-    var webContentMemoryMB: Int { Int(totalWebContentMemory / 1_024 / 1_024) }
+    @Published var webContentMemoryMB: Int { Int(totalWebContentMemory / 1_024 / 1_024) }
 
     /// Memory used by the GPU process (in MB).
-    var gpuProcessMemoryMB: Int { Int(gpuProcessMemory / 1_024 / 1_024) }
+    @Published var gpuProcessMemoryMB: Int { Int(gpuProcessMemory / 1_024 / 1_024) }
 
     // MARK: - Configuration
 
@@ -131,34 +129,26 @@ final class ProcessMemoryMonitor {
 
     // MARK: - Private
 
-    @ObservationIgnored
     private var pollingTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private unowned let pagePool: WebPagePool
 
-    @ObservationIgnored
     private var monitorCount = 0
 
     /// Previous cumulative CPU-time samples per pid, for computing CPU% between
     /// polls. The app process is keyed by its own pid alongside the WebKit ones.
-    @ObservationIgnored
     private var previousCPUSamples: [pid_t: (cpuTime: TimeInterval, sampledAt: Date)] = [:]
 
     /// Maps PIDs to sequential human-friendly process numbers.
-    @ObservationIgnored
     private var processNumberMap: [pid_t: Int] = [:]
 
     /// Counter for assigning sequential process numbers.
-    @ObservationIgnored
     private var nextProcessNumber = 1
 
     /// Rolling history of memory data points (max 60, ~3 minutes at 3s intervals).
-    @ObservationIgnored
     private(set) var memoryHistory: [MemoryDataPoint] = []
 
     /// Maximum number of history points to retain.
-    @ObservationIgnored
     private let maxHistoryPoints = 60
 
     // MARK: - Initialization

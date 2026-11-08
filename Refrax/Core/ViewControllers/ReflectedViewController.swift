@@ -4,8 +4,7 @@ import SwiftUI
 /// State for a reflected (mirrored) window.
 ///
 /// Provides the state needed by SwiftUI views to display the reflected page content.
-@Observable
-final class ReflectedWindowState {
+final class ReflectedWindowState : ObservableObject {
     /// Reference to the displayed page.
     weak var webPage: WebPage?
 

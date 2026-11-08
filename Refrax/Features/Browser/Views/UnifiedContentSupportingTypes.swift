@@ -4,9 +4,8 @@ import SwiftUI
 ///
 /// Separated from the main view state to allow efficient updates during drag operations
 /// without triggering unnecessary view recomputations.
-@Observable
-final class DragModel {
-    var draggedPaneOffset: CGSize = .zero
+final class DragModel : ObservableObject {
+    @Published var draggedPaneOffset: CGSize = .zero
 }
 
 /// Divider orientation for split view layouts

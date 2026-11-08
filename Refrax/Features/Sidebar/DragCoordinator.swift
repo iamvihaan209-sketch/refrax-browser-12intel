@@ -40,7 +40,6 @@ extension Sidebar {
     /// - `DragCoordinator+Reset.swift`: state resets.
     /// - `DragCoordinator+Types.swift`: helper types/debug accessors.
     /// - `DragCoordinator+Constants.swift`: constants used across extensions.
-    @Observable
     final class DragCoordinator {
         unowned var tabManager: TabManager!
         unowned var layoutManager: LayoutManager!
@@ -61,24 +60,24 @@ extension Sidebar {
         /// For multi-selection drags, this contains only the grabbed tab.
         /// Groups cannot be part of multi-selection drags.
         ///
-        /// Marked `@ObservationIgnored` to prevent views from creating observations.
+        /// Marked `` to prevent views from creating observations.
         /// Views should use `isDragging` or `isItemBeingDragged(_:)` instead.
-        @ObservationIgnored var draggedItems: [DraggedItem] = []
+        var draggedItems: [DraggedItem] = []
 
         /// Follower items that will be repositioned after the main item during commit.
         ///
         /// Empty for single-item drags. For multi-selection, contains all selected
         /// items except the main (grabbed) one. Followers are hidden during drag
         /// and inserted after the main item on commit.
-        @ObservationIgnored var followerItems: [DraggedItem] = []
+        var followerItems: [DraggedItem] = []
 
         /// IDs of follower items to hide during drag.
         ///
         /// Used by views to hide followers while the main item is being dragged,
         /// creating a "collapse" animation. Cleared on commit/cancel.
         ///
-        /// Marked `@ObservationIgnored` - views should use `shouldHideItem(_:)` instead.
-        @ObservationIgnored var hiddenFollowerIDs: Set<UUID> = []
+        /// Marked `` - views should use `shouldHideItem(_:)` instead.
+        var hiddenFollowerIDs: Set<UUID> = []
 
         /// Convenience accessor for the main dragged item.
         ///
@@ -90,7 +89,7 @@ extension Sidebar {
 
         /// Whether a drag operation is currently active.
         ///
-        /// This is a stored property (not computed) because `draggedItems` is `@ObservationIgnored`.
+        /// This is a stored property (not computed) because `draggedItems` is ``.
         /// Making this stored ensures views observing `isDragging` get notified when drag state changes.
         var isDragging: Bool = false
 
@@ -137,19 +136,19 @@ extension Sidebar {
         
         /// Internal only. Do not use externally.
         /// The origin position of the dragged item when drag started.
-        @ObservationIgnored var _originPosition: ItemPosition?
+        var _originPosition: ItemPosition?
         /// Whether the dragged item was active when drag started.
         /// Captured at drag start to preserve appearance during return animation.
-        @ObservationIgnored var _draggedItemWasActive: Bool = false
+        var _draggedItemWasActive: Bool = false
 
         // MARK: - Drop Target Detection
 
         /// Internal only. Do not use externally.
-        @ObservationIgnored var _dropTarget: DropTarget = .none
+        var _dropTarget: DropTarget = .none
         /// Warning: Not meant to be set externally.
         var activeDropZone: DropZone?
         /// Pre-calculated target position for return animation (calculated before commit).
-        @ObservationIgnored var _preCalculatedTargetPosition: CGPoint?
+        var _preCalculatedTargetPosition: CGPoint?
         /// Compensation offset applied at commit time when FAV→TAB causes grid row reduction.
         ///
         /// When the favorites grid loses a row, this holds the row height. Applied instantly
@@ -167,7 +166,7 @@ extension Sidebar {
         ///
         /// Used to hide the new tab during return animation to prevent duplication
         /// (overlay + real item both visible). Cleared on reset.
-        @ObservationIgnored var _convertedItemID: UUID?
+        var _convertedItemID: UUID?
 
         // MARK: - Visual Feedback
 
@@ -216,7 +215,7 @@ extension Sidebar {
         /// - Tab from separate/private space → Favorites grid
         ///
         /// The warning indicates that the tab will need to reload with different cookies/storage.
-        @ObservationIgnored var showDataStorageWarning = false
+        var showDataStorageWarning = false
 
         // MARK: - Overlay Morphing
 
@@ -224,13 +223,13 @@ extension Sidebar {
         ///
         /// - `.tabRow`: When dragging within or toward tab list (pinned/normal sections)
         /// - `.tile`: When dragging within or toward favorites grid
-        @ObservationIgnored var currentOverlayMode: OverlayMode = .tabRow
+        var currentOverlayMode: OverlayMode = .tabRow
 
         /// Animation progress for overlay morph transition (0.0 → 1.0).
         ///
         /// Animated over 150ms with easeInOut when `currentOverlayMode` changes.
         /// Used by `MorphingDragOverlay` to crossfade and scale between appearances.
-        @ObservationIgnored var overlayMorphProgress: CGFloat = 1.0
+        var overlayMorphProgress: CGFloat = 1.0
 
         /// Cached tab row width computed from sidebar bounds.
         ///
@@ -280,14 +279,14 @@ extension Sidebar {
         ///
         /// Captured when transitioning to external phase, restored if user
         /// drags back into sidebar. Cleared when drag ends.
-        @ObservationIgnored var ghostState: GhostState?
+        var ghostState: GhostState?
 
         /// Timestamp when external phase began (for debouncing re-entry).
         ///
         /// Set when `handoffPhase` transitions to `.external`. Used to prevent
         /// flickering at the sidebar edge by requiring at least one frame
         /// (~16ms) in external phase before allowing re-entry.
-        @ObservationIgnored var externalPhaseStartTime: CFTimeInterval?
+        var externalPhaseStartTime: CFTimeInterval?
 
         // MARK: - Inbound Drop Tracking
 
@@ -296,7 +295,7 @@ extension Sidebar {
         /// Set when an external URL is being dragged over the sidebar.
         /// Used by views to highlight the active drop zone.
         ///
-        /// Note: Not marked `@ObservationIgnored` because views need to
+        /// Note: Not marked `` because views need to
         /// re-render when this changes (both on set and clear).
         var inboundDropZone: DropZone?
 
@@ -309,61 +308,61 @@ extension Sidebar {
         ///
         /// Set by `SidebarDragSourceView` when it creates its NSView.
         /// Used to initiate AppKit drag sessions during handoff.
-        @ObservationIgnored weak var dragSourceView: DragSourceNSView?
+        weak var dragSourceView: DragSourceNSView?
 
         /// Internal only. Do not use externally.
         /// Y position of the first item in the tab list at drag start (baseline for "above" detection)
-        @ObservationIgnored var _firstItemStartY: CGFloat?
+        var _firstItemStartY: CGFloat?
 
         /// Hysteresis state for drop zone activation.
         ///
         /// Once drop zones activate (drag crosses above first item), they stay active
         /// until the drag crosses below the exit threshold (bottom of drop zone area).
         /// This prevents flickering when the drag hovers near the boundary.
-        @ObservationIgnored var _dropZonesActive: Bool = false
+        var _dropZonesActive: Bool = false
 
         /// Internal only. Do not use externally.
         /// Original frame of dragged item (before drag started) - nil until captured
-        @ObservationIgnored var _draggedItemOriginalFrame: CGRect?
+        var _draggedItemOriginalFrame: CGRect?
 
         /// Internal only. Do not use externally.
         /// Offset from the cursor to the overlay center at drag start.
         /// When user grabs the tab off-center, this preserves that offset throughout the drag.
-        @ObservationIgnored var _clickOffset: CGPoint = .zero
+        var _clickOffset: CGPoint = .zero
 
         /// Internal only. Do not use externally.
         /// Full bounds of dragged group (header + all descendants) - nil until captured
-        @ObservationIgnored var _draggedGroupBounds: CGRect?
+        var _draggedGroupBounds: CGRect?
 
         /// Internal only. Do not use externally.
         /// Items that crossed the swap threshold (progress > 0.5) - will be reordered
-        @ObservationIgnored var _crossedThresholdItems: Set<UUID> = []
+        var _crossedThresholdItems: Set<UUID> = []
 
         /// Internal only. Do not use externally.
         /// Items with partial animation progress (0 < progress < 1)
-        @ObservationIgnored var _partialAnimationItems: Set<UUID> = []
+        var _partialAnimationItems: Set<UUID> = []
 
         // MARK: - Performance Caches
 
         /// Internal only. Do not use externally.
         /// Cached combined items list (invalidated on frameGeneration change)
-        @ObservationIgnored var _allItemsCache: [TabListItem] = []
+        var _allItemsCache: [TabListItem] = []
         /// Internal only. Do not use externally.
-        @ObservationIgnored var _cachedAllItemsGeneration: Int = -1
+        var _cachedAllItemsGeneration: Int = -1
         /// Internal only. Do not use externally.
-        @ObservationIgnored var _cachedVisibleItemsGeneration: Int = -1
+        var _cachedVisibleItemsGeneration: Int = -1
 
         /// Internal only. Do not use externally.
         /// Pre-validated visible items sorted by Y position
-        @ObservationIgnored var _visibleItemsCache: [ValidatedItem] = []
+        var _visibleItemsCache: [ValidatedItem] = []
 
         /// Internal only. Do not use externally.
         /// Pre-calculated descendants for all groups (built at drag start)
-        @ObservationIgnored var _descendantsCache: [UUID: Set<UUID>] = [:]
+        var _descendantsCache: [UUID: Set<UUID>] = [:]
 
         /// Internal only. Do not use externally.
         /// Exclusion set for dragged item + its descendants (built at drag start)
-        @ObservationIgnored var _draggedItemExclusionSet: Set<UUID> = []
+        var _draggedItemExclusionSet: Set<UUID> = []
 
         // MARK: - Lifecycle
 
@@ -437,7 +436,7 @@ extension Sidebar {
             }
 
             // Set isDragging AFTER populating draggedItems (isDragging is stored, not computed,
-            // because draggedItems is @ObservationIgnored - this triggers view updates).
+            // because draggedItems is - this triggers view updates).
             isDragging = true
 
             _originPosition = originPosition

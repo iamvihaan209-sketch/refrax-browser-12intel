@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import SwiftData
 import SwiftUI
 
@@ -44,8 +43,7 @@ protocol GroupCollapseHandler: AnyObject {
 ///
 /// Group deletion captures `ClosedGroupInfo` for undo/redo via the
 /// system's `UndoManager`.
-@Observable
-final class TabGroupManager {
+final class TabGroupManager : ObservableObject {
     // MARK: - Dependencies
 
     private unowned let state: BrowserState
@@ -54,7 +52,7 @@ final class TabGroupManager {
     ///
     /// Views observe this to trigger inline rename when a group is created.
     /// Automatically cleared after being consumed.
-    var groupIDToEdit: UUID?
+    @Published var groupIDToEdit: UUID?
 
     /// Window manager for accessing the active window state.
     ///

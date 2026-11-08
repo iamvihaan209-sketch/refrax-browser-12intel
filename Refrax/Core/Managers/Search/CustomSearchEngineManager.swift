@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 
 /// Manages custom search engines with CRUD operations and an in-memory cache.
@@ -18,10 +17,9 @@ import SwiftData
 ///
 /// Auto-detected engines are deduplicated by `sourceDomain` to prevent
 /// re-prompting for sites the user has already declined or added.
-@Observable
-final class CustomSearchEngineManager {
+final class CustomSearchEngineManager : ObservableObject {
     /// Cached search engines for fast access by providers.
-    private(set) var cachedEngines: [SearchEngine] = []
+    private(set) @Published var cachedEngines: [SearchEngine] = []
 
     /// The underlying SwiftData model context.
     private let modelContext: ModelContext

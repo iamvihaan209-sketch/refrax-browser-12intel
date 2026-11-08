@@ -28,16 +28,14 @@ import Foundation
 /// // When tab becomes inactive
 /// handoff.invalidateActivity()
 /// ```
-@Observable
-final class HandoffManager {
+final class HandoffManager : ObservableObject {
     // MARK: - Properties
 
     /// The current user activity being advertised for Handoff.
-    @ObservationIgnored
     private var currentActivity: NSUserActivity?
 
     /// Whether Handoff is currently enabled.
-    private(set) var isEnabled = true
+    private(set) @Published var isEnabled = true
 
     // MARK: - Activity Management
 

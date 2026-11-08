@@ -1,7 +1,6 @@
 import Foundation
 import IOKit
 import LocalAuthentication
-import Observation
 import OpenDirectory
 
 /// Manages Touch ID/password authentication for locked spaces.
@@ -30,54 +29,48 @@ import OpenDirectory
 ///
 /// Wire up `activationObserver` and `systemSleepObserver` in AppDelegate,
 /// then call `start()` to begin observation.
-@Observable
-final class SpaceLockManager {
+final class SpaceLockManager : ObservableObject {
     // MARK: - State
 
     /// Space IDs that are currently unlocked.
     ///
     /// This is global across all windows. Authentication in one window
     /// unlocks the space everywhere.
-    private(set) var unlockedSpaceIDs: Set<UUID> = []
+    private(set) @Published var unlockedSpaceIDs: Set<UUID> = []
 
     /// Tracks when each space was unlocked and its effective timeout.
     /// Used for per-space auto-lock timing.
-    @ObservationIgnored
     private var spaceUnlockInfo: [UUID: SpaceUnlockInfo] = [:]
 
     /// Last user activity timestamp for timeout calculation.
-    private var lastActivityTime: Date = .init()
+    private @Published var lastActivityTime: Date = .init()
 
     // MARK: - Dependencies
 
     private let settings: BrowserSettings
 
     /// Factory for creating LAContext instances (injectable for testing).
-    @ObservationIgnored
     private let laContextFactory: () -> LAContext
 
     /// The centralized app activation observer.
     ///
     /// Must be set before calling `start()`. Wired up in AppDelegate.
-    var activationObserver: AppActivationObserver?
+    @Published var activationObserver: AppActivationObserver?
 
     /// The centralized system sleep/screen lock observer.
     ///
     /// Must be set before calling `start()`. Wired up in AppDelegate.
-    var systemSleepObserver: SystemSleepObserver?
+    @Published var systemSleepObserver: SystemSleepObserver?
 
     // MARK: - Auto-Lock Timer
 
-    @ObservationIgnored
     private var autoLockTimer: Timer?
 
-    @ObservationIgnored
     private var backgroundedAt: Date?
 
     // MARK: - Idle Time Monitoring
 
     /// Timer for periodic idle time checks.
-    @ObservationIgnored
     private var idleCheckTimer: Timer?
 
     /// Interval for idle time polling (seconds).
@@ -85,16 +78,12 @@ final class SpaceLockManager {
 
     // MARK: - Observation Tasks
 
-    @ObservationIgnored
     private var activationObservationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var sleepObservationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var screenLockObservationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var isRunning = false
 
     // MARK: - Initialization

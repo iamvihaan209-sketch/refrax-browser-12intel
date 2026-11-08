@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import SwiftData
 import SwiftUI
 
@@ -27,8 +26,7 @@ import SwiftUI
 ///
 /// Space data is stored directly in SwiftData via the `Space` model.
 /// The actual `Space` objects are runtime containers that load tabs on demand.
-@Observable
-final class SpaceManager {
+final class SpaceManager : ObservableObject {
     // MARK: - Dependencies
 
     private unowned let state: BrowserState

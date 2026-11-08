@@ -229,8 +229,7 @@ final class SpeedReaderPanel: NSPanel {
 /// Manages playback, word progression, and timing. Uses a timer to advance
 /// through words at the configured WPM rate, with pause multipliers for
 /// punctuation and paragraph breaks.
-@Observable
-final class SpeedReaderState {
+final class SpeedReaderState : ObservableObject {
     // MARK: - Content
 
     let words: [SpeedReaderWord]
@@ -239,8 +238,8 @@ final class SpeedReaderState {
 
     // MARK: - Playback State
 
-    private(set) var currentIndex: Int
-    var isPlaying: Bool = false {
+    private(set) @Published var currentIndex: Int
+    @Published var isPlaying: Bool = false {
         didSet {
             if isPlaying {
                 startTimer()
@@ -260,11 +259,9 @@ final class SpeedReaderState {
     }
 
     /// Callback invoked when WPM changes.
-    @ObservationIgnored
     var onWPMChanged: ((Int) -> Void)?
 
     /// Callback to close the panel.
-    @ObservationIgnored
     var onCloseRequested: (() -> Void)?
 
     // MARK: - Computed
@@ -293,7 +290,6 @@ final class SpeedReaderState {
 
     // MARK: - Private
 
-    @ObservationIgnored
     private var timer: Timer?
 
     // MARK: - Initialization

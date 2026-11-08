@@ -1,6 +1,5 @@
 import EventKit
 import Foundation
-import Observation
 
 /// Represents a calendar event for display in the sidebar widget.
 struct CalendarEvent: Identifiable, Hashable, Sendable {
@@ -172,8 +171,7 @@ enum CalendarAuthorizationStatus: Sendable {
 /// await manager.requestAccess()
 /// // Events are automatically populated in upcomingEvents
 /// ```
-@Observable
-final class CalendarManager {
+final class CalendarManager : ObservableObject {
     // MARK: - Dependencies
 
     private let settings: BrowserSettings
@@ -182,24 +180,24 @@ final class CalendarManager {
     // MARK: - State
 
     /// Current authorization status for calendar access.
-    private(set) var authorizationStatus: CalendarAuthorizationStatus = .notDetermined
+    private(set) @Published var authorizationStatus: CalendarAuthorizationStatus = .notDetermined
 
     /// Available calendars for selection.
-    private(set) var availableCalendars: [CalendarInfo] = []
+    private(set) @Published var availableCalendars: [CalendarInfo] = []
 
     /// Upcoming events within the look-ahead window.
-    private(set) var upcomingEvents: [CalendarEvent] = []
+    private(set) @Published var upcomingEvents: [CalendarEvent] = []
 
     /// Whether a refresh is in progress.
-    private(set) var isRefreshing: Bool = false
+    private(set) @Published var isRefreshing: Bool = false
 
     /// Error message from the last failed operation.
-    private(set) var lastError: String?
+    private(set) @Published var lastError: String?
 
     // MARK: - Private State
 
-    private var notificationObserver: (any NSObjectProtocol)?
-    private var refreshTask: Task<Void, Never>?
+    private @Published var notificationObserver: (any NSObjectProtocol)?
+    private @Published var refreshTask: Task<Void, Never>?
 
     // MARK: - Initialization
 

@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 /// Manages multi-bookmark selection state for batch operations.
 ///
@@ -32,20 +31,19 @@ import Observation
 /// It's set when:
 /// - User Command+Clicks a bookmark (that bookmark becomes anchor)
 /// - User makes a regular click (that bookmark becomes anchor)
-@Observable
-final class BookmarkSelectionManager {
+final class BookmarkSelectionManager : ObservableObject {
     // MARK: - Selection State
 
     /// Set of currently selected bookmark IDs.
     ///
     /// This is public to allow binding for SwiftUI Table selection.
-    var selectedIDs: Set<Bookmark.ID> = []
+    @Published var selectedIDs: Set<Bookmark.ID> = []
 
     /// Anchor bookmark ID for Shift+Click range selection.
     ///
     /// When user Shift+Clicks, all bookmarks between anchor and clicked bookmark
     /// are selected.
-    private var anchorID: Bookmark.ID?
+    private @Published var anchorID: Bookmark.ID?
 
     // MARK: - Computed Properties
 

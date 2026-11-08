@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 import SwiftUI
 
@@ -30,8 +29,7 @@ import SwiftUI
 /// - `BookmarksManager+ImportExport.swift`: import/export placeholders.
 /// - `BookmarksManager+Favicons.swift`: favicon fetching and reloads.
 /// - `BookmarksManager+Support.swift`: cache key and timeout helper.
-@Observable
-final class BookmarksManager {
+final class BookmarksManager : ObservableObject {
     // MARK: - Dependencies
 
     /// SwiftData model context for persistence.
@@ -53,7 +51,7 @@ final class BookmarksManager {
     /// Offline content manager for cleanup when deleting bookmarks.
     ///
     /// Set via late binding in RefraxAppDelegate.
-    var offlineContentManager: OfflineContentManager?
+    @Published var offlineContentManager: OfflineContentManager?
 
     // MARK: - State
 
@@ -63,16 +61,16 @@ final class BookmarksManager {
     /// with their associated Tab instances from BrowserState.
     ///
     /// Warning: Not meant to be set externally.
-    var favorites: [FavoriteItem] = []
+    @Published var favorites: [FavoriteItem] = []
 
     /// Cache key for favorites invalidation.
     ///
     /// Warning: Not for external use.
-    @ObservationIgnored var _favoritesCacheKey: FavoritesCacheKey?
+    var _favoritesCacheKey: FavoritesCacheKey?
 
     /// Version counter that increments on any favorites change (add/remove/reorder).
     /// Used by Sidebar to detect changes that don't affect count.
-    var favoritesVersion: Int = 0
+    @Published var favoritesVersion: Int = 0
 
     /// Flag to coalesce multiple refresh requests into a single refresh.
     ///
@@ -80,7 +78,7 @@ final class BookmarksManager {
     /// Additional refresh requests are ignored until the scheduled refresh completes.
     ///
     /// Warning: Not for external use.
-    @ObservationIgnored var _refreshScheduled = false
+    var _refreshScheduled = false
 
     /// When true, `scheduleRefreshFavoritesCache()` calls `refreshFavoritesCache()` synchronously.
     ///
@@ -88,7 +86,7 @@ final class BookmarksManager {
     /// Production code should leave this false to benefit from refresh coalescing.
     ///
     /// Warning: Not for external use.
-    var _useSynchronousRefreshes = false
+    @Published var _useSynchronousRefreshes = false
 
     /// Counter for favorites added since last cache refresh.
     ///
@@ -96,7 +94,7 @@ final class BookmarksManager {
     /// without querying the database. Reset to 0 when cache is refreshed.
     ///
     /// Warning: Not for external use.
-    @ObservationIgnored var _pendingFavoriteCount = 0
+    var _pendingFavoriteCount = 0
 
     /// Set of bookmark IDs currently having their favicons loaded.
     ///
@@ -104,7 +102,7 @@ final class BookmarksManager {
     /// Use `isFaviconLoading(for:)` to check a specific bookmark.
     ///
     /// Warning: Not for external use. Use `isFaviconLoading(for:)` instead.
-    var _loadingFaviconIDs: Set<UUID> = []
+    @Published var _loadingFaviconIDs: Set<UUID> = []
 
     // MARK: - Configuration
 

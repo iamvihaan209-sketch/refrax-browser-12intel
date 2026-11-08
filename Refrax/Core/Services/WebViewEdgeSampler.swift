@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 import WebKit
 
 /// Samples colors from the left edge of a WebView for the compact sidebar edge extension.
@@ -31,53 +30,51 @@ import WebKit
 ///
 /// Sampling is debounced to avoid excessive snapshot operations:
 /// - 200ms delay after scroll/navigation events
-@Observable @MainActor
-final class WebViewEdgeSampler {
+@MainActor
+final class WebViewEdgeSampler: ObservableObject {
     // MARK: - Public State
 
     /// Colors sampled from the full width of the edge region (56px, blurred).
     ///
     /// Array of colors from top to bottom of the visible viewport.
     /// Empty if no sampling has occurred.
-    private(set) var fullWidthColors: [NSColor] = []
+    private(set) @Published var fullWidthColors: [NSColor] = []
 
     /// Colors sampled from the ultra-narrow edge strip (first 2px from the left).
     ///
     /// These colors are less likely to contain icons/text and are used for the
     /// mirrored edge strip that sits adjacent to the webview.
-    private(set) var edgeStripColors: [NSColor] = []
+    private(set) @Published var edgeStripColors: [NSColor] = []
 
     /// Colors sampled from the near-edge region (first ~8px from the left).
     ///
     /// Used for progressive blending between the narrow edge and wider samples.
-    private(set) var nearEdgeColors: [NSColor] = []
+    private(set) @Published var nearEdgeColors: [NSColor] = []
 
     /// Colors sampled from the mid-edge region (first ~20px from the left).
     ///
     /// Used for progressive blending between the narrow edge and wider samples.
-    private(set) var midEdgeColors: [NSColor] = []
+    private(set) @Published var midEdgeColors: [NSColor] = []
 
     /// Color sampled specifically from the top corner (top 8px of viewport).
     ///
     /// Uses precise averaging (not histogram binning) for pixel-perfect accuracy
     /// in the exposed corner area where there's no glass blur.
-    private(set) var topCornerColor: NSColor?
+    private(set) @Published var topCornerColor: NSColor?
 
     /// Color sampled specifically from the bottom corner (bottom 8px of viewport).
     ///
     /// Uses precise averaging (not histogram binning) for pixel-perfect accuracy
     /// in the exposed corner area where there's no glass blur.
-    private(set) var bottomCornerColor: NSColor?
+    private(set) @Published var bottomCornerColor: NSColor?
 
     /// Whether a sampling operation is currently in progress.
-    private(set) var isSampling: Bool = false
+    private(set) @Published var isSampling: Bool = false
 
     // MARK: - Private State
 
-    @ObservationIgnored
     private var currentTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var lastSampledPageID: UUID?
 
     // MARK: - Configuration
@@ -90,7 +87,6 @@ final class WebViewEdgeSampler {
     ///
     /// In compact sidebar mode this is 0 (no rounded corners). Set by the window controller
     /// based on the current sidebar mode.
-    @ObservationIgnored
     var contentCornerRadius: CGFloat = 0
 
     // MARK: - Constants

@@ -13,42 +13,37 @@ import Foundation
 /// 2. User fills in form fields (bound to published properties)
 /// 3. Call ``submit()`` to validate and send
 /// 4. Call ``reset()`` to clear state for next use
-@Observable
 @MainActor
-final class FeedbackManager {
+final class FeedbackManager : ObservableObject {
     // MARK: - Form State
 
-    var name: String = ""
-    var email: String = ""
-    var subject: String = ""
-    var body: String = ""
-    var category: FeedbackCategory = .general
-    var attachments: [FeedbackAttachment] = []
+    @Published var name: String = ""
+    @Published var email: String = ""
+    @Published var subject: String = ""
+    @Published var body: String = ""
+    @Published var category: FeedbackCategory = .general
+    @Published var attachments: [FeedbackAttachment] = []
 
     // MARK: - Submission State
 
-    var isSubmitting = false
-    var submissionError: String?
-    var didSubmitSuccessfully = false
+    @Published var isSubmitting = false
+    @Published var submissionError: String?
+    @Published var didSubmitSuccessfully = false
 
     /// Confirmation copy for the success screen, tailored to where the
     /// feedback went (GitHub issue vs. the crash backend).
-    var successMessage = "Your report has been saved and will help improve Refrax."
+    @Published var successMessage = "Your report has been saved and will help improve Refrax."
 
     // MARK: - Collected Data
 
-    @ObservationIgnored
     var systemInfo: SystemInfo?
 
     // MARK: - Dependencies
 
-    @ObservationIgnored
     unowned let settings: BrowserSettings
 
-    @ObservationIgnored
     unowned var browserState: BrowserState!
 
-    @ObservationIgnored
     unowned var extensionManager: ExtensionManager!
 
     // MARK: - Initialization

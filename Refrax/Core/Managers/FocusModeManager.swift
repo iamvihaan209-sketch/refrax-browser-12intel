@@ -1,6 +1,5 @@
 import Foundation
 import Intents
-import Observation
 import SwiftData
 
 /// Manages integration with macOS Focus Mode for automatic space switching.
@@ -20,15 +19,14 @@ import SwiftData
 /// - Focus Mode names/identifiers aren't directly exposed by Apple
 /// - Detection relies on Focus status + distributed notification observation
 /// - Some Focus Mode types may not be distinguishable
-@Observable
-final class FocusModeManager {
+final class FocusModeManager : ObservableObject {
     // MARK: - State
 
     /// Whether any Focus Mode is currently active.
-    private(set) var isFocusActive: Bool = false
+    private(set) @Published var isFocusActive: Bool = false
 
     /// Display name of the current Focus Mode (if detectable).
-    private(set) var currentFocusName: String?
+    private(set) @Published var currentFocusName: String?
 
     // MARK: - Dependencies
 

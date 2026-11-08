@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 /// Coordinates periodic background tasks for archive expiration and auto-archive rules.
 ///
@@ -33,14 +32,13 @@ import Observation
 ///
 /// - ``TabArchiveManager/clearExpiredTabs()`` — Removes archived tabs past expiration
 /// - ``TabAutoArchiveManager/executeRules()`` — Applies user-defined auto-archive rules
-@Observable
-final class ScheduledTasksManager {
+final class ScheduledTasksManager : ObservableObject {
     // MARK: - State
 
     /// Timestamp of the last successful task run.
     ///
     /// Used to determine if tasks should run immediately on app activation.
-    private(set) var lastTaskRun: Date?
+    private(set) @Published var lastTaskRun: Date?
 
     // MARK: - Configuration
 
@@ -52,21 +50,16 @@ final class ScheduledTasksManager {
 
     // MARK: - Dependencies
 
-    @ObservationIgnored
     private let activationObserver: AppActivationObserver
 
     // MARK: - Private State
 
-    @ObservationIgnored
     private var scheduler: NSBackgroundActivityScheduler?
 
-    @ObservationIgnored
     private var registeredTasks: [@Sendable () async -> Void] = []
 
-    @ObservationIgnored
     private var activationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var isRunning = false
 
     // MARK: - Initialization

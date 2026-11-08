@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import SwiftData
 import UserNotifications
 import WebKit
@@ -27,8 +26,7 @@ import WebKit
 /// Web Push (delivery while no page or worker runs) needs Apple's `webpushd`, which only
 /// Safari can use; the Push API stays off (`PushAPIEnabled` defaults off for embedders), so
 /// `registration.pushManager` is undefined.
-@Observable
-final class WebNotificationManager {
+final class WebNotificationManager : ObservableObject {
     // MARK: Constants
 
     nonisolated enum Constants {
@@ -43,39 +41,39 @@ final class WebNotificationManager {
     // MARK: Observed State
 
     /// Every origin that asked, ordered by host.
-    private(set) var permissions: [WebNotificationPermission] = []
+    private(set) @Published var permissions: [WebNotificationPermission] = []
 
     /// Whether macOS lets Refrax show notifications.
-    private(set) var systemAuthorization: UNAuthorizationStatus = .notDetermined
+    private(set) @Published var systemAuthorization: UNAuthorizationStatus = .notDetermined
 
     // MARK: Dependencies
 
-    @ObservationIgnored let store: WebNotificationPermissionStore
-    @ObservationIgnored let settings: BrowserSettings
+    let store: WebNotificationPermissionStore
+    let settings: BrowserSettings
 
     /// Tabs, windows, and data stores for routing clicks. Set after the pool is created.
-    @ObservationIgnored weak var pagePool: WebPagePool?
+    weak var pagePool: WebPagePool?
 
     /// Receives ``enginePolicy`` whenever a decision or the ask setting changes, so engines
     /// answer permission from Refrax's store alone.
-    @ObservationIgnored var onEnginePolicyChange: ((NotificationPolicy) -> Void)? {
+    var onEnginePolicyChange: ((NotificationPolicy) -> Void)? {
         didSet { publishEnginePolicy() }
     }
 
     // MARK: WebKit Plumbing
 
     /// Page notification providers, one per process pool, keyed by manager.
-    @ObservationIgnored var providers: [UInt: RFXWebNotificationProvider] = [:]
-    @ObservationIgnored var serviceWorkerProvider: RFXWebNotificationProvider?
-    @ObservationIgnored let providerDelegate = WebNotificationProviderDelegate()
-    @ObservationIgnored let dataStoreDelegate = WebNotificationDataStoreDelegate()
-    @ObservationIgnored private var askSettingObservation: Task<Void, Never>?
+    var providers: [UInt: RFXWebNotificationProvider] = [:]
+    var serviceWorkerProvider: RFXWebNotificationProvider?
+    let providerDelegate = WebNotificationProviderDelegate()
+    let dataStoreDelegate = WebNotificationDataStoreDelegate()
+    private var askSettingObservation: Task<Void, Never>?
 
     // MARK: Deliveries
 
     /// Where each delivered request came from, by request identifier.
-    @ObservationIgnored var sourcesByRequest: [String: IncomingWebNotification.Source] = [:]
-    @ObservationIgnored var requestsBySource: [IncomingWebNotification.Source: String] = [:]
+    var sourcesByRequest: [String: IncomingWebNotification.Source] = [:]
+    var requestsBySource: [IncomingWebNotification.Source: String] = [:]
 
     // MARK: Initialization
 

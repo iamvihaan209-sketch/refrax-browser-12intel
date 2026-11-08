@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 
 /// Coordinates all Apple system integrations in a centralized location.
 ///
@@ -34,8 +33,7 @@ import Observation
 ///
 /// Access through AppDelegate for direct usage, or through RefraxAPI for
 /// external agent access with permission checking.
-@Observable
-final class AppleIntegrationManager {
+final class AppleIntegrationManager : ObservableObject {
     // MARK: - Sub-Managers
 
     /// Manages Spotlight indexing for tabs, bookmarks, and history.

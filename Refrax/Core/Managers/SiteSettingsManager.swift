@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 
 /// Manages per-site settings with efficient caching and domain lookup.
@@ -31,8 +30,7 @@ import SwiftData
 /// settings.pageZoom = 125
 /// siteSettingsManager.save(settings)
 /// ```
-@Observable
-final class SiteSettingsManager {
+final class SiteSettingsManager : ObservableObject {
     // MARK: - Dependencies
 
     private let modelContext: ModelContext
@@ -44,9 +42,8 @@ final class SiteSettingsManager {
     /// Key is the exact domain string from the query (may be subdomain).
     /// Value is the settings and the actual domain the settings belong to.
     ///
-    /// - Note: Marked `@ObservationIgnored` because cache mutations are internal
+    /// - Note: Marked `` because cache mutations are internal
     ///   implementation details that should not trigger view updates.
-    @ObservationIgnored
     private var cache: [String: CachedSettings] = [:]
 
     /// Cache entry containing settings and the domain they actually belong to.
@@ -60,9 +57,8 @@ final class SiteSettingsManager {
     ///
     /// Prevents repeated database queries for domains without settings.
     ///
-    /// - Note: Marked `@ObservationIgnored` because negative cache mutations are
+    /// - Note: Marked `` because negative cache mutations are
     ///   internal implementation details that should not trigger view updates.
-    @ObservationIgnored
     private var noSettingsDomains: Set<String> = []
 
     // MARK: - Save Debouncing
@@ -70,7 +66,7 @@ final class SiteSettingsManager {
     private let saver: DebouncedModelContextSaver
 
     /// Called after settings are saved, deleted, or reset.
-    @ObservationIgnored var onChange: (() -> Void)?
+    var onChange: (() -> Void)?
 
     // MARK: - Initialization
 

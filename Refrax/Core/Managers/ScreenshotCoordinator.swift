@@ -31,16 +31,15 @@ enum ScreenshotResult: Sendable {
 ///
 /// For element selection mode, the coordinator injects JavaScript to allow
 /// the user to select a page element, then captures that region.
-@Observable
-final class ScreenshotCoordinator {
+final class ScreenshotCoordinator : ObservableObject {
     /// The current screenshot preview, if any.
     ///
     /// Set after a successful capture. The preview auto-dismisses after a delay,
     /// or can be dismissed by user interaction.
-    private(set) var currentPreview: ScreenshotPreview?
+    private(set) @Published var currentPreview: ScreenshotPreview?
 
     /// Whether element selection mode is currently active.
-    private(set) var isSelectionModeActive = false
+    private(set) @Published var isSelectionModeActive = false
 
     /// Preview data shown after capture.
     struct ScreenshotPreview: Identifiable {

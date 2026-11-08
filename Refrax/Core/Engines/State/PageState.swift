@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 // MARK: - Snapshot
 
@@ -131,26 +130,25 @@ nonisolated enum PageReducer {
 /// Each field is stored separately so views are invalidated only by the fields
 /// they read, and a field is written only when its value changes. Nothing but
 /// ``apply(_:)`` writes to it.
-@Observable
-final class PageState {
-    private(set) var url: URL?
-    private(set) var pendingURL: URL?
-    private(set) var title = ""
-    private(set) var isLoading = false
-    private(set) var progress = 0.0
-    private(set) var canGoBack = false
-    private(set) var canGoForward = false
-    private(set) var security: PageSecurity = .notApplicable
-    private(set) var faviconURLs: [URL] = []
-    private(set) var themeColor: RGBAColor?
-    private(set) var topEdgeColor: RGBAColor?
-    private(set) var hoveredLink: URL?
-    private(set) var zoom = 1.0
-    private(set) var media: PageMedia = .idle
-    private(set) var fullscreen: PageFullscreen = .none
-    private(set) var rendererHealth: RendererHealth = .running
-    private(set) var failure: NavigationFailure?
-    private(set) var statusCode: Int?
+final class PageState : ObservableObject {
+    private(set) @Published var url: URL?
+    private(set) @Published var pendingURL: URL?
+    private(set) @Published var title = ""
+    private(set) @Published var isLoading = false
+    private(set) @Published var progress = 0.0
+    private(set) @Published var canGoBack = false
+    private(set) @Published var canGoForward = false
+    private(set) @Published var security: PageSecurity = .notApplicable
+    private(set) @Published var faviconURLs: [URL] = []
+    private(set) @Published var themeColor: RGBAColor?
+    private(set) @Published var topEdgeColor: RGBAColor?
+    private(set) @Published var hoveredLink: URL?
+    private(set) @Published var zoom = 1.0
+    private(set) @Published var media: PageMedia = .idle
+    private(set) @Published var fullscreen: PageFullscreen = .none
+    private(set) @Published var rendererHealth: RendererHealth = .running
+    private(set) @Published var failure: NavigationFailure?
+    private(set) @Published var statusCode: Int?
 
     init(initialURL: URL? = nil) {
         url = initialURL

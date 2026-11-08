@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 
 // Manages browsing history recording, querying, and persistence.
@@ -14,8 +13,7 @@ import SwiftData
 // This prevents the main thread from being blocked by SwiftData saves during
 // page loads when titles and entry states are updated frequently.
 
-@Observable
-final class HistoryManager {
+final class HistoryManager : ObservableObject {
     // MARK: - Properties
 
     /// SwiftData model context
@@ -28,13 +26,13 @@ final class HistoryManager {
     let frequentDestinations: FrequentDestinationsCache
 
     /// Active history entries being tracked (URL -> HistoryEntry)
-    @ObservationIgnored private var activeEntries: [UUID: HistoryEntry] = [:]
+    private var activeEntries: [UUID: HistoryEntry] = [:]
 
     /// Last snapshot content hash for deduplication
-    @ObservationIgnored private var lastSnapshotHash: String?
+    private var lastSnapshotHash: String?
 
     /// Current browsing context ID
-    var currentSpaceID: UUID?
+    @Published var currentSpaceID: UUID?
 
     // MARK: - Debounced Save
 
@@ -46,17 +44,16 @@ final class HistoryManager {
     /// Background actor for heavy maintenance operations.
     ///
     /// Initialized lazily when deferred maintenance is performed.
-    private var maintenanceActor: HistoryMaintenanceActor?
+    private @Published var maintenanceActor: HistoryMaintenanceActor?
 
     /// Whether deferred maintenance has completed.
-    private(set) var maintenanceComplete = false
+    private(set) @Published var maintenanceComplete = false
 
     // MARK: - Background Query Actor
 
     /// Background actor for expensive read queries.
     ///
     /// Initialized via deferred setup to avoid blocking app launch.
-    @ObservationIgnored
     private var queryActor: HistoryQueryActor?
 
     // MARK: - Initialization

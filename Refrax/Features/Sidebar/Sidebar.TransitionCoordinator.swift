@@ -35,7 +35,6 @@ extension Sidebar {
     ///     spaceManager.switchToSpace(...)
     /// }
     /// ```
-    @Observable
     final class TransitionCoordinator {
         /// Horizontal offset applied to the tab list.
         /// Positive = content shifted right, negative = content shifted left.
@@ -60,7 +59,6 @@ extension Sidebar {
         ///
         /// Used by `animation(for:offsetY:)` to determine if an item is visible
         /// (has a frame) and should receive spring animation.
-        @ObservationIgnored
         weak var layoutManager: LayoutManager?
 
         /// Standard spring animation for tab/group offset changes.

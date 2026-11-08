@@ -1,19 +1,17 @@
 import Foundation
-import Observation
 
 /// Service for managing the extension gallery.
 ///
 /// Provides curated extension listings and web store integration.
 /// For MVP, uses bundled JSON data. Future versions may fetch from a server.
-@Observable
-final class ExtensionGalleryService {
+final class ExtensionGalleryService : ObservableObject {
     // MARK: - Properties
 
     /// Cached gallery data.
-    private var cachedGallery: GalleryResponse?
+    private @Published var cachedGallery: GalleryResponse?
 
     /// Last time we checked for updates.
-    private var lastFetchDate: Date?
+    private @Published var lastFetchDate: Date?
 
     /// Cache duration (24 hours).
     private let cacheDuration: TimeInterval = 86_400

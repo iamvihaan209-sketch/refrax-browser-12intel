@@ -297,10 +297,9 @@ final class GlimpseController: NSWindowController, NSWindowDelegate {
 ///
 /// Provides the state needed for the toolbar and content views to display
 /// the current page's information and available spaces for transfer.
-@Observable
-final class GlimpseWindowState {
+final class GlimpseWindowState : ObservableObject {
     let tabPage: TabPage
-    var webPage: WebPage?
+    @Published var webPage: WebPage?
 
     /// All available spaces for the transfer dropdown.
     let allSpaces: [Space]

@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 import WebKit
 
@@ -41,8 +40,7 @@ import WebKit
 ///     await autoArchiveManager.executeRules(context: modelContext)
 /// }
 /// ```
-@Observable
-final class TabAutoArchiveManager {
+final class TabAutoArchiveManager : ObservableObject {
     // MARK: - Dependencies
 
     private unowned let state: BrowserState
@@ -56,7 +54,7 @@ final class TabAutoArchiveManager {
     unowned var windowManager: WindowManager!
 
     /// Task that observes settings changes.
-    private var settingsObservationTask: Task<Void, Never>?
+    private @Published var settingsObservationTask: Task<Void, Never>?
 
     // MARK: - Archive Threshold Tracking
 
@@ -64,7 +62,7 @@ final class TabAutoArchiveManager {
     ///
     /// Updated when rules execute or when a tab is activated.
     /// Use ``isAtArchiveThreshold(_:)`` for O(1) lookup.
-    private(set) var tabsAtArchiveThreshold: Set<Tab.ID> = []
+    private(set) @Published var tabsAtArchiveThreshold: Set<Tab.ID> = []
 
     // MARK: - Initialization
 

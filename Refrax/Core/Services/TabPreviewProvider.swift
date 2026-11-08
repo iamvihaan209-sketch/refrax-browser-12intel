@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 import OrderedCollections
 import WebKit
 
@@ -37,14 +36,12 @@ import WebKit
 /// ## Thread Safety
 ///
 /// All APIs must be called on the main actor. `_WKThumbnailView` requires main thread access.
-@Observable @MainActor
-final class TabPreviewProvider {
+@MainActor
+final class TabPreviewProvider: ObservableObject {
     // MARK: - Dependencies
 
-    @ObservationIgnored
     private unowned let tabManager: TabManager
 
-    @ObservationIgnored
     private weak var windowState: WindowState?
 
     // MARK: - Private State
@@ -53,16 +50,12 @@ final class TabPreviewProvider {
     ///
     /// Each adapter wraps one or more `_WKThumbnailView` instances depending on
     /// whether the tab has a single page or multiple pages.
-    @ObservationIgnored
     private var thumbnailCache: OrderedDictionary<Tab.ID, ThumbnailAdapter> = [:]
 
-    @ObservationIgnored
     private var activationObservationTask: Task<Void, any Error>?
 
-    @ObservationIgnored
     private var layoutModeObservationTask: Task<Void, any Error>?
 
-    @ObservationIgnored
     private var pendingThumbnailTasks: [Tab.ID: Task<Void, any Error>] = [:]
 
     // MARK: - Constants

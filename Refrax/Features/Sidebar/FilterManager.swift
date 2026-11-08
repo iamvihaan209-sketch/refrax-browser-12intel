@@ -31,7 +31,6 @@ extension Sidebar {
     /// dependencies on ALL stored properties they read. By making it stored, views
     /// that only care about whether ANY filter is active don't subscribe to every
     /// keystroke in the search field.
-    @Observable
     final class FilterManager {
         // MARK: - Filter State
 
@@ -39,7 +38,6 @@ extension Sidebar {
         ///
         /// Uses explicit `withMutation` instead of `didSet` because
         /// `@Observable` silently replaces `didSet` accessors.
-        @ObservationIgnored
         private var _searchText: String = ""
 
         var searchText: String {
@@ -102,11 +100,9 @@ extension Sidebar {
         ///
         /// Used by page-based filters (media, camera, microphone) to access
         /// WebPage state for each tab.
-        @ObservationIgnored
         var pageLookup: ((TabPage) -> WebPage?)?
 
         /// Task for debouncing search text updates.
-        @ObservationIgnored
         private var debounceTask: Task<Void, Never>?
 
         // MARK: - Observation-Optimized Properties

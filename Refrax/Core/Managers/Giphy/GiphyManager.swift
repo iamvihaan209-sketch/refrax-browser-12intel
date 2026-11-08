@@ -1,25 +1,23 @@
 import Foundation
-import Observation
 
 /// Manages Giphy API integration for GIF search and retrieval.
 ///
 /// Provides search and trending GIF functionality with proper caching
 /// and rate limiting. Uses Giphy's public API.
-@Observable
-final class GiphyManager {
+final class GiphyManager : ObservableObject {
     // MARK: - State
 
     /// Current search results.
-    private(set) var searchResults: [GiphyGIF] = []
+    private(set) @Published var searchResults: [GiphyGIF] = []
 
     /// Trending GIFs for initial display.
-    private(set) var trendingGIFs: [GiphyGIF] = []
+    private(set) @Published var trendingGIFs: [GiphyGIF] = []
 
     /// Whether a search is in progress.
-    private(set) var isSearching = false
+    private(set) @Published var isSearching = false
 
     /// Error message if the last operation failed.
-    private(set) var errorMessage: String?
+    private(set) @Published var errorMessage: String?
 
     // MARK: - Configuration
 
@@ -38,8 +36,8 @@ final class GiphyManager {
 
     // MARK: - Caching
 
-    private var trendingCache: [GiphyGIF]?
-    private var trendingCacheDate: Date?
+    private @Published var trendingCache: [GiphyGIF]?
+    private @Published var trendingCacheDate: Date?
     private let trendingCacheDuration: TimeInterval = 300 // 5 minutes
 
     // MARK: - Search

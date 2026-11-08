@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 // MARK: - Sidebar Namespace Extensions
 
@@ -7,7 +6,7 @@ extension Sidebar {
     /// Container holding dependencies needed for building the sidebar empty area context menu.
     ///
     /// This container is passed via environment to avoid capturing managers in closures
-    /// within `SidebarEmptyAreaContextMenu`. All managers are `@ObservationIgnored` since
+    /// within `SidebarEmptyAreaContextMenu`. All managers are `` since
     /// they are already observable and we don't want this container to trigger updates
     /// when the managers change.
     ///
@@ -24,16 +23,15 @@ extension Sidebar {
     ///     )
     /// }
     /// ```
-    @Observable
     final class DependencyContainer {
-        @ObservationIgnored let tabManager: TabManager
-        @ObservationIgnored let windowState: WindowState
-        @ObservationIgnored let layoutManager: Sidebar.LayoutManager
-        @ObservationIgnored let filterManager: Sidebar.FilterManager
-        @ObservationIgnored let selectionManager: Sidebar.TabSelectionManager
-        @ObservationIgnored let groupManager: TabGroupManager
-        @ObservationIgnored let undoRedoManager: UndoRedoManager
-        @ObservationIgnored let settings: BrowserSettings
+        let tabManager: TabManager
+        let windowState: WindowState
+        let layoutManager: Sidebar.LayoutManager
+        let filterManager: Sidebar.FilterManager
+        let selectionManager: Sidebar.TabSelectionManager
+        let groupManager: TabGroupManager
+        let undoRedoManager: UndoRedoManager
+        let settings: BrowserSettings
 
         /// Toggled from the empty-area context menu to show the window background popover.
         var showWindowBackgroundPopover = false

@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 /// Speed presets for agent visual feedback animations.
 enum FeedbackSpeed: Sendable {
@@ -108,35 +107,32 @@ struct ElementHighlightInfo: Identifiable, Equatable, Sendable {
 ///     .clearHighlights,
 /// ])
 /// ```
-@Observable
 @MainActor
-final class VisualFeedbackManager {
+final class VisualFeedbackManager : ObservableObject {
     // MARK: - Observable State
 
     /// Whether the visual feedback system is active (cursor visible, etc.).
-    private(set) var isActive: Bool = false
+    private(set) @Published var isActive: Bool = false
 
     /// Current cursor state for rendering.
-    private(set) var cursorState: AgentCursorState = .idle
+    private(set) @Published var cursorState: AgentCursorState = .idle
 
     /// Target cursor position in overlay coordinate space.
     /// Views should animate to this position using explicit `.animation()` modifiers.
-    private(set) var cursorPosition: CGPoint = .zero
+    private(set) @Published var cursorPosition: CGPoint = .zero
 
     /// Active element highlights.
-    private(set) var highlights: [ElementHighlightInfo] = []
+    private(set) @Published var highlights: [ElementHighlightInfo] = []
 
     /// Animation speed preset.
-    var speed: FeedbackSpeed = .natural
+    @Published var speed: FeedbackSpeed = .natural
 
     // MARK: - Non-Observable State
 
     /// Current action sequence task, cancellable for interruption.
-    @ObservationIgnored
     private var sequenceTask: Task<Void, Never>?
 
     /// Whether an action sequence is currently running.
-    @ObservationIgnored
     private(set) var isRunningSequence: Bool = false
 
     // MARK: - Cursor Control

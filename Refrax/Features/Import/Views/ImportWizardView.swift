@@ -193,12 +193,11 @@ private extension ImportWizardView {
 // MARK: - View Model
 
 /// State management for the comprehensive import wizard flow.
-@Observable
-final class ImportWizardViewModel {
+final class ImportWizardViewModel : ObservableObject {
     // MARK: - Navigation State
 
     /// Current step in the wizard.
-    var currentStep: ImportStep = .selectBrowser
+    @Published var currentStep: ImportStep = .selectBrowser
 
     /// Whether the back button should be shown.
     var canGoBack: Bool {
@@ -213,51 +212,51 @@ final class ImportWizardViewModel {
     // MARK: - Browser Selection
 
     /// Selected browser for import.
-    var selectedBrowser: ThirdPartyBrowser?
+    @Published var selectedBrowser: ThirdPartyBrowser?
 
     /// Selected profile within the browser.
-    var selectedProfile: BrowserProfile?
+    @Published var selectedProfile: BrowserProfile?
 
     /// Browsers detected as installed on the system.
-    var installedBrowsers: [ThirdPartyBrowser] = []
+    @Published var installedBrowsers: [ThirdPartyBrowser] = []
 
     /// Available profiles for the selected browser.
-    var profiles: [BrowserProfile] = []
+    @Published var profiles: [BrowserProfile] = []
 
     // MARK: - Import Options
 
     /// User's selections for what to import.
-    var importOptions = ImportOptions()
+    @Published var importOptions = ImportOptions()
 
     /// URL of the HTML file to import (when importing from HTML file).
-    var htmlFileURL: URL?
+    @Published var htmlFileURL: URL?
 
     /// Parsed contents of a Safari export zip file.
-    var safariExportContents: SafariExportContents?
+    @Published var safariExportContents: SafariExportContents?
 
     // MARK: - Progress State
 
     /// Import progress (0.0 to 1.0).
-    var progress: Double = 0
+    @Published var progress: Double = 0
 
     /// Current progress message.
-    var progressMessage = ""
+    @Published var progressMessage = ""
 
     // MARK: - Results
 
     /// Result of the import operation (legacy, for backwards compatibility).
-    var result: ImportResult?
+    @Published var result: ImportResult?
 
     /// Comprehensive result covering all data types.
-    var comprehensiveResult = ComprehensiveImportResult()
+    @Published var comprehensiveResult = ComprehensiveImportResult()
 
     /// Error that occurred during import.
-    var error: ImportError?
+    @Published var error: ImportError?
 
     // MARK: - Credential Conflicts
 
     /// Credential conflicts requiring user resolution.
-    var pendingConflicts: [PasswordsManager.CredentialConflict] = []
+    @Published var pendingConflicts: [PasswordsManager.CredentialConflict] = []
 
     /// Whether all conflicts have been resolved.
     var allConflictsResolved: Bool {

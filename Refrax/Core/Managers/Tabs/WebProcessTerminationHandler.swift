@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 /// Handles web content process termination events and automatic recovery.
 ///
@@ -30,8 +29,7 @@ import Observation
 /// // When a page's engine reports its renderer ended:
 /// handler.handleTermination(for: page, reason: .crashed)
 /// ```
-@Observable
-final class WebProcessTerminationHandler {
+final class WebProcessTerminationHandler : ObservableObject {
     // MARK: - Configuration
 
     /// Reference to browser settings for checking crash recovery preferences.
@@ -40,12 +38,12 @@ final class WebProcessTerminationHandler {
     /// Number of crashes within the time window before suppressing reload.
     ///
     /// Synced from `BrowserSettings.crashThreshold`.
-    var crashThreshold: Int = 3
+    @Published var crashThreshold: Int = 3
 
     /// Time window for tracking crash frequency (seconds).
     ///
     /// Synced from `BrowserSettings.crashTimeWindowSeconds`.
-    var crashTimeWindow: TimeInterval = 60
+    @Published var crashTimeWindow: TimeInterval = 60
 
     /// Whether automatic crash recovery is enabled.
     ///
@@ -57,21 +55,21 @@ final class WebProcessTerminationHandler {
     // MARK: - State
 
     /// Termination history per tab page, keyed by page ID.
-    private(set) var terminationHistory: [UUID: [TerminationEvent]] = [:]
+    private(set) @Published var terminationHistory: [UUID: [TerminationEvent]] = [:]
 
     /// Pages currently in "problematic" state (exceeded crash threshold).
-    private(set) var problematicPages: Set<UUID> = []
+    private(set) @Published var problematicPages: Set<UUID> = []
 
     // MARK: - Callbacks
 
     /// Called to present a toast message to the user.
-    var toastPresenter: ((String) -> Void)?
+    @Published var toastPresenter: ((String) -> Void)?
 
     /// Called when a page exceeds the crash threshold.
-    var onProblematicPage: ((WebPage, Int) -> Void)?
+    @Published var onProblematicPage: ((WebPage, Int) -> Void)?
 
     /// Called after a page has been recovered from a crash.
-    var onPageRecovered: ((WebPage) -> Void)?
+    @Published var onPageRecovered: ((WebPage) -> Void)?
 
     // MARK: - Types
 
@@ -195,7 +193,6 @@ final class WebProcessTerminationHandler {
     /// the process, so it is reserved for renderers that are truly stuck.
     static let unresponsiveTerminationDelay: Duration = .seconds(45)
 
-    @ObservationIgnored
     private var unresponsiveTerminations: [UUID: Task<Void, Never>] = [:]
 
     private func scheduleUnresponsiveTermination(for page: WebPage) {

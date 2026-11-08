@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 import WebKit
 
@@ -33,8 +32,7 @@ import WebKit
 /// // Preview CSS changes
 /// await manager.previewStyle(editedCSS, id: style.id, in: webPage)
 /// ```
-@Observable
-final class UserStyleManager {
+final class UserStyleManager : ObservableObject {
     // MARK: - Dependencies
 
     private let modelContext: ModelContext
@@ -46,10 +44,10 @@ final class UserStyleManager {
     /// All loaded user styles.
     ///
     /// Kept in memory for fast URL matching. Updated when styles change.
-    private(set) var styles: [UserStyle] = []
+    private(set) @Published var styles: [UserStyle] = []
 
     /// Script ID for the combined user styles injection.
-    private var styleScriptID: UUID?
+    private @Published var styleScriptID: UUID?
 
     /// Reference to script registry for injection.
     private weak var scriptRegistry: ScriptRegistry?

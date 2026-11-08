@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import UserNotifications
 import WebKit
 
@@ -19,8 +18,7 @@ import WebKit
 /// 4. On fourth crash within 1 hour: Disable extension, notify user
 ///
 /// After 1 hour without crashes, the crash counter resets.
-@Observable
-final class ExtensionRecoveryManager {
+final class ExtensionRecoveryManager : ObservableObject {
     // MARK: - Types
 
     /// An error event logged for an extension.
@@ -77,16 +75,16 @@ final class ExtensionRecoveryManager {
     // MARK: - State
 
     /// Error log entries for UI display.
-    private(set) var errorLog: [ErrorLogEntry] = []
+    private(set) @Published var errorLog: [ErrorLogEntry] = []
 
     /// Maximum error log entries to retain.
     let maxErrorLogEntries = 100
 
     /// Recovery state per extension.
-    private var recoveryStates: [String: RecoveryState] = [:]
+    private @Published var recoveryStates: [String: RecoveryState] = [:]
 
     /// Pending restart tasks.
-    private var pendingRestarts: [String: Task<Void, Never>] = [:]
+    private @Published var pendingRestarts: [String: Task<Void, Never>] = [:]
 
     /// Reference to extension manager for restart operations.
     weak var extensionManager: ExtensionManager?

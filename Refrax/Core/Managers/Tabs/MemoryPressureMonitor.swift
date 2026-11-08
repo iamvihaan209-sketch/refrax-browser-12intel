@@ -1,6 +1,5 @@
 import Dispatch
 import Foundation
-import Observation
 
 /// Monitors system memory pressure and power state for adaptive resource management.
 ///
@@ -33,8 +32,7 @@ import Observation
 /// - After eviction: Wait before evicting more to see if pressure normalizes
 ///
 /// This prevents cascading evictions during temporary pressure spikes (e.g., Xcode builds).
-@Observable
-final class MemoryPressureMonitor {
+final class MemoryPressureMonitor : ObservableObject {
     // MARK: - Singleton
     
     /// Shared monitor instance.
@@ -43,19 +41,19 @@ final class MemoryPressureMonitor {
     // MARK: - Pressure State
     
     /// Current memory pressure level from the system.
-    private(set) var pressureLevel: PressureLevel = .normal
+    private(set) @Published var pressureLevel: PressureLevel = .normal
     
     /// Whether low power mode is enabled by the user.
-    private(set) var isLowPowerModeEnabled: Bool = false
+    private(set) @Published var isLowPowerModeEnabled: Bool = false
     
     /// Current thermal state of the system.
-    private(set) var thermalState: ProcessInfo.ThermalState = .nominal
+    private(set) @Published var thermalState: ProcessInfo.ThermalState = .nominal
     
     /// Timestamp of the last pressure event (for cooldown tracking).
-    private(set) var lastPressureEventTime: Date?
+    private(set) @Published var lastPressureEventTime: Date?
     
     /// Timestamp of the last eviction we triggered.
-    private(set) var lastEvictionTime: Date?
+    private(set) @Published var lastEvictionTime: Date?
     
     // MARK: - Computed Properties
     
@@ -122,16 +120,12 @@ final class MemoryPressureMonitor {
     
     // MARK: - Private State
     
-    @ObservationIgnored
     private var pressureSource: (any DispatchSourceMemoryPressure)?
     
-    @ObservationIgnored
     private var powerStateObserver: (any NSObjectProtocol)?
     
-    @ObservationIgnored
     private var thermalStateObserver: (any NSObjectProtocol)?
     
-    @ObservationIgnored
     private var isRunning = false
     
     // MARK: - Types

@@ -1,16 +1,14 @@
 import Foundation
-import Observation
 
 /// State behind the Local Devices window: the latest network snapshot and the refresh in flight.
-@Observable
-final class LocalDevicesModel {
-    private(set) var snapshot: LocalNetworkSnapshot = .empty
-    private(set) var isRefreshing = false
-    private(set) var refreshedAt: Date?
+final class LocalDevicesModel : ObservableObject {
+    private(set) @Published var snapshot: LocalNetworkSnapshot = .empty
+    private(set) @Published var isRefreshing = false
+    private(set) @Published var refreshedAt: Date?
 
-    @ObservationIgnored private let directory: LocalNetworkDirectory
-    @ObservationIgnored private unowned let tabManager: TabManager
-    @ObservationIgnored private var refreshTask: Task<Void, Never>?
+    private let directory: LocalNetworkDirectory
+    private unowned let tabManager: TabManager
+    private var refreshTask: Task<Void, Never>?
 
     init(directory: LocalNetworkDirectory, tabManager: TabManager) {
         self.directory = directory

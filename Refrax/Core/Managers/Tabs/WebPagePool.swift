@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 /// Manages the pool of active WebPage instances with adaptive memory management.
@@ -47,8 +46,7 @@ import WebKit
 /// // Transfer page during tab move (preserves WebPage and scheme handler state)
 /// pagePool.transferPage(from: sourcePage, to: targetPage)
 /// ```
-@Observable
-final class WebPagePool {
+final class WebPagePool : ObservableObject {
     // MARK: - Dependencies
 
     unowned let state: BrowserState
@@ -93,20 +91,19 @@ final class WebPagePool {
     ///
     /// Not observed to prevent cascade invalidation when pages are added/removed.
     /// Views access pages via `existingPage(for:)` without triggering observation.
-    @ObservationIgnored
     private var _activePages: [TabPage.ID: WebPage] = [:]
 
     /// Version counter for callers that need to observe structural changes.
     ///
     /// Incremented when pages are added or removed. Use this to observe page
     /// pool changes without triggering re-renders on every dictionary access.
-    private(set) var pagesVersion: Int = 0
+    private(set) @Published var pagesVersion: Int = 0
 
     /// How many times each tab page's page was replaced while the tab stayed open.
     ///
     /// ``page(for:)`` reads its entry, so a view that got a page from it shows the
     /// replacement: a tab crossing into or out of an extension's pages gets a new web view.
-    private var pageReplacements: [TabPage.ID: Int] = [:]
+    private @Published var pageReplacements: [TabPage.ID: Int] = [:]
 
     /// Read-only access to active pages.
     ///
@@ -119,7 +116,7 @@ final class WebPagePool {
     ///
     /// Stored separately to allow SSL bypass approval without exposing
     /// the decider through the page.
-    private var navigationDeciders: [TabPage.ID: BrowserNavigationDecider] = [:]
+    private @Published var navigationDeciders: [TabPage.ID: BrowserNavigationDecider] = [:]
 
     // MARK: - Configuration
 
@@ -127,13 +124,13 @@ final class WebPagePool {
     ///
     /// Pages beyond this are candidates for idle eviction, but not forced.
     /// This doesn't trigger immediate eviction.
-    var softLimit: Int = 25
+    @Published var softLimit: Int = 25
 
     /// Maximum time since last visibility before idle eviction (seconds).
-    var idleThreshold: TimeInterval = 3_600 // 1 hour
+    @Published var idleThreshold: TimeInterval = 3_600 // 1 hour
 
     /// Minimum pages to keep even under critical memory pressure.
-    var minimumPages: Int = 3
+    @Published var minimumPages: Int = 3
 
     // MARK: - Scoring
 
@@ -145,14 +142,12 @@ final class WebPagePool {
     ///
     /// Manages automatic reload after crashes, tracks crash frequency to detect
     /// problematic sites, and coordinates user notifications via toast.
-    private(set) var terminationHandler = WebProcessTerminationHandler()
+    private(set) @Published var terminationHandler = WebProcessTerminationHandler()
 
     // MARK: - Background Tasks
 
-    @ObservationIgnored
     private var memoryPressureTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var isMonitoringSetUp = false
 
     // MARK: - Initialization
@@ -184,7 +179,6 @@ final class WebPagePool {
     // MARK: - WebKit Warm-up
 
     /// Task for WebKit warm-up.
-    @ObservationIgnored
     private var warmUpTask: Task<Void, Never>?
 
     /// Warms up WebKit by pre-initializing the WebKit process and GPU context.
@@ -240,7 +234,7 @@ final class WebPagePool {
 
     /// Installed engines; pages whose tab remembers a non-WebKit engine are restored onto it.
     /// Nil where no engines are available (tests).
-    var engineRegistry: EngineRegistry?
+    @Published var engineRegistry: EngineRegistry?
 
     /// Gets or creates a WebPage for a tab page.
     ///

@@ -18,8 +18,7 @@ import SwiftUI
 /// trackpad two-finger horizontal swipes. The sidebar's `ScrollView` is vertical-only,
 /// so horizontal scroll deltas pass through unused. This approach avoids conflicts
 /// with the scroll view's own gesture handling.
-@Observable
-final class SpaceSwipeGestureHandler {
+final class SpaceSwipeGestureHandler : ObservableObject {
     // MARK: - State
 
     enum GestureState: Equatable {
@@ -34,18 +33,18 @@ final class SpaceSwipeGestureHandler {
         case right // Swipe right → previous space (index decreases)
     }
 
-    private(set) var state: GestureState = .idle
+    private(set) @Published var state: GestureState = .idle
 
     // MARK: - Adjacent Space Data
 
     /// The ID of the space being previewed during a swipe gesture.
-    private(set) var adjacentSpaceID: UUID?
+    private(set) @Published var adjacentSpaceID: UUID?
 
     /// Cached pinned items for the adjacent space preview.
-    private(set) var adjacentPinnedItems: [TabListItem] = []
+    private(set) @Published var adjacentPinnedItems: [TabListItem] = []
 
     /// Cached normal items for the adjacent space preview.
-    private(set) var adjacentNormalItems: [TabListItem] = []
+    private(set) @Published var adjacentNormalItems: [TabListItem] = []
 
     // MARK: - Dependencies
 
@@ -284,16 +283,16 @@ final class SpaceSwipeGestureHandler {
 /// (b) `hitTest` returned nil
 /// (c) it conflicted with ScrollView's own two-finger scroll handling
 private final class SpaceSwipeScrollMonitorView: NSView {
-    var handler: SpaceSwipeGestureHandler?
-    private var eventMonitor: Any?
+    @Published var handler: SpaceSwipeGestureHandler?
+    private @Published var eventMonitor: Any?
 
     // Scroll wheel tracking state
-    private var accumulatedDeltaX: CGFloat = 0
-    private var accumulatedDeltaY: CGFloat = 0
-    private var isTracking = false
-    private var directionDecided = false
-    private var isHorizontalGesture = false
-    private var lastEventTimestamp: TimeInterval = 0
+    private @Published var accumulatedDeltaX: CGFloat = 0
+    private @Published var accumulatedDeltaY: CGFloat = 0
+    private @Published var isTracking = false
+    private @Published var directionDecided = false
+    private @Published var isHorizontalGesture = false
+    private @Published var lastEventTimestamp: TimeInterval = 0
 
     /// Minimum total delta to accumulate before deciding gesture direction.
     private let directionDecisionThreshold: CGFloat = 8

@@ -21,19 +21,18 @@ import WebKit
 /// ## Thread Safety
 ///
 /// All methods must be called on the main actor (WKWebsiteDataStore requirement).
-@Observable
-final class SpaceDataStoreManager {
+final class SpaceDataStoreManager : ObservableObject {
     /// Cached persistent data stores keyed by space ID.
     ///
     /// Stores are cached to avoid creating multiple instances for the same space.
     /// The cache is cleared when a space is deleted.
-    private var dataStoreCache: [UUID: WKWebsiteDataStore] = [:]
+    private @Published var dataStoreCache: [UUID: WKWebsiteDataStore] = [:]
 
     /// Cached non-persistent data stores for private spaces, keyed by space ID.
     ///
     /// Each private space gets its own non-persistent store instance for isolation.
     /// These are cleaned up when the private space is closed.
-    private var privateStoreCache: [UUID: WKWebsiteDataStore] = [:]
+    private @Published var privateStoreCache: [UUID: WKWebsiteDataStore] = [:]
 
     /// The shared default data store for spaces without separate data.
     private let defaultDataStore: WKWebsiteDataStore = .default()

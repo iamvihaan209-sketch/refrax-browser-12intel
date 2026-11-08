@@ -1,6 +1,5 @@
 import CryptoKit
 import Foundation
-import Observation
 import SwiftData
 import WebKit
 
@@ -34,8 +33,7 @@ import WebKit
 /// // Configure injection
 /// manager.configure(scriptRegistry: registry, userContentController: controller)
 /// ```
-@Observable
-final class UserScriptManager {
+final class UserScriptManager : ObservableObject {
     // MARK: - Dependencies
 
     private let modelContext: ModelContext
@@ -44,10 +42,10 @@ final class UserScriptManager {
     // MARK: - State
 
     /// All loaded user scripts.
-    private(set) var scripts: [UserScript] = []
+    private(set) @Published var scripts: [UserScript] = []
 
     /// Script IDs registered with ScriptRegistry.
-    private var registeredScriptIDs: [UUID] = []
+    private @Published var registeredScriptIDs: [UUID] = []
 
     /// Reference to script registry for injection.
     private weak var scriptRegistry: ScriptRegistry?
@@ -59,10 +57,10 @@ final class UserScriptManager {
     private weak var scriptChannels: ScriptChannelRouter?
 
     /// Performs GM_* API calls.
-    private var messageHandler: UserScriptMessageHandler?
+    private @Published var messageHandler: UserScriptMessageHandler?
 
     /// Worlds with an open `userscript` channel.
-    private var channelWorlds: [ScriptRequest.World] = []
+    private @Published var channelWorlds: [ScriptRequest.World] = []
 
     // MARK: - Initialization
 

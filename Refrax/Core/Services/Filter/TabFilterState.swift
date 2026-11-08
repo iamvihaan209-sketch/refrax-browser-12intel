@@ -20,25 +20,24 @@ import SwiftUI
 /// let filterState = TabFilterState()
 /// filterState.applyQuickFilter(searchText: "github", inTitle: true, inURL: false)
 /// ```
-@Observable
-final class TabFilterState {
+final class TabFilterState : ObservableObject {
     // MARK: - Properties
     
     /// Current search text (may be actively typing, pre-debounce)
-    var searchText: String = "" {
+    @Published var searchText: String = "" {
         didSet {
             scheduleDebounce()
         }
     }
     
     /// Debounced search text used for actual filtering
-    private(set) var debouncedSearchText: String = ""
+    private(set) @Published var debouncedSearchText: String = ""
     
     /// Whether to search in tab titles (includes customName and title)
-    var searchInTitle: Bool = false
+    @Published var searchInTitle: Bool = false
     
     /// Whether to search in tab URLs
-    var searchInURL: Bool = false
+    @Published var searchInURL: Bool = false
     
     /// Unread status filter for quick filtering
     ///
@@ -48,10 +47,10 @@ final class TabFilterState {
     /// - `false`: Show only read tabs
     ///
     /// When a saved filter is active, its `searchUnread` value takes precedence.
-    var searchUnread: Bool?
+    @Published var searchUnread: Bool?
     
     /// Currently applied saved filter, if any
-    var appliedSavedFilter: SavedFilter?
+    @Published var appliedSavedFilter: SavedFilter?
     
     /// Integer signature to cheaply detect meaningful changes for caching.
     var signature: Int {
@@ -67,7 +66,7 @@ final class TabFilterState {
     
     // MARK: - Private State
     
-    private var debounceTask: Task<Void, any Error>?
+    private @Published var debounceTask: Task<Void, any Error>?
     private let debounceDelay: Duration = .milliseconds(300)
     
     // MARK: - Computed Properties

@@ -34,8 +34,7 @@ import SwiftData
 /// // Set active reference tab
 /// referencePaneManager.setActiveReferenceTab(tab)
 /// ```
-@Observable
-final class ReferencePaneManager {
+final class ReferencePaneManager : ObservableObject {
     // MARK: - Dependencies
 
     private unowned let state: BrowserState

@@ -34,9 +34,8 @@ import WebKit
 ///                    ▼
 ///              ShelfPanel UI (via @Observable)
 /// ```
-@Observable
 @MainActor
-final class ShelfManager {
+final class ShelfManager : ObservableObject {
     // MARK: - Constants
 
     private enum Constants: Sendable {
@@ -49,10 +48,10 @@ final class ShelfManager {
     // MARK: - Properties
 
     /// All shelf items, sorted by creation date (newest first).
-    private(set) var items: [ShelfItem] = []
+    private(set) @Published var items: [ShelfItem] = []
 
     /// Whether the shelf panel is expanded.
-    var isExpanded: Bool = false
+    @Published var isExpanded: Bool = false
 
     // TODO: Add toast feedback when ToastManager is implemented
 
@@ -232,7 +231,7 @@ final class ShelfManager {
     private weak var dataStore: WKWebsiteDataStore?
 
     /// Continuation for waiting on a specific download completion.
-    private var downloadContinuations: [UUID: CheckedContinuation<Void, Never>] = [:]
+    private @Published var downloadContinuations: [UUID: CheckedContinuation<Void, Never>] = [:]
 
     /// Configures dependencies for URL downloads.
     ///

@@ -34,8 +34,7 @@ import SwiftUI
 ///         ├── Update Bookmark.offlineSavedAt
 ///         └── Update Bookmark.offlineFileSize
 /// ```
-@Observable
-final class OfflineContentManager {
+final class OfflineContentManager : ObservableObject {
     // MARK: - Constants
 
     private enum Constants {
@@ -48,7 +47,7 @@ final class OfflineContentManager {
     // MARK: - Properties
 
     /// Total bytes used by offline content.
-    private(set) var totalStorageUsed: Int64 = 0
+    private(set) @Published var totalStorageUsed: Int64 = 0
 
     /// Maximum allowed storage in bytes.
     var maxStorageBytes: Int64 {

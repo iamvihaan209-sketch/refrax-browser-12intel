@@ -21,36 +21,35 @@ import UniformTypeIdentifiers
 /// - ``CommandLensEmptyStateAction``: Quick actions when input is empty
 ///
 /// Providers are queried in parallel and results are merged by priority.
-@Observable
-final class CommandLensManager {
+final class CommandLensManager : ObservableObject {
     // MARK: - Public State
 
-    var inputText: String = ""
-    var suggestions: [CommandLensSuggestion] = []
-    var selection: CommandLensSelection = .none
-    var isPopupVisible: Bool = false
-    var isLoading: Bool = false
-    var hoveredSuggestionID: UUID?
+    @Published var inputText: String = ""
+    @Published var suggestions: [CommandLensSuggestion] = []
+    @Published var selection: CommandLensSelection = .none
+    @Published var isPopupVisible: Bool = false
+    @Published var isLoading: Bool = false
+    @Published var hoveredSuggestionID: UUID?
 
     /// Inline completion text (Arc-style).
-    var inlineCompletion: String?
+    @Published var inlineCompletion: String?
 
     /// Range of the inline completion within the display text.
-    var inlineCompletionRange: NSRange?
+    @Published var inlineCompletionRange: NSRange?
 
     /// The currently selected search engine (when using keyword mode).
-    var selectedSearchEngine: SearchEngine?
+    @Published var selectedSearchEngine: SearchEngine?
 
     /// Available empty state actions for the current context.
-    var availableEmptyStateActions: [EmptyStateDirection: any CommandLensEmptyStateAction] = [:]
+    @Published var availableEmptyStateActions: [EmptyStateDirection: any CommandLensEmptyStateAction] = [:]
 
     // MARK: - Expanded Mode State
 
     /// Whether the category buttons are visible (shown after 2 seconds of no interaction).
-    var showCategoryButtons: Bool = false
+    @Published var showCategoryButtons: Bool = false
 
     /// Index of the currently selected button (-1 means no selection, cursor in text field).
-    var expandedSelection: Int = -1
+    @Published var expandedSelection: Int = -1
 
     /// Whether the user has had a meaningful interaction (prevents auto-show buttons).
     ///
@@ -59,7 +58,7 @@ final class CommandLensManager {
     /// - User starts typing
     ///
     /// Reset when the lens is reset.
-    var hadUserInteraction: Bool = false
+    @Published var hadUserInteraction: Bool = false
 
     /// Whether a category button is currently selected (vs just visible).
     var hasCategorySelection: Bool {
@@ -75,7 +74,7 @@ final class CommandLensManager {
     /// Active category search mode (nil = normal mode).
     ///
     /// When set, the command lens searches within that category only.
-    var categorySearchMode: CategorySearchMode?
+    @Published var categorySearchMode: CategorySearchMode?
 
     /// Buttons available in expanded mode.
     var expandedModeButtons: [ExpandedModeButton] {
@@ -101,11 +100,11 @@ final class CommandLensManager {
 
     // MARK: - Private State
 
-    private var rejectedCompletion: String?
-    private var rejectedAtInputLength: Int = 0
-    private var commandKeyHeldDuringCommit: Bool = false
-    private var optionKeyHeldDuringCommit: Bool = false
-    private var searchTask: Task<Void, any Error>?
+    private @Published var rejectedCompletion: String?
+    private @Published var rejectedAtInputLength: Int = 0
+    private @Published var commandKeyHeldDuringCommit: Bool = false
+    private @Published var optionKeyHeldDuringCommit: Bool = false
+    private @Published var searchTask: Task<Void, any Error>?
 
     // MARK: - Dependencies
 

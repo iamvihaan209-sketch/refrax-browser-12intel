@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 
 /// Coordinator for presenting the system share sheet.
 ///
@@ -22,13 +21,12 @@ import Observation
 ///
 /// The share sheet is presented relative to the current key window.
 /// If no window is available, the sharing request is silently ignored.
-@Observable
-final class SharingCoordinator {
+final class SharingCoordinator : ObservableObject {
     /// Items currently being shared.
-    private(set) var sharingItems: [Any]?
+    private(set) @Published var sharingItems: [Any]?
 
     /// Position where the share sheet should appear (relative to window).
-    private(set) var sharePosition: CGPoint?
+    private(set) @Published var sharePosition: CGPoint?
 
     /// Presents the system share sheet with the specified items.
     ///

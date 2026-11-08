@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import SwiftUI
 
 /// Centralized manager for all browser-level undo/redo operations.
@@ -58,8 +57,7 @@ import SwiftUI
 /// // Access for menu/UI
 /// let closedTabs = undoRedoManager.recentlyClosedTabs
 /// ```
-@Observable
-final class UndoRedoManager {
+final class UndoRedoManager : ObservableObject {
     // MARK: - Properties
 
     /// Global UndoManager for browser-level actions.
@@ -72,12 +70,12 @@ final class UndoRedoManager {
     ///
     /// Ordered by close time (most recent first). Limited to `maxRecentlyClosedTabs`.
     /// Includes both main tabs and reference tabs.
-    private(set) var recentlyClosedTabs: [ClosedTabInfo] = []
+    private(set) @Published var recentlyClosedTabs: [ClosedTabInfo] = []
 
     /// Recently deleted groups available for restoration.
     ///
     /// Ordered by deletion time (most recent first). Limited to `maxRecentlyDeletedGroups`.
-    private(set) var recentlyDeletedGroups: [ClosedGroupInfo] = []
+    private(set) @Published var recentlyDeletedGroups: [ClosedGroupInfo] = []
 
     // MARK: - Configuration
 
@@ -105,10 +103,10 @@ final class UndoRedoManager {
     unowned var spaceManager: SpaceManager!
 
     /// Recently converted spaces (for potential undo).
-    private(set) var recentSpaceToGroupConversions: [ConvertedSpaceInfo] = []
+    private(set) @Published var recentSpaceToGroupConversions: [ConvertedSpaceInfo] = []
 
     /// Recently converted groups (for potential undo).
-    private(set) var recentGroupToSpaceConversions: [ConvertedGroupToSpaceInfo] = []
+    private(set) @Published var recentGroupToSpaceConversions: [ConvertedGroupToSpaceInfo] = []
 
     /// Maximum number of conversions to track.
     let maxConversions = 10
@@ -469,7 +467,7 @@ struct ConvertedSpaceInfo: Equatable {
     let tabInfos: [ConvertedTabInfo]
     let referenceTabInfos: [ConvertedTabInfo]
     let targetSpaceID: UUID
-    var resultGroupID: UUID?
+    @Published var resultGroupID: UUID?
 }
 
 /// Captured state for undoing a group-to-space conversion.
@@ -483,7 +481,7 @@ struct ConvertedGroupToSpaceInfo: Equatable {
     let isCollapsed: Bool
     let sourceSpaceID: UUID
     let tabInfos: [ConvertedTabInfo]
-    var resultSpaceID: UUID?
+    @Published var resultSpaceID: UUID?
 }
 
 /// Captured tab info for conversion undo.

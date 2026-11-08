@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import Photos
 import SwiftData
 import UniformTypeIdentifiers
@@ -74,8 +73,7 @@ import WebKit
 /// // Cancel
 /// downloadManager.cancel(downloadID)
 /// ```
-@Observable
-final class DownloadManager {
+final class DownloadManager : ObservableObject {
     // MARK: - Dependencies
 
     /// Model context for persistence.
@@ -87,30 +85,30 @@ final class DownloadManager {
     // MARK: - State
 
     /// Active download tasks by ID.
-    private var activeTasks: [UUID: DownloadTask] = [:]
+    private @Published var activeTasks: [UUID: DownloadTask] = [:]
 
     /// Downloads performed by WebKit's own `WKDownload` (blob: URLs), by ID.
-    private var webKitTasks: [UUID: WebKitDownloadTask] = [:]
+    private @Published var webKitTasks: [UUID: WebKitDownloadTask] = [:]
 
     /// Downloads plug-in engines are writing, by download ID.
-    private var engineTransfers: [UUID: EngineTransfer] = [:]
+    private @Published var engineTransfers: [UUID: EngineTransfer] = [:]
 
     /// Downloads pending Photos import on completion.
     /// Maps download ID to whether the file should be deleted after import.
-    private var photosImportPending: [UUID: Bool] = [:]
+    private @Published var photosImportPending: [UUID: Bool] = [:]
 
     /// All downloads (active and historical).
-    private(set) var downloads: [Download] = []
+    private(set) @Published var downloads: [Download] = []
 
     /// Total progress for Dock icon (0.0-1.0).
-    private(set) var aggregateProgress: Double = 0
+    private(set) @Published var aggregateProgress: Double = 0
 
     /// When the most recent download entered the completed list.
     ///
     /// Drives the sidebar downloads indicator for instantly completed
     /// downloads (e.g. PDF HUD saves), which never pass through the
     /// active state that normally makes the indicator appear.
-    private(set) var latestCompletionDate: Date?
+    private(set) @Published var latestCompletionDate: Date?
 
     /// Number of active downloads.
     var activeDownloadCount: Int {
@@ -176,27 +174,27 @@ final class DownloadManager {
     }
 
     /// Whether to show the downloads panel when a download starts.
-    var showPanelOnStart: Bool = true
+    @Published var showPanelOnStart: Bool = true
 
     /// Whether to show the downloads panel when a download completes.
-    var showPanelOnCompletion: Bool = true
+    @Published var showPanelOnCompletion: Bool = true
 
     /// Whether to use aria2 for large file downloads.
     ///
     /// When enabled, downloads larger than `aria2Threshold` use aria2's
     /// multi-connection downloader for improved speed and reliability.
-    var useAria2ForLargeFiles: Bool = false
+    @Published var useAria2ForLargeFiles: Bool = false
 
     /// Size threshold (in bytes) for using aria2.
     ///
     /// Downloads >= this size will use aria2 if `useAria2ForLargeFiles` is true.
     /// Default: 50 MB
-    var aria2Threshold: Int64 = 50 * 1_024 * 1_024
+    @Published var aria2Threshold: Int64 = 50 * 1_024 * 1_024
 
     /// Whether BitTorrent downloads are enabled.
     ///
     /// When enabled, magnet: links and .torrent files can be downloaded.
-    var enableBitTorrent: Bool = false
+    @Published var enableBitTorrent: Bool = false
 
     // MARK: - File Progress (Finder/Dock Integration)
 
@@ -205,7 +203,7 @@ final class DownloadManager {
     /// Each downloading file gets an `NSProgress` published with its file URL.
     /// Finder automatically shows progress bars on these files in the Downloads
     /// stack and folder, with pause/resume buttons (like Safari).
-    private var fileProgressObjects: [UUID: Progress] = [:]
+    private @Published var fileProgressObjects: [UUID: Progress] = [:]
 
     // MARK: - Persistence
 
@@ -215,16 +213,16 @@ final class DownloadManager {
     // MARK: - Callbacks
 
     /// Called when a download starts.
-    var onDownloadStarted: ((Download) -> Void)?
+    @Published var onDownloadStarted: ((Download) -> Void)?
 
     /// Called when a download completes.
-    var onDownloadCompleted: ((Download) -> Void)?
+    @Published var onDownloadCompleted: ((Download) -> Void)?
 
     /// Called when a download fails.
-    var onDownloadFailed: ((Download, any Error) -> Void)?
+    @Published var onDownloadFailed: ((Download, any Error) -> Void)?
 
     /// Called when aggregate progress changes.
-    var onProgressChanged: (() -> Void)?
+    @Published var onProgressChanged: (() -> Void)?
 
     // MARK: - Initialization
 
@@ -1235,7 +1233,7 @@ final class DownloadManager {
     // MARK: - yt-dlp Downloads
 
     /// Active yt-dlp download tasks by download ID.
-    private var ytdlpTasks: [UUID: YTDLPDownloadTask] = [:]
+    private @Published var ytdlpTasks: [UUID: YTDLPDownloadTask] = [:]
 
     /// Starts a download using yt-dlp for video/audio extraction.
     ///

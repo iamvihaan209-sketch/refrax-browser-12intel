@@ -134,15 +134,13 @@ nonisolated enum ClientIdentityResolver {
 /// Maintains a list of allowed clients and handles the authorization flow
 /// for incoming connections. In prompt mode, unknown clients trigger a
 /// user-facing alert.
-@Observable
-final class ControlAccessManager {
+final class ControlAccessManager : ObservableObject {
     private static let logger = OSLog(subsystem: "website.refrax.browser", category: "control-access")
 
-    private(set) var allowedClients: [AllowedClient] = []
+    private(set) @Published var allowedClients: [AllowedClient] = []
     private unowned let settings: BrowserSettings
 
     /// Callback invoked when an unknown client needs authorization in prompt mode.
-    @ObservationIgnored
     var onAuthorizationPrompt: (@MainActor @Sendable (ClientIdentity) async -> AuthorizationDecision)?
 
     init(settings: BrowserSettings) {

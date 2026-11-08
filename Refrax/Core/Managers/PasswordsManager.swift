@@ -40,8 +40,7 @@ import Security
 /// }
 /// ```
 ///
-@Observable
-final class PasswordsManager {
+final class PasswordsManager : ObservableObject {
     // MARK: - Types
 
     /// A credential stored in or retrieved from the Keychain.

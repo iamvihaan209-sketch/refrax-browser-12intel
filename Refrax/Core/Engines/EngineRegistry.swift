@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 
 /// Installed engines and their running hosts.
 ///
@@ -7,8 +6,7 @@ import Observation
 /// `~/Library/Application Support/<bundle id>/Engines/<engine id>/*.engine`,
 /// discovered by reading their Info.plist only; an engine's code loads the
 /// first time a page asks for it.
-@Observable
-final class EngineRegistry {
+final class EngineRegistry : ObservableObject {
     static let systemWebKit = EngineDescriptor(
         id: .systemWebKit,
         displayName: "WebKit",
@@ -25,28 +23,28 @@ final class EngineRegistry {
     )
 
     /// Every usable engine, system WebKit first.
-    private(set) var descriptors: [EngineDescriptor] = [EngineRegistry.systemWebKit]
+    private(set) @Published var descriptors: [EngineDescriptor] = [EngineRegistry.systemWebKit]
 
     /// Engines whose code is loaded and running in this session.
-    private(set) var runningEngines: Set<EngineID> = [.systemWebKit]
+    private(set) @Published var runningEngines: Set<EngineID> = [.systemWebKit]
 
-    @ObservationIgnored private var bundles: [EngineID: EngineBundle] = [:]
+    private var bundles: [EngineID: EngineBundle] = [:]
     /// The latest policy per category, replayed to each engine as it starts.
-    @ObservationIgnored private var policy: [PolicyUpdate.Category: PolicyUpdate] = [:]
-    @ObservationIgnored private var hosts: [EngineID: ExternalEngineHost] = [:]
-    @ObservationIgnored private var icons: [EngineID: NSImage] = [:]
+    private var policy: [PolicyUpdate.Category: PolicyUpdate] = [:]
+    private var hosts: [EngineID: ExternalEngineHost] = [:]
+    private var icons: [EngineID: NSImage] = [:]
     /// Each installed bundle's code-signature check, run once off the main thread: a strict
     /// check hashes every file in the bundle, hundreds of megabytes for Chromium.
-    @ObservationIgnored private var signatureChecks: [EngineBundle: Task<Void, any Error>] = [:]
+    private var signatureChecks: [EngineBundle: Task<Void, any Error>] = [:]
 
     /// Receives every running engine's events that belong to no page.
-    @ObservationIgnored var engineEventHandler: ((EngineID, EngineEvent) -> Void)?
+    var engineEventHandler: ((EngineID, EngineEvent) -> Void)?
 
     let enginesDirectory: URL
     let dataDirectory: URL
 
     /// Each engine's security floor, from the last verified engine catalog.
-    private(set) var securityFloors: [EngineID: EngineReleaseVersion] = [:]
+    private(set) @Published var securityFloors: [EngineID: EngineReleaseVersion] = [:]
 
     /// Where the last verified engine catalog is kept, hidden from the engine scan.
     var catalogCacheDirectory: URL {
@@ -77,7 +75,7 @@ final class EngineRegistry {
     }
 
     /// Downloads and installs engines from the engine catalog.
-    @ObservationIgnored private(set) lazy var distribution = EngineDistribution(registry: self)
+    private(set) lazy var distribution = EngineDistribution(registry: self)
 
     /// Rescans the engines directory, first installing any engine downloaded while its
     /// predecessor ran.

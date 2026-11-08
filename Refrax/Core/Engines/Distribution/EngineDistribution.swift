@@ -1,9 +1,7 @@
 import Foundation
-import Observation
 
 /// What the engine catalog offers this copy of Refrax, and the installs it has started.
-@Observable
-final class EngineDistribution {
+final class EngineDistribution : ObservableObject {
     enum CatalogState: Equatable {
         case unchecked
         case checking
@@ -33,11 +31,11 @@ final class EngineDistribution {
         }
     }
 
-    private(set) var catalogState: CatalogState = .unchecked
-    private(set) var catalog: EngineCatalog?
-    private(set) var installs: [EngineID: InstallState] = [:]
+    private(set) @Published var catalogState: CatalogState = .unchecked
+    private(set) @Published var catalog: EngineCatalog?
+    private(set) @Published var installs: [EngineID: InstallState] = [:]
     /// The engines installed this session, and whether each replaced an older release.
-    private(set) var completed: [Completion] = []
+    private(set) @Published var completed: [Completion] = []
 
     struct Completion: Equatable {
         let displayName: String
@@ -45,8 +43,8 @@ final class EngineDistribution {
         let isUpdate: Bool
     }
 
-    @ObservationIgnored private unowned let registry: EngineRegistry
-    @ObservationIgnored private var tasks: [EngineID: Task<Void, Never>] = [:]
+    private unowned let registry: EngineRegistry
+    private var tasks: [EngineID: Task<Void, Never>] = [:]
 
     init(registry: EngineRegistry) {
         self.registry = registry

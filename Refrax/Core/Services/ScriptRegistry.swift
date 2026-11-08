@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 /// Central registry for all user scripts injected into web pages.
@@ -35,8 +34,7 @@ import WebKit
 /// | `.agent` | 100 | MCP agent injected scripts |
 ///
 /// Within the same priority, scripts are applied in registration order.
-@Observable
-final class ScriptRegistry {
+final class ScriptRegistry : ObservableObject {
     // MARK: - Priority Constants
 
     /// Standard priority levels for script injection ordering.
@@ -82,17 +80,17 @@ final class ScriptRegistry {
 
     // MARK: - Properties
 
-    private var registrations: [Registration] = []
-    private var registrationCounter: UInt64 = 0
+    private @Published var registrations: [Registration] = []
+    private @Published var registrationCounter: UInt64 = 0
 
     /// Called after the scripts are applied, with them in injection order, for engines other than WebKit.
-    var onApply: (([InjectedScript]) -> Void)?
+    @Published var onApply: (([InjectedScript]) -> Void)?
 
     /// The current number of registered scripts.
-    var count: Int { registrations.count }
+    @Published var count: Int { registrations.count }
 
     /// Whether the registry has no registered scripts.
-    var isEmpty: Bool { registrations.isEmpty }
+    @Published var isEmpty: Bool { registrations.isEmpty }
 
     // MARK: - Registration
 

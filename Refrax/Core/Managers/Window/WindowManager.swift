@@ -34,29 +34,28 @@ import UniformTypeIdentifiers
 /// // Create new window
 /// let controller = windowManager.createWindow()
 /// ```
-@Observable
-final class WindowManager {
+final class WindowManager : ObservableObject {
     // MARK: - Properties
 
-    private(set) var windowControllers: [RefraxWindowController] = []
-    @ObservationIgnored private var windowObservers: [ObjectIdentifier: any NSObjectProtocol] = [:]
-    private var didBecomeKeyObserver: (any NSObjectProtocol)?
+    private(set) @Published var windowControllers: [RefraxWindowController] = []
+    private var windowObservers: [ObjectIdentifier: any NSObjectProtocol] = [:]
+    private @Published var didBecomeKeyObserver: (any NSObjectProtocol)?
 
     /// Active reference pane window controllers, keyed by parent WindowState.
     ///
     /// Each browser window can have at most one reference pane window open.
     /// When the parent window closes or the reference pane window is closed,
     /// the entry is removed.
-    @ObservationIgnored private var referencePaneWindowControllers: [ObjectIdentifier: ReferencePaneWindowController] = [:]
+    private var referencePaneWindowControllers: [ObjectIdentifier: ReferencePaneWindowController] = [:]
 
     /// Observers for reference pane window close notifications, keyed by parent WindowState.
-    @ObservationIgnored private var referencePaneCloseObservers: [ObjectIdentifier: any NSObjectProtocol] = [:]
+    private var referencePaneCloseObservers: [ObjectIdentifier: any NSObjectProtocol] = [:]
 
     /// Active Glimpse window controllers.
     ///
     /// Glimpse windows are lightweight ephemeral windows for quick browsing tasks.
     /// They are not persisted across app restarts.
-    private(set) var glimpseWindowControllers: [GlimpseController] = []
+    private(set) @Published var glimpseWindowControllers: [GlimpseController] = []
 
     /// The most recently active browser window controller.
     ///

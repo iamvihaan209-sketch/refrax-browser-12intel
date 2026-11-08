@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import SwiftData
 import SwiftUI
 import WebKit
@@ -50,16 +49,14 @@ import WebKit
 ///
 /// All state access must occur on the main actor. The `@Observable` macro
 /// ensures SwiftUI views update automatically when state changes.
-@Observable
-final class BrowserState {
+final class BrowserState : ObservableObject {
     // MARK: - Core State (Global)
 
     /// All loaded spaces in memory. Shared across all windows.
     ///
-    /// Marked @ObservationIgnored to prevent views from creating observation dependencies
+    /// Marked to prevent views from creating observation dependencies
     /// when iterating over spaces. Views that need to react to space list changes should
     /// observe `tabListVersion` (incremented on space add/remove) rather than the array.
-    @ObservationIgnored
     private(set) var spaces: [Space] = []
 
     private static let lastActiveSpaceIDKey = "lastActiveSpaceID"
@@ -89,7 +86,6 @@ final class BrowserState {
     /// - Note: Live favorite tabs have `status == .liveFavorite` and are indexed in
     ///   `tabIndex` like regular tabs. Their `linkedBookmark` relationship points to the
     ///   associated `Bookmark`.
-    @ObservationIgnored
     private(set) var liveFavoriteTabs: [Tab] = []
 
     /// Fast O(1) lookup for tabs by ID across all spaces and live favorites.
@@ -99,7 +95,6 @@ final class BrowserState {
     ///
     /// - Note: This index must be kept in sync with tab insertions/deletions.
     ///   Always use TabManager methods which handle index maintenance automatically.
-    @ObservationIgnored
     private var tabIndex: [Tab.ID: Tab] = [:]
     
     // MARK: - Mutation Counters
@@ -117,7 +112,7 @@ final class BrowserState {
     /// ```swift
     /// .onChange(of: tabManager.state.tabListVersion) { rebuildLayout() }
     /// ```
-    private(set) var tabListVersion: UInt64 = 0
+    private(set) @Published var tabListVersion: UInt64 = 0
     
     /// Version counter for tab content/metadata changes.
     ///
@@ -131,7 +126,7 @@ final class BrowserState {
     /// ```swift
     /// .onChange(of: tabManager.state.tabContentVersion) { updateDisplay() }
     /// ```
-    private(set) var tabContentVersion: UInt64 = 0
+    private(set) @Published var tabContentVersion: UInt64 = 0
 
     // MARK: - Incremental Layout Update Callbacks
 
@@ -145,7 +140,6 @@ final class BrowserState {
     ///   - itemID: The ID of the removed item.
     ///   - context: Information about where the item was located.
     /// - Returns: `true` if the removal was handled incrementally (skip full rebuild).
-    @ObservationIgnored
     var onIncrementalRemoval: ((UUID, TabMutationPipeline.RemovalContext) -> Bool)?
 
     /// Callback for incremental batch removal in layout.
@@ -157,14 +151,12 @@ final class BrowserState {
     ///   - itemIDs: The set of IDs of removed items.
     ///   - spaceID: The space where the removal occurred.
     /// - Returns: `true` if the removal was handled incrementally (skip full rebuild).
-    @ObservationIgnored
     var onBatchRemoval: ((Set<UUID>, Space.ID) -> Bool)?
 
     /// The version counter at which the last incremental update was applied.
     ///
     /// Used by `LayoutManager.rebuildLayout()` to skip full rebuilds when the
     /// version was already handled incrementally via callbacks.
-    @ObservationIgnored
     private(set) var lastIncrementallyHandledVersion: UInt64 = 0
 
     /// Marks the current `tabListVersion` as handled incrementally.
@@ -177,23 +169,14 @@ final class BrowserState {
     
     // MARK: - Dependencies
 
-    @ObservationIgnored
     let modelContext: ModelContext
-    @ObservationIgnored
     let settings: BrowserSettings
-    @ObservationIgnored
     let historyManager: HistoryManager
-    @ObservationIgnored
     let faviconCache: FaviconCache
-    @ObservationIgnored
     let dialogState: DialogState
-    @ObservationIgnored
     let siteSettingsManager: SiteSettingsManager
-    @ObservationIgnored
     let settingsApplier: WebPageSettingsApplier
-    @ObservationIgnored
     let siteSettingsCoordinator: SiteSettingsCoordinator
-    @ObservationIgnored
     let scriptRegistry: ScriptRegistry
 
     /// Channels Refrax-injected scripts post to, delivered to handlers for any engine.
@@ -202,61 +185,51 @@ final class BrowserState {
     /// Download manager for handling file downloads.
     ///
     /// Set by TabManager after initialization (late-bound to avoid circular dependency).
-    @ObservationIgnored
     unowned var downloadManager: DownloadManager!
     
     /// WebPage pool for WebView lifecycle management.
     ///
     /// Set by TabManager after initialization.
-    @ObservationIgnored
     unowned var pagePool: WebPagePool!
 
     /// Extension manager for browser extension support.
     ///
     /// Set by AppDelegate after initialization.
-    @ObservationIgnored
     unowned var extensionManager: ExtensionManager!
 
     /// Space lock manager for Touch ID authentication.
     ///
     /// Manages unlock state for locked spaces. Created during initialization.
-    @ObservationIgnored
     let spaceLockManager: SpaceLockManager
 
     /// PiP coordinator for auto-PiP on tab switch.
     ///
     /// Coordinates Picture-in-Picture behavior when switching between tabs.
-    @ObservationIgnored
     let pipCoordinator: PiPCoordinator
 
     /// Web inspector manager for developer tools.
     ///
     /// Manages WebKit inspector instances across all tabs.
     /// Set by AppDelegate after initialization.
-    @ObservationIgnored
     unowned var webInspectorManager: WebInspectorManager!
 
     /// Handoff manager for NSUserActivity continuity.
     ///
     /// Manages Handoff state when switching tabs or navigating.
-    @ObservationIgnored
     let handoffManager: HandoffManager
 
     /// Domain time tracker for tracking time spent per domain.
     ///
     /// Tracks cumulative time spent on each domain in a rolling 24-hour window
     /// and enforces user-configured daily time limits.
-    @ObservationIgnored
     let domainTimeTracker: DomainTimeTracker
 
     /// Web notifications: per-origin permissions, delivery, and clicks.
-    @ObservationIgnored
     let webNotifications: WebNotificationManager
 
     // MARK: - Configuration
     
     /// WebPage configuration for creating new sessions.
-    @ObservationIgnored
     var webPageConfiguration: WebPage.Configuration
     
     // MARK: - WebPage Access
@@ -275,15 +248,12 @@ final class BrowserState {
     // MARK: - UI State
     
     /// Auto-fill state for credential management.
-    @ObservationIgnored
     let autoFillState: AutoFillState
     
     /// Auto-fill manager instance.
-    @ObservationIgnored
     let autoFillManager: AutoFillManager
     
     /// Whether content blocking rules are compiled and ready.
-    @ObservationIgnored
     private(set) var isContentBlockingReady = false
 
     /// Whether the bundled `refrax-ctl` helper needs an administrator-privileged
@@ -293,12 +263,11 @@ final class BrowserState {
     /// Set at launch and on control-mode changes after the silent install
     /// attempt; drives the sidebar install button and the Settings row.
     /// Cleared after a successful authorized install.
-    var cliHelperNeedsPrivilegedInstall = false
+    @Published var cliHelperNeedsPrivilegedInstall = false
     
     // MARK: - Persistence
 
     /// Debounced saver for tab state persistence.
-    @ObservationIgnored
     private let saver: DebouncedModelContextSaver
 
     /// Schedules a debounced save operation.
@@ -390,7 +359,6 @@ final class BrowserState {
     // MARK: - Initialization
     
     /// Task for observing settings changes.
-    @ObservationIgnored
     private var settingsObservationTask: Task<Void, Never>?
 
     init(

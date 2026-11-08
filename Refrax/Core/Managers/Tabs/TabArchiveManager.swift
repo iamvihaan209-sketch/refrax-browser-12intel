@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 
 /// Manages tab archive operations including archiving, restoring, and expiration.
@@ -30,8 +29,7 @@ import SwiftData
 /// - ``ScheduledTasksManager`` calls ``clearExpiredTabs()`` hourly
 /// - Tab close operations route through ``archive(_:)`` when archive is enabled
 /// - UI shows restore popup via ``restoreTab(_:)``
-@Observable
-final class TabArchiveManager {
+final class TabArchiveManager : ObservableObject {
     // MARK: - Dependencies
 
     private unowned let state: BrowserState

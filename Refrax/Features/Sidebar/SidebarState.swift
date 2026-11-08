@@ -30,7 +30,6 @@ extension Sidebar {
     ///
     /// let frame = geometryState.itemFrame(for: itemID)
     /// ```
-    @Observable
     final class GeometryState {
         // MARK: - Dependencies
 
@@ -48,11 +47,10 @@ extension Sidebar {
         ///
         /// `sidebarLocalY = documentY + documentToSidebarOffset`
         ///
-        /// `@ObservationIgnored` because this changes on every scroll frame and is
+        /// `` because this changes on every scroll frame and is
         /// only consumed by DragCoordinator's frame calculations (not by views).
         /// Making this observable would create a feedback loop:
         /// scroll → write offset → Sidebar re-renders → updateNSView → write offset → ...
-        @ObservationIgnored
         var documentToSidebarOffset: CGFloat = 0
 
         // MARK: - Active Tab Scroll Position
@@ -118,14 +116,12 @@ extension Sidebar {
         /// Complete sidebar bounds in window coordinate space.
         ///
         /// Updated via geometry preference from the Sidebar container.
-        @ObservationIgnored
         private(set) var sidebarBounds: CGRect = .zero
 
         /// Favorites grid frame in window coordinate space.
         private(set) var favoritesGridFrame: CGRect = .zero
 
         /// Grid layout info for favorites (captured from FavoritesGrid).
-        @ObservationIgnored
         var favoritesGridLayout: GridLayoutInfo?
 
         /// Grid layout information for favorites.

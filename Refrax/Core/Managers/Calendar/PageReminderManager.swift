@@ -1,6 +1,5 @@
 import EventKit
 import Foundation
-import Observation
 import UserNotifications
 
 /// Preset reminder durations for quick selection.
@@ -140,8 +139,7 @@ struct PendingReminderItem: Identifiable, Equatable {
 /// )
 /// try await manager.scheduleReminder(reminder)
 /// ```
-@Observable
-final class PageReminderManager {
+final class PageReminderManager : ObservableObject {
     // MARK: - Dependencies
 
     private let eventStore: EKEventStore
@@ -150,19 +148,19 @@ final class PageReminderManager {
     // MARK: - State
 
     /// Current authorization status for Reminders.app access.
-    private(set) var remindersAuthStatus: EKAuthorizationStatus = .notDetermined
+    private(set) @Published var remindersAuthStatus: EKAuthorizationStatus = .notDetermined
 
     /// Current authorization status for notifications.
-    private(set) var notificationAuthStatus: UNAuthorizationStatus = .notDetermined
+    private(set) @Published var notificationAuthStatus: UNAuthorizationStatus = .notDetermined
 
     /// Error from the last operation.
-    private(set) var lastError: String?
+    private(set) @Published var lastError: String?
 
     /// All pending page reminders, sorted by fire date.
-    private(set) var pendingItems: [PendingReminderItem] = []
+    private(set) @Published var pendingItems: [PendingReminderItem] = []
 
     /// Whether there are any pending reminders.
-    var hasPendingReminders: Bool { !pendingItems.isEmpty }
+    @Published var hasPendingReminders: Bool { !pendingItems.isEmpty }
 
     // MARK: - Notification Identifiers
 

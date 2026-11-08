@@ -23,7 +23,6 @@ extension Sidebar {
     /// Rebuilds are triggered explicitly via `onChange` modifiers, not on every
     /// body evaluation. The `frameGeneration` counter only increments when tabs
     /// change, preventing metadata-dependent views from invalidating on unrelated changes.
-    @Observable
     final class LayoutManager {
         // MARK: - Dependencies
         
@@ -87,21 +86,18 @@ extension Sidebar {
         /// Metadata keyed by item ID.
         ///
         /// Not observed to avoid triggering SwiftUI updates on frame changes.
-        @ObservationIgnored
         var metadata: [UUID: ItemMetadata] = [:]
 
         /// Cached group descendants to avoid repeated traversal.
         ///
         /// Built during `buildMetadata()` and invalidated on layout rebuild.
         /// Key is group ID, value is set of all descendant IDs (tabs and nested groups).
-        @ObservationIgnored
         private var descendantsIndex: [UUID: Set<UUID>] = [:]
 
         /// Cached set of all group IDs for O(1) lookup in buildDescendantsIndex.
         ///
         /// Populated during `buildMetadata()` to avoid O(n) linear search when
         /// checking if a child ID is a group.
-        @ObservationIgnored
         private var allGroupIDs: Set<UUID> = []
 
         /// Items hidden due to their parent group being collapsed.
@@ -112,7 +108,6 @@ extension Sidebar {
         ///
         /// - Note: This set is cleared on full layout rebuilds since the collapse
         ///   state is re-evaluated during `buildTabHierarchy`.
-        @ObservationIgnored
         private var hiddenItems: Set<UUID> = []
 
         /// Backing storage for pinned items including hidden ones.
@@ -120,7 +115,6 @@ extension Sidebar {
         /// Used by `setItemsHidden` to restore items when expanding without
         /// needing a full rebuild. Maps item ID to (item, originalIndex) where
         /// originalIndex preserves sort order for restoration.
-        @ObservationIgnored
         private var hiddenPinnedItems: [(item: TabListItem, originalIndex: Int)] = []
 
         /// Backing storage for normal items including hidden ones.
@@ -128,7 +122,6 @@ extension Sidebar {
         /// Used by `setItemsHidden` to restore items when expanding without
         /// needing a full rebuild. Maps item ID to (item, originalIndex) where
         /// originalIndex preserves sort order for restoration.
-        @ObservationIgnored
         private var hiddenNormalItems: [(item: TabListItem, originalIndex: Int)] = []
 
         // MARK: - Layout Cache (Space Switching Optimization)
@@ -161,14 +154,12 @@ extension Sidebar {
         /// Key is `Space.id`. Cache is checked on space switch and populated after
         /// layout builds. Use `invalidateCacheForSpace(_:)` for space-local changes
         /// and `invalidateAllCaches()` for global changes like favorites.
-        @ObservationIgnored
         private var layoutCache: [UUID: CachedLayout] = [:]
 
         /// Task for pre-building layouts of inactive spaces.
         ///
         /// Cancelled and recreated on each cache invalidation to debounce rapid mutations.
         /// Uses low priority to avoid blocking UI during active use.
-        @ObservationIgnored
         private var prebuildLayoutTask: Task<Void, Never>?
 
         // MARK: - Version Tracking
@@ -190,9 +181,7 @@ extension Sidebar {
         /// Used to determine if `frameGeneration` should increment. Only structural
         /// changes (add/remove/reorder) require frame recapture - property changes
         /// like tab title don't affect positions.
-        @ObservationIgnored
         private var previousPinnedIDs: [UUID] = []
-        @ObservationIgnored
         private var previousNormalIDs: [UUID] = []
         
         // MARK: - Public API

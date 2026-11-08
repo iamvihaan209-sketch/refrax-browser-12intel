@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 import WebKit
 
 // MARK: - WebInspectorManager
@@ -23,8 +22,7 @@ import WebKit
 /// inspectorManager.tabWillBecomeHidden(tabPage.id, webView: webView)
 /// inspectorManager.tabDidClose(tabPage.id, webView: webView)
 /// ```
-@Observable
-final class WebInspectorManager {
+final class WebInspectorManager : ObservableObject {
     // MARK: - Types
 
     /// Attachment side for docked inspector.
@@ -51,18 +49,17 @@ final class WebInspectorManager {
     // MARK: - Dependencies
 
     /// Delegate for handling inspector-initiated URL opening.
-    @ObservationIgnored
     weak var urlHandler: (any WebInspectorURLHandler)?
 
     // MARK: - State
 
     /// Per-tab inspector state tracking.
-    private var inspectorStates: [TabPage.ID: InspectorState] = [:]
+    private @Published var inspectorStates: [TabPage.ID: InspectorState] = [:]
 
     /// Inspector delegate handlers keyed by web view.
     ///
     /// Using NSMapTable with weak keys to automatically clean up when web views are deallocated.
-    private var delegateHandlers = NSMapTable<WKWebView, InspectorDelegateHandler>.weakToStrongObjects()
+    private @Published var delegateHandlers = NSMapTable<WKWebView, InspectorDelegateHandler>.weakToStrongObjects()
 
     // MARK: - Initialization
 

@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 extension Sidebar {
     /// Manages multi-tab selection state for batch operations.
@@ -21,16 +20,13 @@ extension Sidebar {
     /// The currently active tab is always considered "selected" visually,
     /// but may not be in the `selectedTabIDs` set. Views should check both
     /// `isSelected(tab)` and `isActive(tab)` for proper highlighting.
-    @Observable
     final class TabSelectionManager {
         // MARK: - Dependencies
 
         /// Layout manager for ordered item access.
-        @ObservationIgnored
         unowned var layoutManager: Sidebar.LayoutManager!
 
         /// Window state for active tab reference.
-        @ObservationIgnored
         unowned var windowState: WindowState!
 
         // MARK: - Selection State
@@ -39,10 +35,9 @@ extension Sidebar {
         ///
         /// Does not include the active tab unless explicitly selected.
         ///
-        /// Marked `@ObservationIgnored` to prevent ForEach re-evaluation overhead.
+        /// Marked `` to prevent ForEach re-evaluation overhead.
         /// When selection changes, `selectionVersion` is incremented instead.
         /// Views should observe `selectionVersion` and then query `isSelected(_:)`.
-        @ObservationIgnored
         private(set) var selectedTabIDs: Set<Tab.ID> = []
 
         /// Version counter incremented on every selection change.
@@ -74,7 +69,6 @@ extension Sidebar {
         /// All currently selected tabs in display order.
         ///
         /// Uses the layout manager's ordered items for consistent ordering.
-        @ObservationIgnored
         var selectedTabs: [Tab] {
             let allItems = layoutManager.pinnedItems + layoutManager.normalItems
             return allItems.compactMap { item -> Tab? in
@@ -86,7 +80,6 @@ extension Sidebar {
         /// Selected tabs including the active tab if it's not already selected.
         ///
         /// Use this for operations that should include the active tab in batch actions.
-        @ObservationIgnored
         var selectedTabsIncludingActive: [Tab] {
             var tabs = selectedTabs
             if let activeTab = windowState.activeTab,

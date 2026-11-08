@@ -6,33 +6,32 @@ import SwiftUI
 /// Bundles all environment objects that sidebar cell views need into a single
 /// `@Environment` lookup, eliminating per-object environment resolution.
 ///
-/// All properties are immutable references set once at creation. `@ObservationIgnored`
+/// All properties are immutable references set once at creation. ``
 /// prevents the `@Observable` macro from registering tracking for reads — these
 /// references never change, so observation would be pure overhead.
-@Observable
-final class SidebarCellEnvironment {
-    @ObservationIgnored unowned let layoutManager: Sidebar.LayoutManager
-    @ObservationIgnored unowned let dragCoordinator: Sidebar.DragCoordinator
-    @ObservationIgnored unowned let selectionManager: Sidebar.TabSelectionManager
-    @ObservationIgnored unowned let tabManager: TabManager
-    @ObservationIgnored unowned let windowState: WindowState
-    @ObservationIgnored unowned let browserState: BrowserState
-    @ObservationIgnored unowned let dependencyContainer: Sidebar.DependencyContainer
-    @ObservationIgnored unowned let geometryState: Sidebar.GeometryState
-    @ObservationIgnored unowned let modifierKeysState: ModifierKeysState
-    @ObservationIgnored unowned let tabPreviewManager: TabPreviewManager
-    @ObservationIgnored unowned let pagePool: WebPagePool
-    @ObservationIgnored unowned let historyManager: HistoryManager
-    @ObservationIgnored unowned let groupManager: TabGroupManager
-    @ObservationIgnored unowned let filterManager: Sidebar.FilterManager
-    @ObservationIgnored unowned let settings: BrowserSettings
-    @ObservationIgnored unowned let mediaControlsManager: Sidebar.MediaControlsManager
-    @ObservationIgnored unowned let autoArchiveManager: TabAutoArchiveManager
-    @ObservationIgnored unowned let windowManager: WindowManager
+final class SidebarCellEnvironment : ObservableObject {
+    unowned let layoutManager: Sidebar.LayoutManager
+    unowned let dragCoordinator: Sidebar.DragCoordinator
+    unowned let selectionManager: Sidebar.TabSelectionManager
+    unowned let tabManager: TabManager
+    unowned let windowState: WindowState
+    unowned let browserState: BrowserState
+    unowned let dependencyContainer: Sidebar.DependencyContainer
+    unowned let geometryState: Sidebar.GeometryState
+    unowned let modifierKeysState: ModifierKeysState
+    unowned let tabPreviewManager: TabPreviewManager
+    unowned let pagePool: WebPagePool
+    unowned let historyManager: HistoryManager
+    unowned let groupManager: TabGroupManager
+    unowned let filterManager: Sidebar.FilterManager
+    unowned let settings: BrowserSettings
+    unowned let mediaControlsManager: Sidebar.MediaControlsManager
+    unowned let autoArchiveManager: TabAutoArchiveManager
+    unowned let windowManager: WindowManager
 
     /// Returns the global frame (screen coordinates) for a cell with the given ID.
     /// Set by the RecyclingTabListView coordinator; used by compact cells for tooltip positioning.
-    @ObservationIgnored var globalFrameForItem: ((_ itemID: UUID) -> CGRect)?
+    var globalFrameForItem: ((_ itemID: UUID) -> CGRect)?
 
     init(
         layoutManager: Sidebar.LayoutManager,
@@ -777,7 +776,7 @@ private final class TabListScrollView: NSScrollView {
 /// - `_shouldDelayFirstResponder:forRow:` → allows immediate first responder
 ///   without the default delay, enabling click-through from inactive windows
 private final class FirstMouseTableView: NSTableView {
-    var menuBuilder: (() -> NSMenu)?
+    @Published var menuBuilder: (() -> NSMenu)?
 
     override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
         true

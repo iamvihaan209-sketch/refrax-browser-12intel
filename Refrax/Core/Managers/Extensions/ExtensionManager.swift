@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 /// Key for tracking extension contexts in isolated/private spaces.
@@ -71,8 +70,7 @@ private enum ControllerType {
 /// let extensionManager = ExtensionManager(state: browserState)
 /// browserState.webPageConfiguration.webExtensionController = extensionManager.controller
 /// ```
-@Observable
-final class ExtensionManager {
+final class ExtensionManager : ObservableObject {
     // MARK: - Properties
 
     /// The default WebKit extension controller for normal spaces.
@@ -85,7 +83,7 @@ final class ExtensionManager {
     /// Spaces with `usesSeparateDataStore = true` get their own controller with:
     /// - Unique persistent storage via `WKWebExtensionController.Configuration(identifier:)`
     /// - Linked data store from `SpaceDataStoreManager`
-    private var isolatedControllers: [UUID: WKWebExtensionController] = [:]
+    private @Published var isolatedControllers: [UUID: WKWebExtensionController] = [:]
 
     /// Extension controllers for private spaces, keyed by space ID.
     ///
@@ -93,15 +91,14 @@ final class ExtensionManager {
     /// - No persistent storage (default configuration without identifier)
     /// - Non-persistent data store from `SpaceDataStoreManager`
     /// - Only extensions with `allowedInPrivateMode = true` are loaded
-    private var privateControllers: [UUID: WKWebExtensionController] = [:]
+    private @Published var privateControllers: [UUID: WKWebExtensionController] = [:]
 
     /// All installed extensions (persisted metadata).
-    private(set) var installedExtensions: [InstalledExtension] = [] {
+    private(set) @Published var installedExtensions: [InstalledExtension] = [] {
         didSet { onPackagesChanged?(enginePackages) }
     }
 
     /// Called with the installed extensions whenever they change, for engines other than WebKit.
-    @ObservationIgnored
     var onPackagesChanged: (([ExtensionPackage]) -> Void)?
 
     /// Installed extensions as the engine contract describes them: unpacked, read-only directories
@@ -120,19 +117,19 @@ final class ExtensionManager {
     }
 
     /// Global extension settings.
-    private(set) var globalSettings = ExtensionGlobalSettings()
+    private(set) @Published var globalSettings = ExtensionGlobalSettings()
 
     /// Currently loaded extension contexts in the default controller, keyed by unique identifier.
-    private var loadedContexts: [String: WKWebExtensionContext] = [:]
+    private @Published var loadedContexts: [String: WKWebExtensionContext] = [:]
 
     /// Extension contexts loaded into isolated controllers, keyed by (spaceID, extensionIdentifier).
-    private var isolatedContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
+    private @Published var isolatedContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
 
     /// Extension tab adapters, keyed by TabPage ID.
-    private var tabAdapters: [TabPage.ID: RefraxExtensionTab] = [:]
+    private @Published var tabAdapters: [TabPage.ID: RefraxExtensionTab] = [:]
 
     /// Extension window adapters, keyed by WindowState object identity.
-    private var windowAdapters: [ObjectIdentifier: RefraxExtensionWindow] = [:]
+    private @Published var windowAdapters: [ObjectIdentifier: RefraxExtensionWindow] = [:]
 
     // MARK: - Dependencies
 
@@ -164,16 +161,16 @@ final class ExtensionManager {
     let shimInjector: ShimInjector
 
     /// The controller delegate handling extension callbacks (for default controller).
-    private var controllerDelegate: ExtensionControllerDelegate?
+    private @Published var controllerDelegate: ExtensionControllerDelegate?
 
     /// Delegates for isolated controllers, keyed by space ID.
-    private var isolatedDelegates: [UUID: ExtensionControllerDelegate] = [:]
+    private @Published var isolatedDelegates: [UUID: ExtensionControllerDelegate] = [:]
 
     /// Delegates for private controllers, keyed by space ID.
-    private var privateDelegates: [UUID: ExtensionControllerDelegate] = [:]
+    private @Published var privateDelegates: [UUID: ExtensionControllerDelegate] = [:]
 
     /// Extension contexts loaded into private controllers, keyed by (spaceID, extensionIdentifier).
-    private var privateContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
+    private @Published var privateContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
 
     /// Data store manager for per-space data stores.
     ///
@@ -193,7 +190,7 @@ final class ExtensionManager {
     }
 
     /// Task for observing app activation state changes.
-    private var activationObservationTask: Task<Void, Never>?
+    private @Published var activationObservationTask: Task<Void, Never>?
 
     isolated deinit {
         activationObservationTask?.cancel()

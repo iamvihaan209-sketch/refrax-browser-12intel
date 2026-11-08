@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 import SwiftUI
 
 // MARK: - Window State
@@ -40,8 +39,7 @@ import SwiftUI
 ///
 /// - Note: This state persists only during the window's lifetime. Panel collapse
 ///   states are saved via `@SceneStorage` in ``ContentView`` for restoration.
-@Observable
-final class WindowState {
+final class WindowState : ObservableObject {
     /// Convert Swift Duration to the nanosecond sleep API supported by macOS 12.
     private static func nanoseconds(for duration: Duration) -> UInt64 {
         let components = duration.components
@@ -54,14 +52,12 @@ final class WindowState {
     private let settings: BrowserSettings
 
     /// Reference to the browser state for O(1) tab lookups.
-    @ObservationIgnored
     private unowned let browserState: BrowserState
 
     /// Reference to the NSWindow containing this state.
     ///
     /// Set during window controller initialization. Used to detect when this window
     /// becomes key for multi-window ownership tracking.
-    @ObservationIgnored
     weak var window: NSWindow?
 
     // MARK: - Background
@@ -87,10 +83,9 @@ final class WindowState {
     /// Debounced website color to prevent rapid flashing during navigation.
     ///
     /// Updated via `updateWebsiteColor()` with a 200ms debounce.
-    private(set) var debouncedWebsiteColor: Color.Components?
+    private(set) @Published var debouncedWebsiteColor: Color.Components?
 
     /// Task for debouncing website color updates.
-    @ObservationIgnored
     private var websiteColorDebounceTask: Task<Void, Never>?
 
     /// The resolved background color and its source.
@@ -202,7 +197,7 @@ final class WindowState {
     /// Active space ID for this window.
     ///
     /// Use `activeSpace` property to get the actual Space object.
-    var activeSpaceID: Space.ID?
+    @Published var activeSpaceID: Space.ID?
 
     /// Active space for this window.
     ///
@@ -234,11 +229,11 @@ final class WindowState {
     /// SwiftUI overlay re-renders reliably.
     ///
     /// The lock overlay's observation chain crosses multiple `@Observable` objects
-    /// via `@ObservationIgnored` intermediates (`browserState`, `spaceLockManager`).
+    /// via `` intermediates (`browserState`, `spaceLockManager`).
     /// In `NSHostingView` contexts, this transitive chain may not trigger SwiftUI
     /// re-renders. This counter provides a direct observation path on `WindowState`
     /// itself, bridging the reliable AppKit `Observations {}` handler to SwiftUI.
-    var spaceLockVersion: Int = 0
+    @Published var spaceLockVersion: Int = 0
 
     var activeSpaceTabs: [Tab] {
         activeSpace?.tabs ?? []
@@ -259,20 +254,19 @@ final class WindowState {
     /// Active tab IDs per space (allows remembering position when switching spaces).
     ///
     /// When switching back to a space, the previously active tab is restored.
-    private var _activeTabIDs: [Space.ID: Tab.ID] = [:]
+    private @Published var _activeTabIDs: [Space.ID: Tab.ID] = [:]
 
     /// Previous active tab IDs per space (for "go back" when closing tabs).
     ///
     /// Tracks the tab that was active before the current one in each space.
     /// When the active tab is closed, we prefer activating this tab.
-    @ObservationIgnored
     private var _previousActiveTabIDs: [Space.ID: Tab.ID] = [:]
 
     /// Active live favorite tab ID for this window.
     ///
     /// When set, a live favorite tab takes priority over the space's active tab.
     /// Managed internally via `setActiveTab(_:)`.
-    private var _activeLiveFavoriteTabID: Tab.ID?
+    private @Published var _activeLiveFavoriteTabID: Tab.ID?
 
     /// Active tab ID for this window.
     ///
@@ -336,7 +330,7 @@ final class WindowState {
     /// Active reference tab ID for this window.
     ///
     /// Reference tabs appear in the reference pane for side-by-side browsing.
-    var activeReferenceTabID: Tab.ID?
+    @Published var activeReferenceTabID: Tab.ID?
 
     /// Active reference tab for this window.
     ///
@@ -364,7 +358,7 @@ final class WindowState {
     /// 1. Active tab's primary page (if single-page tab)
     /// 2. Active tab's active page (if split-view tab)
     /// 3. First reference tab's page (if no main tab)
-    var focusedPageID: TabPage.ID?
+    @Published var focusedPageID: TabPage.ID?
 
     /// The focused webpage for address bar and navigation display.
     ///
@@ -391,15 +385,13 @@ final class WindowState {
     /// The focused TabPage for URL display.
     ///
     /// Returns the last-interacted page, or falls back to a sensible default.
-    /// @ObservationIgnored to reduce observation dependencies.
-    @ObservationIgnored
+    /// to reduce observation dependencies.
     var focusedPage: TabPage? {
         focusedWebPage?.tabPage ?? fallbackPage
     }
 
     /// Fallback page when focused page is unavailable.
-    /// @ObservationIgnored to reduce observation dependencies.
-    @ObservationIgnored
+    /// to reduce observation dependencies.
     private var fallbackPage: TabPage? {
         if let activeTab {
             return activeTab.activePage
@@ -449,12 +441,12 @@ final class WindowState {
     ///
     /// When set, darkens the background and presents the lens interface for
     /// quick actions or address entry.
-    private(set) var focusedLens: FocusedLens?
+    private(set) @Published var focusedLens: FocusedLens?
     
     /// Frame of the address bar in global coordinates (root of view hierarchy).
     ///
     /// Used to position the address lens overlay aligned with the address bar.
-    var addressBarFrame: CGRect = .zero
+    @Published var addressBarFrame: CGRect = .zero
 
     // MARK: - Split View State
 
@@ -462,13 +454,13 @@ final class WindowState {
     ///
     /// When collapsed, only the sidebar overlay appears on hover. When expanded,
     /// the sidebar is pinned open. Synced with `@SceneStorage` for persistence.
-    var isSidebarCollapsed: Bool = false
+    @Published var isSidebarCollapsed: Bool = false
 
     /// Whether the inspector (reference pane) is collapsed.
     ///
     /// The inspector shows side-by-side content when working with multiple sources.
     /// Synced with `@SceneStorage` for persistence across launches.
-    var isInspectorCollapsed: Bool = true
+    @Published var isInspectorCollapsed: Bool = true
 
     // MARK: - Sidebar Overlay State
 
@@ -486,7 +478,7 @@ final class WindowState {
     /// The detail tray is a secondary panel that slides in adjacent to the sidebar,
     /// providing quick access to downloads, bookmarks, and history without opening
     /// dedicated tabs. Uses Liquid Glass styling consistent with the sidebar overlay.
-    var detailTrayMode: DetailTrayMode = .hidden
+    @Published var detailTrayMode: DetailTrayMode = .hidden
 
     /// Whether the detail tray is currently visible.
     var isDetailTrayVisible: Bool {
@@ -498,26 +490,26 @@ final class WindowState {
     /// Set by `RefraxWindowController` when the tray position changes. Used by views
     /// like `LinkHoverPreviewView` to avoid overlapping with the tray. A value of 0
     /// means the tray is hidden or not yet positioned.
-    var detailTrayTrailingEdge: CGFloat = 0
+    @Published var detailTrayTrailingEdge: CGFloat = 0
 
     /// Trailing edge of the sidebar overlay in window coordinates.
     ///
     /// Set by `RefraxWindowController` when the sidebar overlay shows/hides.
     /// Accounts for compact strip width or full overlay width. A value of 0
     /// means the overlay is hidden or the sidebar is expanded (pinned).
-    var sidebarOverlayTrailingEdge: CGFloat = 0
+    @Published var sidebarOverlayTrailingEdge: CGFloat = 0
 
     /// Current width of the sidebar panel.
     ///
     /// Dynamically updated as the user resizes the sidebar. Persisted per
     /// window by AppKit state restoration and app-wide by `WindowGeometryStore`.
-    var sidebarThickness: CGFloat = 300
+    @Published var sidebarThickness: CGFloat = 300
 
     /// Tracks whether the tutorial peek animation has played this session.
     ///
     /// On first launch, the sidebar briefly peeks out to teach users about
     /// the hover interaction. This flag prevents repeated animations.
-    var hasShownTutorialPeek = false
+    @Published var hasShownTutorialPeek = false
 
     // MARK: - Compact Tab Title Tooltip
 
@@ -525,19 +517,18 @@ final class WindowState {
     ///
     /// Used by CompactTabTitleOverlay to position the title tooltip adjacent
     /// to the tab when hovered.
-    var compactTabTooltipFrame: CGRect = .zero
+    @Published var compactTabTooltipFrame: CGRect = .zero
 
     /// Title to display in the compact tab tooltip.
     ///
     /// Set when hovering a compact tab button after the delay expires.
     /// Cleared when hover ends.
-    private(set) var compactTabTooltipTitle: String?
+    private(set) @Published var compactTabTooltipTitle: String?
 
     /// Centralized task for compact tab tooltip delay.
     ///
     /// Previously each CompactTabButton had its own `@State tooltipTask`, creating
     /// 100+ Task allocations for windows with many tabs. Now managed centrally.
-    @ObservationIgnored
     private var compactTabTooltipTask: Task<Void, Never>?
 
     /// Delay before showing compact tab tooltip.
@@ -573,25 +564,25 @@ final class WindowState {
     ///
     /// Shown when hovering the link button or during page load in compact mode.
     /// The overlay is rendered in OverlayContainer with fixed positioning.
-    var showsCompactAddressBar = false
+    @Published var showsCompactAddressBar = false
 
     // MARK: - Layout Mode State
 
     /// Whether the window is currently in layout editing mode
-    var isInLayoutMode = false
+    @Published var isInLayoutMode = false
 
     /// Whether a layout mode exit animation is in progress.
     ///
-    /// `@ObservationIgnored` so it doesn't trigger view rebuilds. Read directly
+    /// `` so it doesn't trigger view rebuilds. Read directly
     /// by the `.transaction` modifier to allow the exit animation through.
-    @ObservationIgnored private(set) var isAnimatingLayoutTransition = false
+    private(set) var isAnimatingLayoutTransition = false
 
     /// Whether the mouse cursor is currently inside the bounds of an overlay.
     ///
     /// When `true`, WKWebView's `_ignoresAllEvents` is set to block all input.
     /// This is used when the sidebar overlay or detail tray is visible, so that
     /// the overlay receives events instead of the underlying web content.
-    var webViewsShouldIgnoreAllEvents = false
+    @Published var webViewsShouldIgnoreAllEvents = false
 
     /// Whether the cursor is hovering over an interactive overlay notification
     /// (e.g., the search engine detected pill).
@@ -599,33 +590,33 @@ final class WindowState {
     /// When `true`, the overlay hosting view stops passing through hit tests,
     /// allowing SwiftUI buttons in the notification to receive clicks.
     /// Set via `.onHover` on the notification view itself.
-    var isHoveringOverlayNotification = false
+    @Published var isHoveringOverlayNotification = false
 
     /// Target pane position for adding a page via command lens in layout mode
     ///
     /// When set, the command lens will add a new page to the active tab's layout
     /// at this position instead of creating a new tab.
-    var layoutModeTargetPosition: PanePosition?
+    @Published var layoutModeTargetPosition: PanePosition?
 
     /// When set, command lens creates a new reference tab instead of a main tab.
     ///
     /// Set to `true` when user taps the "add tab" button in the reference pane.
     /// The command lens will then route the selected URL/search to `addReferenceTab()`
     /// instead of creating a normal tab.
-    var isCreatingReferenceTab = false
+    @Published var isCreatingReferenceTab = false
 
     /// Whether the command lens is visible in the reference pane window.
     ///
     /// This is separate from `showsCommandLens` because the reference pane window
     /// has its own lens overlay positioned at the top-middle of the window.
-    var showsReferencePaneLens = false
+    @Published var showsReferencePaneLens = false
 
     /// Whether a reference pane window is open for this WindowState.
     ///
     /// Set by `WindowManager.createReferencePaneWindow()` and cleared when the window closes.
     /// When true, the docked reference pane view should NOT force WebViews inactive
     /// because the content is being displayed in the separate window.
-    var hasReferencePaneWindow = false
+    @Published var hasReferencePaneWindow = false
 
     // MARK: - Toast Notification State
 
@@ -633,10 +624,9 @@ final class WindowState {
     ///
     /// Set this to show a brief notification at the top of the window.
     /// Automatically clears after a few seconds.
-    var toastMessage: String?
+    @Published var toastMessage: String?
 
     /// Auto-dismiss task for the current toast.
-    @ObservationIgnored
     private var toastDismissTask: Task<Void, any Error>?
 
     /// Shows a toast notification that auto-dismisses.
@@ -664,10 +654,9 @@ final class WindowState {
     // MARK: - Search Engine Detection
 
     /// A search engine detected from browsing that the user hasn't acted on yet.
-    var pendingSearchEngineDetection: DetectedSearchEngine?
+    @Published var pendingSearchEngineDetection: DetectedSearchEngine?
 
     /// Domains whose search engine detection was dismissed this session.
-    @ObservationIgnored
     var dismissedSearchEngineDomains: Set<String> = []
 
     // MARK: - Remind Me Sheet State
@@ -683,7 +672,7 @@ final class WindowState {
     }
 
     /// Current page info for the Remind Me sheet, if showing.
-    var remindMePageInfo: RemindMePageInfo?
+    @Published var remindMePageInfo: RemindMePageInfo?
 
     /// Shows the Remind Me sheet for the specified page.
     func showRemindMeSheet(url: URL, title: String) {
@@ -706,7 +695,7 @@ final class WindowState {
     }
 
     /// Current GIF picker context, if the picker is showing.
-    var gifPickerContext: GifPickerContext?
+    @Published var gifPickerContext: GifPickerContext?
 
     /// Shows the GIF picker for inserting into the specified page.
     func showGifPicker(for page: WebPage) {
@@ -721,16 +710,14 @@ final class WindowState {
     // MARK: - Browser Import State
 
     /// Whether the browser data import wizard is showing.
-    var showsBrowserImport = false
+    @Published var showsBrowserImport = false
 
     // MARK: - Speed Reader State
 
     /// Current speed reader window controller, retained to keep the window alive.
-    @ObservationIgnored
     private var speedReaderWindowController: SpeedReaderWindowController?
 
     /// The speed reader panel still splitting its words; a newer request cancels it.
-    @ObservationIgnored
     private var speedReaderOpening: Task<Void, Never>?
 
     /// Shows the speed reader panel for the given selected text.
@@ -773,7 +760,7 @@ final class WindowState {
     // MARK: - Page Search Bar State
 
     /// Per-tab page find navigator presentation state
-    private var findNavigatorIsPresented: [TabPage.ID: Bool] = [:]
+    private @Published var findNavigatorIsPresented: [TabPage.ID: Bool] = [:]
 
     /// Binding for find navigator presentation for a specific tab page
     ///
@@ -824,7 +811,7 @@ final class WindowState {
     // `ReferencePaneWindow` that shares the same WindowState.
 
     /// Reference pane width when docked in inspector panel
-    var referencePaneDockedWidth: CGFloat = 400
+    @Published var referencePaneDockedWidth: CGFloat = 400
 
     // MARK: - Computed Properties
 

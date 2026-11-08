@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 
 /// Monitors the system clipboard for URLs and publishes them for quick navigation.
 ///
@@ -36,18 +35,17 @@ import Observation
 ///     }
 /// }
 /// ```
-@Observable
-final class ClipboardMonitor {
+final class ClipboardMonitor : ObservableObject {
     // MARK: - State
 
     /// The most recently detected URL from the clipboard.
     ///
     /// Set when a new HTTP/HTTPS URL is detected. UI should observe this
     /// to show the clipboard URL toast. Cleared after cooldown period.
-    private(set) var detectedURL: URL?
+    private(set) @Published var detectedURL: URL?
 
     /// Whether monitoring is currently active.
-    private(set) var isMonitoring: Bool = false
+    private(set) @Published var isMonitoring: Bool = false
 
     // MARK: - Dependencies
 
@@ -55,16 +53,12 @@ final class ClipboardMonitor {
 
     // MARK: - Private State
 
-    @ObservationIgnored
     private nonisolated(unsafe) var appActivationObserver: Any?
 
-    @ObservationIgnored
     private var lastChangeCount: Int = 0
 
-    @ObservationIgnored
     private var lastDetectedURL: URL?
 
-    @ObservationIgnored
     private var lastDetectedTime: Date?
 
     /// Cooldown period to avoid re-showing toast for the same URL.

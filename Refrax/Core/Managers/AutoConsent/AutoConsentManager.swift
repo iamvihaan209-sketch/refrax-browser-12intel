@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 /// Manages automatic dismissal of cookie consent banners.
@@ -28,8 +27,7 @@ import WebKit
 /// // Check if enabled for a domain
 /// let shouldInject = autoConsentManager.isEnabled(for: "example.com")
 /// ```
-@Observable
-final class AutoConsentManager {
+final class AutoConsentManager : ObservableObject {
     /// Reference to browser state for script registry access.
     unowned let state: BrowserState
 
@@ -38,19 +36,19 @@ final class AutoConsentManager {
     /// Whether auto-consent is globally enabled.
     ///
     /// Controlled by `BrowserSettings.enableAutoConsent`.
-    private(set) var isEnabled: Bool = true
+    private(set) @Published var isEnabled: Bool = true
 
     /// Currently loaded ruleset.
-    private(set) var ruleset: AutoConsentRuleset = .empty
+    private(set) @Published var ruleset: AutoConsentRuleset = .empty
 
     /// Last time the ruleset was updated from remote.
-    private(set) var lastUpdateCheck: Date?
+    private(set) @Published var lastUpdateCheck: Date?
 
     // MARK: - Private State
 
-    private var isSetUp = false
-    private var scriptID: UUID?
-    private var settingsObservationTask: Task<Void, Never>?
+    private @Published var isSetUp = false
+    private @Published var scriptID: UUID?
+    private @Published var settingsObservationTask: Task<Void, Never>?
 
     /// Content world for scripts (isolated from page scripts).
     private static let scriptWorldName = "RefraxScripts"

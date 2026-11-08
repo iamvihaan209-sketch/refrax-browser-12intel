@@ -69,9 +69,8 @@ import Security
 /// ## User Preferences
 ///
 /// - `BrowserSettings.checkForUpdatesAutomatically`: Enables/disables background checks
-@Observable
 @MainActor
-final class AppUpdateManager {
+final class AppUpdateManager : ObservableObject {
     // MARK: - Types
 
     /// Lifecycle state of the update system.
@@ -107,39 +106,34 @@ final class AppUpdateManager {
     // MARK: - Observable State
 
     /// Current phase of the update lifecycle.
-    var phase: UpdatePhase = .idle
+    @Published var phase: UpdatePhase = .idle
 
     /// Set on launch after a successful update. Drives the notification panel.
-    var justUpdated: PostUpdateInfo?
+    @Published var justUpdated: PostUpdateInfo?
 
     /// When `true`, the sidebar notification panel shows the failure error message.
     /// Set by clicking the warning icon in the sidebar bottom controls.
-    var showFailedPanel = false
+    @Published var showFailedPanel = false
 
     /// When `true`, the sidebar shows the crash report notification panel.
     /// Set after an automatic crash report is submitted on relaunch.
-    var crashReportSent = false
+    @Published var crashReportSent = false
 
     /// When the last successful check completed.
-    var lastCheckDate: Date?
+    @Published var lastCheckDate: Date?
 
     // MARK: - Dependencies
 
-    @ObservationIgnored
     unowned let settings: BrowserSettings
 
     // MARK: - Private State
 
-    @ObservationIgnored
     private var downloadTask: URLSessionDownloadTask?
 
-    @ObservationIgnored
     private var progressObservation: NSKeyValueObservation?
 
-    @ObservationIgnored
     private var downloadedDMGPath: URL?
 
-    @ObservationIgnored
     private var pendingUpdate: AppUpdate?
 
     // MARK: - UserDefaults Keys
@@ -151,7 +145,7 @@ final class AppUpdateManager {
     }
 
     /// Installed engines' updates, checked on every app update check.
-    @ObservationIgnored weak var engineDistribution: EngineDistribution?
+    weak var engineDistribution: EngineDistribution?
 
     // MARK: - Initialization
 

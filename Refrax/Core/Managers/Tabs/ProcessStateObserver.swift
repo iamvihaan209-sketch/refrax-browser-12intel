@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 /// Observes web process state changes with `@Observable` integration.
@@ -48,42 +47,41 @@ import WebKit
 /// Uses the same backing property pattern as `WebPage` to properly integrate
 /// KVO-based properties with Swift's `@Observable` macro. This ensures that
 /// SwiftUI views receive updates when the underlying KVO properties change.
-@Observable
-final class ProcessStateObserver {
+final class ProcessStateObserver : ObservableObject {
     // MARK: - Observable Properties
 
     /// Current state of the web process (debounced).
     ///
     /// Debounces transitions TO `notRunning` to prevent UI flicker during
     /// process startup. Transitions to running states are immediate.
-    private(set) var processState: _WKWebProcessState = .notRunning
+    private(set) @Published var processState: _WKWebProcessState = .notRunning
 
     /// Whether the web process is currently unresponsive.
     ///
     /// Set via delegate callbacks from `WKNavigationDelegatePrivate`.
     /// Reset when the process becomes responsive or terminates.
-    private(set) var isUnresponsive: Bool = false
+    private(set) @Published var isUnresponsive: Bool = false
 
     /// Whether the tab recently crashed and was auto-recovered.
     ///
     /// Used to show a visual indicator that recovery occurred.
     /// Automatically cleared after a brief display period.
-    private(set) var recentlyCrashed: Bool = false
+    private(set) @Published var recentlyCrashed: Bool = false
 
     /// Whether the process has ever been in a running state.
     ///
     /// Used to distinguish between:
     /// - A page that crashed/terminated (was running, now not) → show unloaded indicator
     /// - A new page that hasn't loaded yet → don't show indicator
-    private(set) var hasEverBeenRunning: Bool = false
+    private(set) @Published var hasEverBeenRunning: Bool = false
 
     /// The reason for the most recent process termination.
     ///
     /// `nil` if no termination has occurred during this observer's lifetime.
-    private(set) var lastTerminationReason: RendererTerminationReason?
+    private(set) @Published var lastTerminationReason: RendererTerminationReason?
 
     /// Timestamp of the most recent termination.
-    private(set) var lastTerminationTime: Date?
+    private(set) @Published var lastTerminationTime: Date?
 
     // MARK: - Computed Properties
 
@@ -114,14 +112,11 @@ final class ProcessStateObserver {
 
     private let wkWebView: WKWebView
 
-    @ObservationIgnored
     private var observations = ObservationStorage()
 
-    @ObservationIgnored
     private var crashIndicatorTask: Task<Void, any Error>?
 
     /// Task for debouncing the transition to `notRunning`.
-    @ObservationIgnored
     private var notRunningDebounceTask: Task<Void, Never>?
 
     /// Delay before reporting `notRunning` state.
@@ -262,7 +257,7 @@ final class ProcessStateObserver {
 /// The `invalidateAll()` method can be safely called from deinit since
 /// `NSKeyValueObservation.invalidate()` is thread-safe.
 private final class ObservationStorage {
-    var contents: [AnyKeyPath: NSKeyValueObservation] = [:]
+    @Published var contents: [AnyKeyPath: NSKeyValueObservation] = [:]
 
     /// Invalidates all observations. Safe to call from deinit.
     func invalidateAll() {

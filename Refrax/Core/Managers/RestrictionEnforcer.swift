@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 /// Tracks and enforces Focus Mode domain restrictions.
 ///
@@ -17,8 +16,7 @@ import Observation
 ///
 /// All state is isolated to `@MainActor` since it's updated by UI/Focus events
 /// and read during navigation decisions which dispatch to main actor.
-@Observable
-final class RestrictionEnforcer {
+final class RestrictionEnforcer : ObservableObject {
     // MARK: - Singleton
 
     static let shared = RestrictionEnforcer()
@@ -26,30 +24,30 @@ final class RestrictionEnforcer {
     // MARK: - State
 
     /// Domains that should show a blocking interstitial.
-    private(set) var blockedDomains: Set<String> = []
+    private(set) @Published var blockedDomains: Set<String> = []
 
     /// Domains that should show blurred content until revealed.
-    private(set) var blurredDomains: Set<String> = []
+    private(set) @Published var blurredDomains: Set<String> = []
 
     /// Whether browser notifications should be suppressed.
-    private(set) var suppressNotifications: Bool = false
+    private(set) @Published var suppressNotifications: Bool = false
 
     /// Domains that the user has bypassed for the current session.
     ///
     /// When a user clicks "Proceed Anyway" on an interstitial, the domain is added here.
     /// This set is cleared when Focus Mode changes.
-    private(set) var sessionBypassedDomains: Set<String> = []
+    private(set) @Published var sessionBypassedDomains: Set<String> = []
 
     /// Domains where the user clicked to reveal blurred content.
     ///
     /// Tracks which pages the user has explicitly revealed so blur isn't re-applied
     /// on same-site navigation or Focus Mode re-activation during the same session.
-    private(set) var revealedBlurDomains: Set<String> = []
+    private(set) @Published var revealedBlurDomains: Set<String> = []
 
     /// The identifier of the Focus Mode that set the current restrictions.
     ///
     /// Used to clear session bypasses when Focus Mode changes.
-    private(set) var activeFocusIdentifier: String?
+    private(set) @Published var activeFocusIdentifier: String?
 
     // MARK: - Computed Properties
 

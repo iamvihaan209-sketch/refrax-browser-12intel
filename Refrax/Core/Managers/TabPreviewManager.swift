@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import SwiftUI
 
 /// Manages tab preview state for Safari-style hover previews.
@@ -28,14 +27,11 @@ import SwiftUI
 /// // When hover ends
 /// tabPreviewManager.endHover()
 /// ```
-@Observable
-final class TabPreviewManager {
+final class TabPreviewManager : ObservableObject {
     // MARK: - Dependencies
 
-    @ObservationIgnored
     unowned let previewProvider: TabPreviewProvider
 
-    @ObservationIgnored
     unowned let settings: BrowserSettings
 
     // MARK: - Public State
@@ -43,20 +39,18 @@ final class TabPreviewManager {
     /// Whether the preview should be visible.
     ///
     /// Becomes `true` after the display delay if still hovering.
-    private(set) var isPreviewVisible: Bool = false
+    private(set) @Published var isPreviewVisible: Bool = false
 
     /// The frame of the hovered tab in global (window) coordinates.
     ///
     /// Used by OverlayContainer to position the preview correctly.
-    private(set) var hoveredTabFrame: CGRect = .zero
+    private(set) @Published var hoveredTabFrame: CGRect = .zero
 
     /// The currently hovered tab, if any.
-    @ObservationIgnored
     private(set) var hoveredTab: Tab?
 
     // MARK: - Private State
 
-    @ObservationIgnored
     private var displayDelayTask: Task<Void, any Error>?
 
     // MARK: - Constants

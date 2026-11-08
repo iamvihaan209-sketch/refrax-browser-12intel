@@ -40,8 +40,7 @@ enum RecordingResult: Sendable {
 /// Due to WebKit architecture, audio from web pages cannot be captured. WKWebView audio
 /// runs in a separate WebContent process that ScreenCaptureKit cannot access. Recordings
 /// are video-only.
-@Observable
-final class RecordingCoordinator {
+final class RecordingCoordinator : ObservableObject {
     // MARK: - Configuration
 
     /// Maximum recording duration in seconds (30 minutes).
@@ -56,19 +55,19 @@ final class RecordingCoordinator {
     ///
     /// Set after a successful recording. The preview auto-dismisses after a delay,
     /// or can be dismissed by user interaction.
-    private(set) var currentPreview: RecordingPreview?
+    private(set) @Published var currentPreview: RecordingPreview?
 
     /// Whether recording is currently in progress.
-    private(set) var isRecording = false
+    private(set) @Published var isRecording = false
 
     /// The start time of the current recording, for duration display.
-    private(set) var recordingStartTime: Date?
+    private(set) @Published var recordingStartTime: Date?
 
     /// The web page being recorded, if any.
     private(set) weak var recordingWebPage: WebPage?
 
     /// Error message to display to the user, if any.
-    private(set) var errorMessage: String?
+    private(set) @Published var errorMessage: String?
 
     /// Duration of the current recording in seconds.
     var recordingDuration: TimeInterval {
@@ -79,13 +78,13 @@ final class RecordingCoordinator {
     // MARK: - Private State
 
     /// The active recording session.
-    private var activeRecording: RecordingService.ActiveRecording?
+    private @Published var activeRecording: RecordingService.ActiveRecording?
 
     /// Task for the recording startup process.
-    private var startupTask: Task<Void, Never>?
+    private @Published var startupTask: Task<Void, Never>?
 
     /// Task for monitoring recording duration and lifecycle.
-    private var durationLimitTask: Task<Void, Never>?
+    private @Published var durationLimitTask: Task<Void, Never>?
 
     /// Preview data shown after recording.
     struct RecordingPreview: Identifiable {

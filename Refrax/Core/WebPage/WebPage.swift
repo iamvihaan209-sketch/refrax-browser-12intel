@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftUI
 import UniformTypeIdentifiers
 import WebKit
@@ -18,13 +17,12 @@ import WebKit
 ///
 /// By using a small holder class, we can capture it in the handler closure
 /// before `self` is fully initialized, then observe it from the view layer.
-@Observable
-final class DeepLinkFlag {
+final class DeepLinkFlag : ObservableObject {
     /// The intercepted deep link URL, or `nil` if not showing a deep link.
     ///
     /// When set, ``WebViewContainer`` renders a ``DeepLinkView`` for this URL
     /// instead of the WebKit ``WebView``.
-    var deepLinkURL: URL?
+    @Published var deepLinkURL: URL?
 
     /// Whether the session is currently displaying a deep link.
     var isShowingDeepLink: Bool {
@@ -124,7 +122,6 @@ struct StickyHeaderDetectionResult: Codable, Sendable {
 /// - `WebPage+Windowing.swift`: multi-window ownership + mirror windows.
 /// - `WebPage+LinkHover.swift`: link hover callbacks.
 /// - `WebPage+Lifecycle.swift`: page pool hookup for process lifecycle.
-@Observable
 final class WebPage: Identifiable {
     // MARK: - Types
 
@@ -252,10 +249,10 @@ final class WebPage: Identifiable {
     /// during navigation events.
     ///
     /// This can be reassigned during tab transfers via ``transferTo(_:)``.
-    var tabPage: TabPage
+    @Published var tabPage: TabPage
 
     /// The ID of the page that opened this one via window.open().
-    var openerPageID: TabPage.ID?
+    @Published var openerPageID: TabPage.ID?
 
     // MARK: - Configuration
 
@@ -263,7 +260,6 @@ final class WebPage: Identifiable {
     let configuration: Configuration
 
     /// A preconfigured WKWebViewConfiguration supplied by WebKit for popups.
-    @ObservationIgnored
     private let providedWebViewConfiguration: WKWebViewConfiguration?
 
     /// The base URL of the extension whose pages this web view shows, or `nil` for a web view
@@ -279,7 +275,6 @@ final class WebPage: Identifiable {
     ///
     /// Use this for direct access to WebKit APIs not exposed through `WebPage`.
     /// Named to match WebKit's internal naming convention.
-    @ObservationIgnored
     private(set) var backingWebView: WebPageWebView
 
     /// The website data store backing this page.
@@ -293,11 +288,9 @@ final class WebPage: Identifiable {
     // MARK: - Delegates
 
     /// The navigation delegate adapter.
-    @ObservationIgnored
     let backingNavigationDelegate: WKNavigationDelegateAdapter
 
     /// The UI delegate adapter.
-    @ObservationIgnored
     let backingUIDelegate: WKUIDelegateAdapter
 
     // MARK: - Dependencies
@@ -305,19 +298,14 @@ final class WebPage: Identifiable {
     let historyManager: HistoryManager
     let autoFillManager: AutoFillManager
     let faviconCache: FaviconCache
-    @ObservationIgnored
     let settingsApplier: WebPageSettingsApplier
-    @ObservationIgnored
     weak var siteSettingsCoordinator: SiteSettingsCoordinator?
-    @ObservationIgnored
     let domainTimeTracker: DomainTimeTracker
 
     /// Adapter for WebKit's private history delegate protocol.
-    @ObservationIgnored
     var historyDelegateAdapter: HistoryDelegateAdapter?
 
     /// Adapter for WebKit's private icon loading delegate (favicon detection).
-    @ObservationIgnored
     let iconLoadingDelegateAdapter: IconLoadingDelegateAdapter
 
     // MARK: - Download Manager
@@ -442,7 +430,7 @@ final class WebPage: Identifiable {
     ///
     /// Updated after page load via `updateStickyHeaderDetection()`.
     /// This is observable to trigger SwiftUI updates when detection completes.
-    private var _detectedStickyHeaderViaJS: Bool = false
+    private @Published var _detectedStickyHeaderViaJS: Bool = false
 
     /// Whether the page has a sticky header (fixed-position content at the top).
     ///
@@ -566,7 +554,7 @@ final class WebPage: Identifiable {
 
     /// The page in a plug-in engine rendering this page's content, or nil while
     /// the built-in WebKit view renders it. See `WebPage+Engine.swift`.
-    var enginePage: (any EnginePage)?
+    @Published var enginePage: (any EnginePage)?
 
     /// The page's state as reported by the engine rendering it, built by `PageReducer`.
     /// The single source of the core page properties (`url`, `title`, loading, history).
@@ -576,25 +564,21 @@ final class WebPage: Identifiable {
     let prompts = PagePrompts()
 
     /// Reports WebKit's observable properties into `state` while WebKit renders the page.
-    @ObservationIgnored
     private var webKitObserver: WebKitPageObserver?
 
     /// Tasks consuming `enginePage`'s event and request streams.
-    @ObservationIgnored
     var engineTasks: [Task<Void, Never>] = []
 
     /// Downloads the engine page is writing: the engine's download ID to Refrax's.
-    @ObservationIgnored
     var engineDownloads: [String: UUID] = [:]
 
     /// Whether the engine's developer tools are open for this page.
-    @ObservationIgnored
     var isEngineDevToolsShown = false
 
     // MARK: - Back-Forward List
 
     /// The webpage's back-forward navigation list.
-    var backForwardList: BackForwardList = .init()
+    @Published var backForwardList: BackForwardList = .init()
 
     /// Whether there is a back item in the history.
     var canGoBack: Bool {
@@ -656,24 +640,24 @@ final class WebPage: Identifiable {
     }
 
     /// Whether media playback is currently suspended.
-    var isMediaSuspended: Bool = false
+    @Published var isMediaSuspended: Bool = false
 
     // MARK: - Translation State
 
     /// Whether a translation is currently in progress.
-    var isTranslating: Bool = false
+    @Published var isTranslating: Bool = false
 
     /// Whether the page is currently showing translated content.
-    var isTranslated: Bool = false
+    @Published var isTranslated: Bool = false
 
     /// The detected source language of the page content.
-    var detectedLanguage: Locale.Language?
+    @Published var detectedLanguage: Locale.Language?
 
     /// The original language before translation was applied.
-    var originalLanguage: Locale.Language?
+    @Published var originalLanguage: Locale.Language?
 
     /// The language the page was translated to.
-    var translatedToLanguage: Locale.Language?
+    @Published var translatedToLanguage: Locale.Language?
 
     /// Resets translation state when navigation begins.
     ///
@@ -690,7 +674,6 @@ final class WebPage: Identifiable {
     // MARK: - Deep Link State
 
     /// Observable state holder for deep link display.
-    @ObservationIgnored
     var deepLinkFlag: DeepLinkFlag = .init()
 
     /// Whether the session is currently displaying a deep link (internal browser view).
@@ -709,14 +692,14 @@ final class WebPage: Identifiable {
     ///
     /// When set alongside `httpErrorURL`, the view layer shows an error page
     /// instead of web content.
-    var httpErrorCode: Int?
+    @Published var httpErrorCode: Int?
 
     /// The URL that failed to load, causing an error page to be displayed.
     ///
     /// Stored directly when `loadAlternateHTMLForError` is called, ensuring
     /// the error page can display immediately without waiting for WebKit's
     /// internal `_unreachableURL` property to be set asynchronously.
-    var httpErrorURL: URL?
+    @Published var httpErrorURL: URL?
 
     // MARK: - Crash Error State
 
@@ -724,7 +707,7 @@ final class WebPage: Identifiable {
     ///
     /// When set, the view layer shows a crash error page instead of web content.
     /// Cleared when the user manually triggers a reload via ``startNewNavigation()``.
-    var crashError: CrashError?
+    @Published var crashError: CrashError?
 
     // MARK: - Security State
 
@@ -733,11 +716,10 @@ final class WebPage: Identifiable {
     /// The cache is keyed by the SecTrust object reference - when serverTrust changes
     /// (e.g., after navigation), the cache automatically becomes invalid.
     ///
-    /// Not marked `@ObservationIgnored` so views are notified when async evaluation completes.
-    private var cachedCertificateInfo: (trust: SecTrust, info: CertificateInfo)?
+    /// Not marked `` so views are notified when async evaluation completes.
+    private @Published var cachedCertificateInfo: (trust: SecTrust, info: CertificateInfo)?
 
     /// Tracks in-flight certificate evaluation to prevent duplicate async work.
-    @ObservationIgnored
     private var pendingTrustEvaluation: SecTrust?
 
     /// Information about the current page's SSL certificate.
@@ -831,7 +813,7 @@ final class WebPage: Identifiable {
     // MARK: - Web Process State
 
     /// Observer for web process state with `@Observable` KVO integration.
-    var processStateObserver: ProcessStateObserver?
+    @Published var processStateObserver: ProcessStateObserver?
 
     // MARK: - In-Window Fullscreen
 
@@ -840,14 +822,14 @@ final class WebPage: Identifiable {
     /// Created at web view creation when the fullscreen mode is not `.system`;
     /// must live as long as the web view (its pointer is registered as the
     /// page's fullscreen client info).
-    private(set) var inWindowFullscreenController: InWindowFullscreenController?
+    private(set) @Published var inWindowFullscreenController: InWindowFullscreenController?
 
     /// Whether the web view is currently hosted by the windowed-fullscreen
     /// video window instead of its tab.
     ///
     /// While true, display-mode updates must not reclaim the web view — the
     /// tab shows a frozen snapshot until the video window returns it.
-    var isWebViewInVideoWindow = false
+    @Published var isWebViewInVideoWindow = false
 
     /// The current state of the web process backing this session.
     var webProcessState: _WKWebProcessState {
@@ -893,7 +875,6 @@ final class WebPage: Identifiable {
         return _isAudioMuted
     }
 
-    @ObservationIgnored
     private var _isAudioMuted: Bool = false
 
     /// Cached playback state from `requestMediaPlaybackState()`.
@@ -905,7 +886,6 @@ final class WebPage: Identifiable {
         return _cachedPlaybackState
     }
 
-    @ObservationIgnored
     private var _cachedPlaybackState: WKMediaPlaybackState = .none
 
     /// Updates the cached playback state with observation notification.
@@ -941,40 +921,39 @@ final class WebPage: Identifiable {
     ///
     /// Applied via JavaScript to HTMLMediaElement.volume or WebKit SPI fallback.
     /// When the page is evicted from the pool or the app restarts, this resets to 1.0.
-    var volume: Double = 1.0
+    @Published var volume: Double = 1.0
 
     /// Last time media was actively playing on this page.
     ///
     /// Used by ``MediaControlsManager`` to keep recently-active tabs visible
     /// in the panel for quick resume (5-minute timeout).
-    var lastMediaActivity: Date?
+    @Published var lastMediaActivity: Date?
 
     /// Whether the user manually marked this tab as a call.
     ///
     /// Overrides automatic domain-based call detection. Useful for unrecognized
     /// video conferencing services or web apps with WebRTC.
-    var userMarkedAsCall: Bool = false
+    @Published var userMarkedAsCall: Bool = false
 
     /// Cached Media Session metadata from the page.
     ///
     /// Contains title, artist, album, and artwork URL from the Media Session API.
     /// Fetched on-demand and cached. Call `refreshMediaSessionMetadata()` to update.
-    var mediaSessionMetadata: MediaSessionMetadata?
+    @Published var mediaSessionMetadata: MediaSessionMetadata?
 
     // MARK: - Form Data State
 
     /// Cached form data state (updated via `checkFormDataState()`).
-    var hasUnsavedFormData: Bool = false
+    @Published var hasUnsavedFormData: Bool = false
 
     // MARK: - Content Blocker Bypass
 
-    @ObservationIgnored
     var lastContentBlockerBypassHost: String?
 
     // MARK: - Zoom Control
 
     /// Current zoom level (percentage, e.g., 100 = 100%).
-    var currentZoom: Int = 100
+    @Published var currentZoom: Int = 100
 
     // MARK: - Scroll Position
 
@@ -982,7 +961,7 @@ final class WebPage: Identifiable {
     ///
     /// Updated by the UI delegate when scroll geometry changes. Used for
     /// features like edge color sampling that need to respond to scroll events.
-    var scrollOffsetY: CGFloat = 0
+    @Published var scrollOffsetY: CGFloat = 0
 
     // MARK: - Multi-Window Ownership
 
@@ -994,7 +973,7 @@ final class WebPage: Identifiable {
     /// displaying this page.
     ///
     /// - Note: Use `claimOwnership(for:)` and `isOwner(_:)` to manage ownership.
-    var ownerWindowID: ObjectIdentifier?
+    @Published var ownerWindowID: ObjectIdentifier?
 
     // MARK: - Reflected Windows
 
@@ -1003,12 +982,11 @@ final class WebPage: Identifiable {
     /// Reflected windows use the owner/portal mechanism for displaying web content.
     /// When a reflected window becomes key, it claims ownership of the interactive
     /// WebView, and other windows automatically switch to portal mode.
-    @ObservationIgnored
     var _reflectedWindows: [ReflectedViewController] = []
 
     /// Tracked count of reflected windows for SwiftUI observation.
     /// This is separate from `_reflectedWindows` to allow observation of changes.
-    var reflectedWindowCount: Int = 0
+    @Published var reflectedWindowCount: Int = 0
 
     /// Whether any reflected windows are currently active.
     var hasReflectedWindows: Bool {
@@ -1026,7 +1004,6 @@ final class WebPage: Identifiable {
     ///
     /// Set by ``WebViewContainer`` to update the local hover state for displaying
     /// a link URL preview overlay. Called with `nil` when the mouse moves off a link.
-    @ObservationIgnored
     var onHoveredLinkChanged: ((URL?) -> Void)?
 
     // MARK: - KVO Observation Storage
@@ -1036,32 +1013,25 @@ final class WebPage: Identifiable {
     /// Uses the WebKit pattern: observations are created when properties are first
     /// accessed, not eagerly at init. The `~Copyable` struct ensures single ownership
     /// and automatic invalidation on deinit.
-    @ObservationIgnored
     private var observations = KeyValueObservations()
 
     // MARK: - Navigation Tracking
 
-    @ObservationIgnored
     var redirectChain = RedirectChain()
 
-    @ObservationIgnored
     var scopedNavigations: [ObjectIdentifier: AsyncThrowingStream<NavigationEvent, any Error>.Continuation] = [:]
 
-    @ObservationIgnored
     var scopedStreams: [ObjectIdentifier: AsyncThrowingStream<NavigationEvent, any Error>] = [:]
 
-    @ObservationIgnored
     var indefiniteNavigations: [UUID: AsyncThrowingStream<NavigationEvent, any Error>.Continuation] = [:]
 
     /// Cached navigation stream for the primary consumer (navigationObservationTask).
     ///
     /// This prevents stream accumulation when `navigations` is accessed multiple times.
     /// The stream is created lazily on first access and reused thereafter.
-    @ObservationIgnored
     private var _cachedNavigationStream: AsyncThrowingStream<NavigationEvent, any Error>?
 
     /// UUID of the cached navigation stream for cleanup tracking.
-    @ObservationIgnored
     private var _cachedNavigationStreamID: UUID?
 
     /// A sequence of all navigation events throughout the webpage's lifetime.
@@ -1080,16 +1050,12 @@ final class WebPage: Identifiable {
 
     // MARK: - Task Management
 
-    @ObservationIgnored
     var loadTask: Task<Void, Never>?
 
-    @ObservationIgnored
     var navigationObservationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     var faviconTask: Task<Void, Never>?
 
-    @ObservationIgnored
     var historyDebounceTask: Task<Void, Never>?
 
     // MARK: - Navigation Generation
@@ -1100,7 +1066,6 @@ final class WebPage: Identifiable {
     /// `load()` is actually called. Used by `ensureInitialLoadStarted()` to
     /// recover if the deferred init load was dropped (e.g. WebView not yet
     /// in a window when the async dispatch fired).
-    @ObservationIgnored
     var initialLoadPending = false
 
     /// Generation counter for navigation operations.
@@ -1109,27 +1074,20 @@ final class WebPage: Identifiable {
     /// When a load is cancelled and a new one starts, events from the old navigation
     /// (which may still arrive due to cooperative cancellation) are ignored by comparing
     /// the captured generation against the current value.
-    @ObservationIgnored
     var navigationGeneration: UInt64 = 0
 
     // MARK: - History Tracking State
 
-    @ObservationIgnored
     var currentHistoryEntry: HistoryEntry?
 
-    @ObservationIgnored
     var parentHistoryEntry: HistoryEntry?
 
-    @ObservationIgnored
     var visibilityStartTime: Date?
 
-    @ObservationIgnored
     var lastCommittedURL: URL?
 
-    @ObservationIgnored
     var pendingHistoryURL: URL?
 
-    @ObservationIgnored
     var isBackForwardNavigation: Bool = false
 
     // MARK: - Scroll Position Restoration
@@ -1139,7 +1097,6 @@ final class WebPage: Identifiable {
     /// Set to `true` during initialization when `tabPage.scrollPositionY` has a saved value.
     /// After restoration (or when the user navigates to a new URL), this is set to `false`
     /// to prevent restoring stale scroll positions.
-    @ObservationIgnored
     var shouldRestoreScrollPosition: Bool = false
 
     // MARK: - Constants

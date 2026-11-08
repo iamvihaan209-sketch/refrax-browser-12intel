@@ -24,18 +24,17 @@ import SwiftData
 ///
 /// Rules are cached in memory and reloaded when `reloadRules()` is called.
 /// The cache should be invalidated when rules are added, modified, or deleted.
-@Observable
-final class RuleEngine {
+final class RuleEngine : ObservableObject {
     // MARK: - Properties
 
     /// Cached rules ordered by priority (descending).
-    private var rules: [RoutingRule] = []
+    private @Published var rules: [RoutingRule] = []
 
     /// The model context for fetching rules.
     private let modelContext: ModelContext
 
     /// Whether rules have been loaded.
-    private var isLoaded = false
+    private @Published var isLoaded = false
 
     // MARK: - Initialization
 

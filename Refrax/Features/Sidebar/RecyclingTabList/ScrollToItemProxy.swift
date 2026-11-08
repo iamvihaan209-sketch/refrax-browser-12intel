@@ -4,10 +4,8 @@ import Foundation
 ///
 /// The Coordinator sets itself as the handler, forwarding scroll requests
 /// to `NSScrollView.contentView.scroll(to:)`.
-@Observable
-final class ScrollToItemProxy {
+final class ScrollToItemProxy : ObservableObject {
     /// Closure set by the RecyclingTabList Coordinator to handle scroll requests.
-    @ObservationIgnored
     var scrollHandler: ((_ itemID: UUID, _ anchor: ScrollAnchor) -> Void)?
 
     enum ScrollAnchor {

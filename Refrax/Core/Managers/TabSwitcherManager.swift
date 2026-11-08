@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 import OrderedCollections
 import SwiftUI
 
@@ -23,35 +22,30 @@ import SwiftUI
 /// 1. User presses Control+Tab → `show()` called, selects previous tab
 /// 2. While Control held, Tab/Shift+Tab cycles selection
 /// 3. User releases Control → `dismiss()` activates selected tab
-@Observable
-final class TabSwitcherManager {
+final class TabSwitcherManager : ObservableObject {
     // MARK: - Dependencies
 
-    @ObservationIgnored
     private unowned let tabManager: TabManager
 
-    @ObservationIgnored
     private unowned let windowState: WindowState
 
-    @ObservationIgnored
     private unowned let previewProvider: TabPreviewProvider
 
     // MARK: - Public State
 
     /// Whether the tab switcher overlay is currently visible.
-    private(set) var isActive: Bool = false
+    private(set) @Published var isActive: Bool = false
 
     /// The currently selected index in the switcher (0-based).
-    private(set) var selectedIndex: Int = 0
+    private(set) @Published var selectedIndex: Int = 0
 
     // MARK: - Private State
 
     /// IDs of recently used tabs, ordered by most recently used first.
     /// Maximum of 5 entries.
-    private var recentlyUsedTabIDs: [Tab.ID] = []
+    private @Published var recentlyUsedTabIDs: [Tab.ID] = []
 
     /// Task for observing tab activation changes.
-    @ObservationIgnored
     private var observationTask: Task<Void, Never>?
 
     // MARK: - Constants

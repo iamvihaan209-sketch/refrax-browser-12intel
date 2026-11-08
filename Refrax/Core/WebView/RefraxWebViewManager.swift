@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 import WebKit
 
 /// Manages web view display state across multiple windows.
@@ -33,8 +32,7 @@ import WebKit
 /// ## Thread Safety
 ///
 /// All operations must be performed on the main actor.
-@Observable
-final class RefraxWebViewManager {
+final class RefraxWebViewManager : ObservableObject {
     // MARK: - Types
 
     /// Identifier for a window.
@@ -50,10 +48,10 @@ final class RefraxWebViewManager {
     // MARK: - Properties
 
     /// Active display registrations keyed by page ID.
-    private var activeDisplays: [WebPage.ID: ActiveDisplay] = [:]
+    private @Published var activeDisplays: [WebPage.ID: ActiveDisplay] = [:]
 
     /// Screen share windows keyed by page ID.
-    private var screenShareWindows: [WebPage.ID: NSWindow] = [:]
+    private @Published var screenShareWindows: [WebPage.ID: NSWindow] = [:]
 
     /// Shared instance for app-wide coordination.
     static let shared = RefraxWebViewManager()
@@ -210,7 +208,7 @@ final class ScreenSharePortalView: NSView {
     // MARK: - Properties
 
     private let page: WebPage
-    private var portalLayer: CALayer?
+    private @Published var portalLayer: CALayer?
 
     // MARK: - Initialization
 

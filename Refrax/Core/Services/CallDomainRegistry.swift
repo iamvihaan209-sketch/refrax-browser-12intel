@@ -16,8 +16,7 @@ import Foundation
 ///
 /// Users can add custom domains for lesser-known services or internal
 /// corporate video chat tools. These persist in UserDefaults.
-@Observable
-final class CallDomainRegistry {
+final class CallDomainRegistry : ObservableObject {
     // MARK: - Built-in Domains
 
     /// Built-in call domains (read-only).

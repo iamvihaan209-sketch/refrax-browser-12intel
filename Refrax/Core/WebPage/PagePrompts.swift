@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 
 /// A question a page is waiting on the user to answer.
 ///
@@ -43,8 +42,7 @@ enum PageAnswer: Hashable {
 /// Questions belong to their page: a background tab's question waits until the tab is shown,
 /// and never appears over another site. A navigation or the page's teardown declines
 /// everything still pending, so a page never waits on a question that can no longer be seen.
-@Observable
-final class PagePrompts {
+final class PagePrompts : ObservableObject {
     /// The most questions a page may have waiting; later ones are declined unseen.
     private static let queueLimit = 3
 
@@ -55,8 +53,8 @@ final class PagePrompts {
     }
 
     /// The question on screen for this page.
-    private(set) var current: Pending?
-    @ObservationIgnored private var waiting: [Pending] = []
+    private(set) @Published var current: Pending?
+    private var waiting: [Pending] = []
 
     /// Queues `question` and suspends until the user answers it or it's dismissed.
     func ask(_ question: PageQuestion) async -> PageAnswer {

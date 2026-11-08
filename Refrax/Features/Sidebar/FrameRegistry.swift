@@ -6,7 +6,6 @@ import SwiftUI
 /// Provides direct access to NSView frames without SwiftUI geometry/preference overhead.
 /// Computes visible items by checking which registered view frames intersect the viewport.
 extension Sidebar {
-    @Observable
     final class FrameRegistry {
         /// Registered views keyed by item ID.
         private var views: [UUID: NSView] = [:]

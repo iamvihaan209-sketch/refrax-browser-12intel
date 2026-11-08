@@ -33,20 +33,16 @@ extension Sidebar {
     /// ## Recently Active
     ///
     /// Tabs remain visible for 5 minutes after media pauses to allow quick resume.
-    @Observable
     final class MediaControlsManager {
         // MARK: - Dependencies
 
         /// Access to the page pool for iterating active pages.
-        @ObservationIgnored
         weak var pagePool: WebPagePool?
 
         /// Tab lookup closure provided during initialization.
-        @ObservationIgnored
         var tabLookup: ((TabPage.ID) -> Tab?)?
 
         /// Active space ID lookup for cross-space detection.
-        @ObservationIgnored
         var activeSpaceIDLookup: (() -> UUID?)?
 
         /// Registry for detecting call domains.
@@ -89,18 +85,15 @@ extension Sidebar {
         ///
         /// These pages remain visible in the panel until the tab is closed
         /// or the user explicitly dismisses them.
-        @ObservationIgnored
         private var manuallyPausedPages: Set<TabPage.ID> = []
 
         /// Pages where the user has adjusted volume via the media panel.
         ///
         /// These pages remain visible even if volume is 0 (which causes
         /// `isPlayingAudio` to be false). Cleared when dismissed or tab closed.
-        @ObservationIgnored
         private var volumeControlledPages: Set<TabPage.ID> = []
 
         /// Auto-collapse timer task.
-        @ObservationIgnored
         private var collapseTask: Task<Void, any Error>?
 
         // MARK: - Computed Properties

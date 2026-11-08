@@ -1,5 +1,4 @@
 import AppKit
-import Observation
 
 /// Manages quick previews for favorites using Option+Click.
 ///
@@ -19,8 +18,7 @@ import Observation
 /// The preview observes when its source tab becomes active. If the user
 /// activates the tab (e.g., by clicking the favorite normally), the preview
 /// automatically closes.
-@Observable
-final class FavoritePreviewManager {
+final class FavoritePreviewManager : ObservableObject {
     // MARK: - Dependencies
 
     private unowned let tabManager: TabManager
@@ -29,13 +27,13 @@ final class FavoritePreviewManager {
     // MARK: - State
 
     /// The currently active preview panel, if any.
-    private var previewPanel: LinkPreviewPanel?
+    private @Published var previewPanel: LinkPreviewPanel?
 
     /// The tab being previewed (for live favorites).
-    private(set) var previewingTab: Tab?
+    private(set) @Published var previewingTab: Tab?
 
     /// The URL being previewed.
-    private(set) var previewingURL: URL?
+    private(set) @Published var previewingURL: URL?
 
     /// Whether a preview is currently visible.
     var isPreviewVisible: Bool {

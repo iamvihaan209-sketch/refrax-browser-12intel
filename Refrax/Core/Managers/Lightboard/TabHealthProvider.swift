@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 // MARK: - Tab Health Provider
@@ -19,23 +18,22 @@ import WebKit
 ///     TabHealthRow(snapshot: snapshot)
 /// }
 /// ```
-@Observable
-final class TabHealthProvider {
+final class TabHealthProvider : ObservableObject {
     // MARK: - Observable Properties
 
     /// Current snapshots for all tab pages.
-    private(set) var snapshots: [TabHealthSnapshot] = []
+    private(set) @Published var snapshots: [TabHealthSnapshot] = []
 
     /// Filtered and sorted snapshots for display.
-    private(set) var displaySnapshots: [TabHealthSnapshot] = []
+    private(set) @Published var displaySnapshots: [TabHealthSnapshot] = []
 
     /// Current filter mode.
-    var filter: TabHealthFilter = .all {
+    @Published var filter: TabHealthFilter = .all {
         didSet { updateDisplaySnapshots() }
     }
 
     /// Current sort mode.
-    var sortMode: TabHealthSortMode = .memory {
+    @Published var sortMode: TabHealthSortMode = .memory {
         didSet { updateDisplaySnapshots() }
     }
 
@@ -46,34 +44,25 @@ final class TabHealthProvider {
 
     // MARK: - Dependencies
 
-    @ObservationIgnored
     private unowned let tabManager: TabManager
 
-    @ObservationIgnored
     private unowned let pagePool: WebPagePool
 
-    @ObservationIgnored
     private unowned let memoryMonitor: ProcessMemoryMonitor
 
-    @ObservationIgnored
     private let importanceScorer = PageImportanceScorer()
 
     // MARK: - Private
 
-    @ObservationIgnored
     private var observationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var memoryObservationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var refreshDebouncer: Task<Void, any Error>?
 
-    @ObservationIgnored
     private let debounceInterval: Duration = .milliseconds(100)
 
     /// Reference count for observers. When > 0, observation is active.
-    @ObservationIgnored
     private var observerCount = 0
 
     // MARK: - Initialization
@@ -484,7 +473,7 @@ enum TabHealthFilter: String, CaseIterable, Identifiable {
     case playingMedia = "Playing Media"
     case suspended = "Suspended"
 
-    var id: String { rawValue }
+    @Published var id: String { rawValue }
 }
 
 /// Sort modes for the tab health dashboard.
@@ -496,5 +485,5 @@ enum TabHealthSortMode: String, CaseIterable, Identifiable {
     case recent = "Recent"
     case space = "Space"
 
-    var id: String { rawValue }
+    @Published var id: String { rawValue }
 }

@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 
 /// Manages page activity state for accurate history time-spent tracking.
 ///
@@ -40,55 +39,51 @@ import Observation
 /// Rather than calling `WebPage.onBecameVisible()` directly, views should register
 /// with this manager. The manager tracks state transitions and provides a callback
 /// mechanism to notify when a page's activity state changes.
-@Observable
-final class HistoryActivityManager {
+final class HistoryActivityManager : ObservableObject {
     // MARK: - Activity State
 
     /// Whether the application is currently active (frontmost).
-    private(set) var isAppActive: Bool = true
+    private(set) @Published var isAppActive: Bool = true
 
     /// Whether the system is sleeping.
-    private(set) var isSystemSleeping: Bool = false
+    private(set) @Published var isSystemSleeping: Bool = false
 
     // MARK: - Page Registration
 
     /// Tracks which pages are currently visible and in which windows.
     /// Key: PageID, Value: Set of WindowIDs displaying this page.
     /// A page can be visible in multiple windows simultaneously.
-    private var visiblePages: [UUID: Set<ObjectIdentifier>] = [:]
+    private @Published var visiblePages: [UUID: Set<ObjectIdentifier>] = [:]
 
     /// Tracks which windows are currently key.
-    private var keyWindows: Set<ObjectIdentifier> = []
+    private @Published var keyWindows: Set<ObjectIdentifier> = []
 
     /// Tracks the last known activity state for each page to detect transitions.
-    private var pageActivityStates: [UUID: Bool] = [:]
+    private @Published var pageActivityStates: [UUID: Bool] = [:]
 
     /// Callback invoked when a page's activity state changes.
     ///
     /// Parameters: (pageID, isNowActive)
-    var onPageActivityChanged: ((UUID, Bool) -> Void)?
+    @Published var onPageActivityChanged: ((UUID, Bool) -> Void)?
 
     // MARK: - Dependencies
 
     /// The centralized app activation observer.
     ///
     /// Must be set before calling `start()`. Wired up in AppDelegate.
-    var activationObserver: AppActivationObserver?
+    @Published var activationObserver: AppActivationObserver?
 
     /// The centralized system sleep observer.
     ///
     /// Must be set before calling `start()`. Wired up in AppDelegate.
-    var systemSleepObserver: SystemSleepObserver?
+    @Published var systemSleepObserver: SystemSleepObserver?
 
     // MARK: - Private State
 
-    @ObservationIgnored
     private var isRunning = false
 
-    @ObservationIgnored
     private var appStateObservationTask: Task<Void, Never>?
 
-    @ObservationIgnored
     private var sleepObservationTask: Task<Void, Never>?
 
     // MARK: - Initialization

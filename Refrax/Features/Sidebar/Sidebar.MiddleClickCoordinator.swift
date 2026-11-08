@@ -18,7 +18,6 @@ extension Sidebar {
     /// - 1 event monitor
     /// - O(n) frame lookup on click (acceptable—clicks are rare)
     /// - Zero SwiftUI overhead
-    @Observable
     final class MiddleClickCoordinator {
         // MARK: - Dependencies
 
@@ -29,7 +28,6 @@ extension Sidebar {
 
         // MARK: - Private State
 
-        @ObservationIgnored
         private var eventMonitor: Any?
 
         // MARK: - Lifecycle

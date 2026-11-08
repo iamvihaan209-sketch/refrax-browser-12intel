@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import WebKit
 
 /// Manages Reader Mode functionality for extracting and displaying article content.
@@ -38,8 +37,7 @@ import WebKit
 ///     // Show in ReaderView
 /// }
 /// ```
-@Observable
-final class ReaderModeManager {
+final class ReaderModeManager : ObservableObject {
     // MARK: - Properties
 
     /// Reference to browser state for script registry access.
@@ -48,7 +46,7 @@ final class ReaderModeManager {
     // MARK: - State
 
     /// User preferences for reader appearance.
-    var preferences: ReaderPreferences = .load() {
+    @Published var preferences: ReaderPreferences = .load() {
         didSet {
             preferences.save()
         }
@@ -60,7 +58,7 @@ final class ReaderModeManager {
     ///
     /// When a tab enters reader mode, its extracted article is stored here.
     /// WebViewContainer observes this to show/hide the reader overlay.
-    private(set) var activeReaderStates: [UUID: ExtractedArticle] = [:]
+    private(set) @Published var activeReaderStates: [UUID: ExtractedArticle] = [:]
 
     /// Checks if reader mode is active for a specific tab page.
     ///
@@ -134,24 +132,24 @@ final class ReaderModeManager {
     // MARK: - Per-Page State
 
     /// Cached availability status per URL.
-    private var availabilityCache: [URL: Bool] = [:]
+    private @Published var availabilityCache: [URL: Bool] = [:]
 
     /// Cached extracted articles per URL.
-    private var articleCache: [URL: ExtractedArticle] = [:]
+    private @Published var articleCache: [URL: ExtractedArticle] = [:]
 
     /// Running availability checks, shared by every caller asking about the same URL.
-    private var availabilityChecks: [URL: Task<Bool, Never>] = [:]
+    private @Published var availabilityChecks: [URL: Task<Bool, Never>] = [:]
 
     /// Running extractions, shared by every caller asking about the same URL.
-    private var extractions: [URL: Task<ReaderExtraction, Never>] = [:]
+    private @Published var extractions: [URL: Task<ReaderExtraction, Never>] = [:]
 
     // MARK: - Private State
 
-    private var isSetUp = false
-    private var availabilityScriptID: UUID?
+    private @Published var isSetUp = false
+    private @Published var availabilityScriptID: UUID?
 
     /// The extraction script, built once from the bundled Readability.js.
-    private var extractionScript: String?
+    private @Published var extractionScript: String?
 
     /// Content world for scripts (isolated from page scripts).
     private static let scriptWorldName = "RefraxScripts"
@@ -486,10 +484,10 @@ final class ReaderModeManager {
 
 /// Resumes a continuation with the first of several racing results and drops the rest.
 private final class FirstFinisher<Value: Sendable> {
-    private var continuation: CheckedContinuation<Value, Never>?
+    private @Published var continuation: CheckedContinuation<Value, Never>?
 
     /// The timeout task, cancelled once a result arrives.
-    var timer: Task<Void, Never>?
+    @Published var timer: Task<Void, Never>?
 
     init(_ continuation: CheckedContinuation<Value, Never>) {
         self.continuation = continuation

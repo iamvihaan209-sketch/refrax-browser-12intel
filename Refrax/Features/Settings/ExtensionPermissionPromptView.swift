@@ -29,13 +29,12 @@ struct PermissionRequest: Identifiable {
 // MARK: - Permission Prompt Manager
 
 /// Manages pending permission requests and presents the prompt UI.
-@Observable
-final class PermissionPromptManager {
+final class PermissionPromptManager : ObservableObject {
     /// The current permission request to show, if any.
-    var currentRequest: PermissionRequest?
+    @Published var currentRequest: PermissionRequest?
 
     /// Queue of pending permission requests.
-    private var requestQueue: [PermissionRequest] = []
+    private @Published var requestQueue: [PermissionRequest] = []
 
     /// Enqueues a permission request and shows the prompt if not already showing.
     func enqueue(_ request: PermissionRequest) {

@@ -1,6 +1,5 @@
 import Foundation
 import NaturalLanguage
-import Observation
 import OSLog
 import SwiftUI
 import Translation
@@ -24,15 +23,14 @@ import Translation
 /// 2. View layer triggers translation via `.translationTask`
 /// 3. Session callback invokes manager to complete translation
 /// 4. Manager injects translated content back into page
-@Observable
-final class TranslationManager {
+final class TranslationManager : ObservableObject {
     // MARK: - State
 
     /// Tracks pages that are currently being translated.
-    private var translatingPages: Set<UUID> = .init()
+    private @Published var translatingPages: Set<UUID> = .init()
 
     /// Cached detected languages per URL.
-    private var detectedLanguageCache: [URL: Locale.Language] = .init()
+    private @Published var detectedLanguageCache: [URL: Locale.Language] = .init()
 
     // MARK: - Target Language
 

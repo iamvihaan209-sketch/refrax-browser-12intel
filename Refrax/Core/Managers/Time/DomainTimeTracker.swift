@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import SwiftData
 
 // Tracks time spent on domains and enforces time limits.
@@ -46,8 +45,7 @@ import SwiftData
 // }
 // ```
 
-@Observable
-final class DomainTimeTracker {
+final class DomainTimeTracker : ObservableObject {
     // MARK: - Constants
 
     /// Rolling window duration in seconds (24 hours).
@@ -61,7 +59,6 @@ final class DomainTimeTracker {
     // MARK: - Background Actor
 
     /// Background actor for all persistence operations.
-    @ObservationIgnored
     private var backgroundActor: DomainTimeTrackerActor?
 
     // MARK: - Session State
@@ -69,19 +66,18 @@ final class DomainTimeTracker {
     /// Active session tracking (transient, not persisted).
     ///
     /// Only one session can be active at a time since only one tab is visible.
-    @ObservationIgnored
     private var activeSession: (domain: String, startTime: Date)?
 
     // MARK: - Cached UI State
 
     /// The domain of the currently visible tab.
-    private(set) var currentDomain: String?
+    private(set) @Published var currentDomain: String?
 
     /// Cached limit for the current domain.
-    private(set) var currentDomainLimit: DomainTimeLimitData?
+    private(set) @Published var currentDomainLimit: DomainTimeLimitData?
 
     /// Cached time spent on current domain today.
-    private(set) var currentDomainTimeToday: TimeInterval = 0
+    private(set) @Published var currentDomainTimeToday: TimeInterval = 0
 
     /// Whether the current domain's limit has been exceeded.
     ///
@@ -90,7 +86,7 @@ final class DomainTimeTracker {
     /// when the exceeded state actually changes, not on every time update.
     /// The TimeLimitOverlayContainer (which shows when exceeded) separately
     /// observes `currentDomainTimeToday` for display.
-    private(set) var isCurrentDomainLimitExceeded: Bool = false
+    private(set) @Published var isCurrentDomainLimitExceeded: Bool = false
 
     // MARK: - Initialization
 

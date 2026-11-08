@@ -1,5 +1,4 @@
 import Foundation
-import Observation
 import Synchronization
 import WebKit
 
@@ -130,8 +129,8 @@ final class KVOWrapper: NSObject, @unchecked Sendable {
 ///     }
 /// }
 /// ```
-final class WebKitObservationBag {
-    private var storage = WebKitKVOStorage()
+final class WebKitObservationBag : ObservableObject {
+    private @Published var storage = WebKitKVOStorage()
 
     init() {}
 
@@ -260,19 +259,18 @@ extension WKWebView {
 ///     Image(systemName: "speaker.wave.2.fill")
 /// }
 /// ```
-@Observable
-final class WKWebViewAudioObserver {
+final class WKWebViewAudioObserver : ObservableObject {
     /// Whether the web view is playing audio.
-    private(set) var isPlaying: Bool = false
+    private(set) @Published var isPlaying: Bool = false
 
     /// Whether audio is muted.
-    private(set) var isMuted: Bool = false
+    private(set) @Published var isMuted: Bool = false
 
     /// The raw media muted state bitmask.
-    private(set) var mutedState: UInt = 0
+    private(set) @Published var mutedState: UInt = 0
 
     private weak var webView: WKWebView?
-    private var observations = WebKitObservationBag()
+    private @Published var observations = WebKitObservationBag()
 
     init() {}
 
@@ -323,11 +321,10 @@ final class WKWebViewAudioObserver {
 ///
 /// ## Availability
 /// Requires macOS 15.4+ for process state monitoring.
-@Observable
 @available(macOS 15.4, *)
-final class WKWebViewProcessObserver {
+final class WKWebViewProcessObserver : ObservableObject {
     /// The current web process state.
-    private(set) var state: _WKWebProcessState = .notRunning
+    private(set) @Published var state: _WKWebProcessState = .notRunning
 
     /// Whether the web process is running (foreground or background).
     var isRunning: Bool {
@@ -340,7 +337,7 @@ final class WKWebViewProcessObserver {
     }
 
     private weak var webView: WKWebView?
-    private var observations = WebKitObservationBag()
+    private @Published var observations = WebKitObservationBag()
 
     init() {}
 

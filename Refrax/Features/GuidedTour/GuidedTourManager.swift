@@ -5,8 +5,7 @@ import SwiftUI
 /// The tour walks new users through key browser actions step by step.
 /// Each step has an instruction and a completion condition detected
 /// via `onChange` on observable state properties in `GuidedTourOverlay`.
-@Observable
-final class GuidedTourManager {
+final class GuidedTourManager : ObservableObject {
     /// A step in the guided tour.
     enum Step: Int, CaseIterable, Sendable {
         case openCommandLens
@@ -18,10 +17,10 @@ final class GuidedTourManager {
     }
 
     /// The current tour step, or nil if the tour is not active.
-    var currentStep: Step?
+    @Published var currentStep: Step?
 
     /// Whether the tour is currently running.
-    var isActive: Bool { currentStep != nil }
+    @Published var isActive: Bool { currentStep != nil }
 
     /// Starts the tour from the beginning.
     func start() {
@@ -75,7 +74,7 @@ extension GuidedTourManager.Step {
     }
 
     /// 1-based step number for display.
-    var stepNumber: Int { rawValue + 1 }
+    @Published var stepNumber: Int { rawValue + 1 }
 
     /// Total actionable steps (excludes .completed).
     static var totalSteps: Int { Self.allCases.count - 1 }

@@ -1,6 +1,5 @@
 import AppKit
 import Foundation
-import Observation
 import SwiftData
 import SwiftUI
 import WebKit
@@ -82,8 +81,7 @@ import WebKit
 /// ```swift
 /// .onChange(of: tabManager.state.tabListVersion) { rebuildLayout() }
 /// ```
-@Observable
-final class TabManager {
+final class TabManager : ObservableObject {
     // MARK: - Shared State
 
     /// Shared state container accessed by all managers.
@@ -126,7 +124,7 @@ final class TabManager {
 
     /// When true, runs async operations synchronously. Used by tests to avoid
     /// race conditions during test teardown.
-    var _runSynchronously = false
+    @Published var _runSynchronously = false
 
     // MARK: - Sub-Managers
 
@@ -162,7 +160,7 @@ final class TabManager {
         _ruleEngine = engine
         return engine
     }
-    private var _ruleEngine: RuleEngine?
+    private @Published var _ruleEngine: RuleEngine?
 
     /// Handles position arithmetic and normalization.
     let positioner = TabPositioner()
@@ -174,11 +172,11 @@ final class TabManager {
     /// Used to coordinate rename state across all tab and group views.
     /// When set, the corresponding view shows a text field; all others exit edit mode.
     /// Set to nil when rename is committed or cancelled.
-    var renamingItemID: UUID?
+    @Published var renamingItemID: UUID?
 
     /// ID of the archived tab currently showing its restore confirmation popover.
     /// Set when clicking an archived tab; cleared when popover is dismissed.
-    var showingRestorePopoverForTabID: UUID?
+    @Published var showingRestorePopoverForTabID: UUID?
 
     /// Window state synchronization helper.
     ///
@@ -211,7 +209,7 @@ final class TabManager {
     // MARK: - Close Confirmation
 
     /// State for the close confirmation dialog.
-    var pendingCloseConfirmation: CloseConfirmation?
+    @Published var pendingCloseConfirmation: CloseConfirmation?
 
     /// Information about a pending tab close that requires user confirmation.
     struct CloseConfirmation: Identifiable {
