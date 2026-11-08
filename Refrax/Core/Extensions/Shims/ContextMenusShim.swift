@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import AppKit
 import Foundation
 
@@ -352,3 +353,5 @@ final class ContextMenusShim: ExtensionShim {
         removeAll(extensionID: extensionID)
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

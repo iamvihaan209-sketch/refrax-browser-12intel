@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 
 /// Shim for `browser.downloads` API bridging to Refrax's download manager.
@@ -338,3 +339,5 @@ final class DownloadsShim: ExtensionShim {
         extensionDownloads.removeValue(forKey: extensionID)
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import UserNotifications
 
@@ -236,3 +237,5 @@ final class NotificationsShim: ExtensionShim, @unchecked Sendable {
         }
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

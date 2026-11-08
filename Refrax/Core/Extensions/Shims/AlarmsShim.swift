@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 
 /// Shim for `browser.alarms` API using Swift timers.
@@ -243,3 +244,5 @@ final class AlarmsShim: ExtensionShim {
         _ = clearAll(extensionID: extensionID)
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

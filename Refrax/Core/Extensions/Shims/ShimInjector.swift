@@ -1,4 +1,5 @@
 #if !REFRAX_NO_EXTENSIONS
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 import WebKit
 
@@ -324,5 +325,7 @@ protocol ExtensionShim {
     /// - Returns: The result to send back to JavaScript.
     func handle(method: String, args: [String: Any], extensionID: String) async throws -> Any?
 }
+
+#endif // !REFRAX_NO_EXTENSIONS
 
 #endif // !REFRAX_NO_EXTENSIONS

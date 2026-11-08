@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import SwiftUI
 import WebKit
 
@@ -388,3 +389,5 @@ private struct WarningRow: View {
         onInstall: {},
     )
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

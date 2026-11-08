@@ -1,3 +1,4 @@
+#if !REFRAX_NO_EXTENSIONS
 import Foundation
 
 /// JavaScript content script for Chrome Web Store and Firefox Add-ons integration.
@@ -436,3 +437,5 @@ extension WebStore {
         }
     }
 }
+
+#endif // !REFRAX_NO_EXTENSIONS

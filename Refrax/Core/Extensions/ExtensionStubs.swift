@@ -10,4 +10,13 @@ final class ExtensionManager: ObservableObject {
 
     func extensionContext(for url: URL) -> ContextStub? { nil }
 }
+
+enum ExtensionPageRouting {
+    static let scheme = "webkit-extension"
+    static func canNavigate(from _: URL?, to _: URL?) -> Bool { true }
+}
+
+final class ExtensionCommandHandler {
+    init(extensionManager _: ExtensionManager) {}
+}
 #endif
