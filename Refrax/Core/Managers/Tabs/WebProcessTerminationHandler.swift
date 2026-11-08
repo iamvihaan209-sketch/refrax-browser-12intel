@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Handles web content process termination events and automatic recovery.
 ///

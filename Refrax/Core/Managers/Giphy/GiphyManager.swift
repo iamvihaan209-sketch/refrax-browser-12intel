@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Manages Giphy API integration for GIF search and retrieval.
 ///

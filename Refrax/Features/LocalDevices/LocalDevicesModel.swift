@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// State behind the Local Devices window: the latest network snapshot and the refresh in flight.
 final class LocalDevicesModel : ObservableObject {

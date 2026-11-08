@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 /// Observable model for pane drag offset
 ///

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Manages the Public Suffix List (PSL) for safe domain extraction.
 ///

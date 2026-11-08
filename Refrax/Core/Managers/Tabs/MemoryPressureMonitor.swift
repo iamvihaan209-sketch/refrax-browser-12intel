@@ -1,4 +1,5 @@
 import Dispatch
+import Combine
 import Foundation
 
 /// Monitors system memory pressure and power state for adaptive resource management.

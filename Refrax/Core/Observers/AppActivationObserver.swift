@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 
 /// Observes app activation events for use by scheduled tasks and archive expiration.
 ///

@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 /// Manages the state of the interactive guided tour.
 ///

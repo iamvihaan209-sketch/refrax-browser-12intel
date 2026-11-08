@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 
 /// Coordinator for presenting the system share sheet.
 ///

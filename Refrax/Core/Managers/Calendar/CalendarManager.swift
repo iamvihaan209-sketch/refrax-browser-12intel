@@ -1,4 +1,5 @@
 import EventKit
+import Combine
 import Foundation
 
 /// Represents a calendar event for display in the sidebar widget.

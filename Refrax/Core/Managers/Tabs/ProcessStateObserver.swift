@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Observes web process state changes with `@Observable` integration.

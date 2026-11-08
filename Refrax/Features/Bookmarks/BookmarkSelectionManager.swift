@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Manages multi-bookmark selection state for batch operations.
 ///

@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import WebKit
 
 /// Samples colors from the left edge of a WebView for the compact sidebar edge extension.

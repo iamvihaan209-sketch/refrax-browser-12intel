@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 
 /// Installed engines and their running hosts.
 ///

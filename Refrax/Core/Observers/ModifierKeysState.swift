@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 
 /// Tracks the current state of keyboard modifier keys.
 ///

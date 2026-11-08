@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Key for tracking extension contexts in isolated/private spaces.

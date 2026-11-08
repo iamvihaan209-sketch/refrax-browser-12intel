@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Coordinates periodic background tasks for archive expiration and auto-archive rules.
 ///

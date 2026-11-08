@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import Foundation
 
 /// Observes system sleep/wake state and screen lock status.

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Manages WKWebsiteDataStore instances for spaces with separate browsing data.

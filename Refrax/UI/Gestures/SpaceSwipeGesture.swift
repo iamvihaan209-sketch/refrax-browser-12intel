@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import SwiftUI
 
 /// Observable handler for two-finger horizontal swipe gestures to navigate between spaces.

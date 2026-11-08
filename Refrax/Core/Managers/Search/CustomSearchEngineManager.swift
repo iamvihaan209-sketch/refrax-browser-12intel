@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import SwiftData
 
 /// Manages custom search engines with CRUD operations and an in-memory cache.

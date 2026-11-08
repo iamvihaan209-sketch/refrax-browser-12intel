@@ -1,4 +1,5 @@
 import SwiftData
+import Combine
 import SwiftUI
 
 /// Multi-step wizard for importing data from other browsers.

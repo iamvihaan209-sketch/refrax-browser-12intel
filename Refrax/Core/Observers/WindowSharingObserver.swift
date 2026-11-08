@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 
 /// Observes whether an NSWindow is being captured by an external screen sharing session.
 ///

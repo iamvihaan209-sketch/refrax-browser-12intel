@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import Foundation
 
 /// Manages feedback composition, attachment collection, and submission.

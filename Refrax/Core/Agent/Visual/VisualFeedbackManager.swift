@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Speed presets for agent visual feedback animations.
 enum FeedbackSpeed: Sendable {

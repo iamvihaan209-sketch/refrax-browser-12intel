@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// What the engine catalog offers this copy of Refrax, and the installs it has started.
 final class EngineDistribution : ObservableObject {

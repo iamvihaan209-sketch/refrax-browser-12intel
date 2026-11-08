@@ -19,8 +19,8 @@ import SwiftData
 ///
 /// `@MainActor` because it drives SwiftUI sheet presentation. The continuation is stored
 /// until the user taps a button, then resumed exactly once.
-@MainActor @Observable
-final class SyncAccountChangeHandler {
+@MainActor
+final class SyncAccountChangeHandler: ObservableObject {
 
     // MARK: - Types
 

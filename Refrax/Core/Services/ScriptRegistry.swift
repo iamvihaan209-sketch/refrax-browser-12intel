@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Central registry for all user scripts injected into web pages.

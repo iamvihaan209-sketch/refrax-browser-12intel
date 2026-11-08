@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import WebKit
 
 /// Manages web view display state across multiple windows.

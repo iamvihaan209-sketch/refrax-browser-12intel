@@ -9,8 +9,8 @@ import Foundation
 ///
 /// Thread safety: all access is `@MainActor` — the interpreter, UI, and control
 /// server all run on main.
-@MainActor @Observable
-final class HumanInterventionManager {
+@MainActor
+final class HumanInterventionManager: ObservableObject {
     /// A pending request waiting for human intervention.
     struct PendingRequest: Identifiable {
         let id: UUID

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Manages Reader Mode functionality for extracting and displaying article content.

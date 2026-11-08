@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import SwiftData
 
 // Manages browsing history recording, querying, and persistence.

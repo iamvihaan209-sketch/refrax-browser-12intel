@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import Foundation
 
 /// Monitors the system clipboard for URLs and publishes them for quick navigation.

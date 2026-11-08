@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Manages cookie inspection and editing across all data stores.

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Service for managing the extension gallery.
 ///

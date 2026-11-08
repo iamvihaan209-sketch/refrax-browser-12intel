@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import SwiftData
 
 // Tracks time spent on domains and enforces time limits.

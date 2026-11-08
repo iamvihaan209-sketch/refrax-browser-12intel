@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 
 /// Manages quick previews for favorites using Option+Click.
 ///

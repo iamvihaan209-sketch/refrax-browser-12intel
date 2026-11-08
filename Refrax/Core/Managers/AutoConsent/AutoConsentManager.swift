@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Manages automatic dismissal of cookie consent banners.

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import WebKit
 
 /// Manages the pool of active WebPage instances with adaptive memory management.

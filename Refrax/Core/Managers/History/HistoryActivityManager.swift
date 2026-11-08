@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import Foundation
 
 /// Manages page activity state for accurate history time-spent tracking.
