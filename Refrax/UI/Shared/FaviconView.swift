@@ -165,7 +165,7 @@ struct FaviconView<Fallback: View>: View {
         }
         .environment(\.faviconSize, size)
         .frame(width: size, height: size)
-        .onChange(of: data) { _, _ in
+        .compatOnChange(of: data) { _, _ in
             // Clear stale decoded image from previous cell content to prevent
             // briefly showing the wrong favicon during NSTableView cell reuse.
             decodedImage = nil

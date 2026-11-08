@@ -69,7 +69,7 @@ struct LoadingIndicatorBar: View {
         .onAppear {
             syncVisibility()
         }
-        .onChange(of: isLoading) { _, _ in
+        .compatOnChange(of: isLoading) { _, _ in
             syncVisibility()
         }
     }

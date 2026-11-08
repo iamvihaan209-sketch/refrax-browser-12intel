@@ -123,13 +123,13 @@ struct PaneContentWrapper: View {
                         cachedTrayTrailingEdge = windowState.detailTrayTrailingEdge
                         updateLinkPreviewOffset(containerMinX: geo.frame(in: .global).minX, animated: false)
                     }
-                    .onChange(of: windowState.detailTrayTrailingEdge) { _, newValue in
+                    .compatOnChange(of: windowState.detailTrayTrailingEdge) { _, newValue in
                         // Only update when change is significant (> 1px) to avoid per-frame updates during animation
                         guard abs(cachedTrayTrailingEdge - newValue) > 1 else { return }
                         cachedTrayTrailingEdge = newValue
                         updateLinkPreviewOffset(containerMinX: geo.frame(in: .global).minX)
                     }
-                    .onChange(of: windowState.sidebarOverlayTrailingEdge) { _, _ in
+                    .compatOnChange(of: windowState.sidebarOverlayTrailingEdge) { _, _ in
                         updateLinkPreviewOffset(containerMinX: geo.frame(in: .global).minX)
                     }
             }
@@ -141,7 +141,7 @@ struct PaneContentWrapper: View {
             cachedTrayTrailingEdge = windowState.detailTrayTrailingEdge
         }
         .onDisappear { endLifecycle() }
-        .onChange(of: webPage?.id) { oldValue, newValue in
+        .compatOnChange(of: webPage?.id) { oldValue, newValue in
             // A tab switch arrives here rather than as onDisappear/onAppear: the
             // outgoing page is hidden and released, the incoming one claimed and shown.
             guard oldValue != newValue else { return }
@@ -159,7 +159,7 @@ struct PaneContentWrapper: View {
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)) { notification in
             handleWindowResignedKey(notification)
         }
-        .onChange(of: webPage?.ownerWindowID) { oldValue, newValue in
+        .compatOnChange(of: webPage?.ownerWindowID) { oldValue, newValue in
             // When ownership is released (becomes nil), immediately claim it.
             // This prevents the visual gap when another window closes and releases ownership.
             guard !isForcedInactive, let webPage, newValue == nil, oldValue != nil else { return }
@@ -372,7 +372,7 @@ private struct FileInputModifier: ViewModifier {
     @ObservedObject var state: DialogState
 
     func body(content: Content) -> some View {
-        content.onChange(of: state.fileInput?.id) { _, newValue in
+        content.compatOnChange(of: state.fileInput?.id) { _, newValue in
             if newValue != nil {
                 presentOpenPanel()
             }
@@ -420,7 +420,7 @@ private struct ClientCertificateModifier: ViewModifier {
     @ObservedObject var state: DialogState
 
     func body(content: Content) -> some View {
-        content.onChange(of: state.clientCertificate?.id) { _, newValue in
+        content.compatOnChange(of: state.clientCertificate?.id) { _, newValue in
             if newValue != nil {
                 presentPanel()
             }

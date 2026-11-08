@@ -30,7 +30,7 @@ import Foundation
 /// let monitor = ClipboardMonitor(settings: browserSettings)
 ///
 /// // Observe detectedURL in UI to show toast
-/// .onChange(of: monitor.detectedURL) { _, url in
+/// .compatOnChange(of: monitor.detectedURL) { _, url in
 ///     if let url {
 ///         showClipboardToast(for: url)
 ///     }

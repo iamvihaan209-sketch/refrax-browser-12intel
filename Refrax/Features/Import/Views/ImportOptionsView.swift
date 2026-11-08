@@ -159,7 +159,7 @@ private struct HistoryDateRangeSlider: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Slider(value: $startValue, in: 0 ... 1)
-                    .onChange(of: startValue) { _, newValue in
+                    .compatOnChange(of: startValue) { _, newValue in
                         let newStart = minDate.addingTimeInterval(newValue * totalSeconds)
                         if newStart < selectedRange.upperBound {
                             selectedRange = newStart ... selectedRange.upperBound
@@ -173,7 +173,7 @@ private struct HistoryDateRangeSlider: View {
                     .foregroundStyle(.secondary)
                     .frame(width: 30, alignment: .leading)
                 Slider(value: $endValue, in: 0 ... 1)
-                    .onChange(of: endValue) { _, newValue in
+                    .compatOnChange(of: endValue) { _, newValue in
                         let newEnd = minDate.addingTimeInterval(newValue * totalSeconds)
                         if newEnd > selectedRange.lowerBound {
                             selectedRange = selectedRange.lowerBound ... newEnd

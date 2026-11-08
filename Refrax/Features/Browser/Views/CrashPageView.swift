@@ -36,7 +36,7 @@ struct CrashPageView: View {
                     .frame(maxWidth: isCompact ? Layout.compactMaxWidth : Layout.fullMaxWidth)
                     .frame(maxWidth: .infinity)
             }
-            .onChange(of: geometry.size, initial: true) { _, newSize in
+            .compatOnChange(of: geometry.size, initial: true) { _, newSize in
                 isCompact = newSize.width < Layout.compactWidthThreshold
                     || newSize.height < Layout.compactHeightThreshold
             }

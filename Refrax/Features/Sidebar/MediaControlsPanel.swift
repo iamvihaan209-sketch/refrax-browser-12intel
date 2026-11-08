@@ -148,12 +148,12 @@ struct MediaControlsPanel: View {
             }
         }
         // These observers must be outside the `if` to fire when panel is closed
-        .onChange(of: mediaControlsManager.activeSections.isEmpty) { _, isEmpty in
+        .compatOnChange(of: mediaControlsManager.activeSections.isEmpty) { _, isEmpty in
             if isEmpty {
                 mediaControlsManager.closeIfNoActiveMedia()
             }
         }
-        .onChange(of: mediaControlsManager.hasActiveMedia) { _, hasMedia in
+        .compatOnChange(of: mediaControlsManager.hasActiveMedia) { _, hasMedia in
             if hasMedia {
                 mediaControlsManager.expandIfPinnedAndHasMedia()
             }

@@ -444,7 +444,7 @@ private struct AddSourceAppRuleSheet: View {
                         }
                         .labelsHidden()
                         .fixedSize()
-                        .onChange(of: bundleIDPattern) { _, newValue in
+                        .compatOnChange(of: bundleIDPattern) { _, newValue in
                             if let match = SourceAppRule.CommonApps.all.first(where: { $0.bundleID == newValue }) {
                                 if name.isEmpty {
                                     name = "Links from \(match.name)"

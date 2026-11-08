@@ -64,7 +64,7 @@ struct YTDLPSettingsSection: View {
         .task {
             await checkInstallation()
         }
-        .onChange(of: settings.ytdlpEnabled) { _, enabled in
+        .compatOnChange(of: settings.ytdlpEnabled) { _, enabled in
             if enabled {
                 Task { await checkInstallation() }
             }

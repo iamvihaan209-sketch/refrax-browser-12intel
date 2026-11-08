@@ -265,7 +265,7 @@ struct FallbackColorWheelView: View {
                     .onChanged { pick(at: $0.location, center: center, radius: radius) },
             )
         }
-        .onChange(of: brightness) { _, newBrightness in
+        .compatOnChange(of: brightness) { _, newBrightness in
             let hsb = hsbComponents()
             color = Color(hue: hsb.hue, saturation: hsb.saturation, brightness: newBrightness)
         }

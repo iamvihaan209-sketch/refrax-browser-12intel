@@ -12,7 +12,7 @@ struct GracePeriodModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .opacity(showContent ? 1 : 0)
-            .onChange(of: shouldDelay, initial: true) { _, shouldDelay in
+            .compatOnChange(of: shouldDelay, initial: true) { _, shouldDelay in
                 delayTask?.cancel()
                 if shouldDelay {
                     delayTask = Task {

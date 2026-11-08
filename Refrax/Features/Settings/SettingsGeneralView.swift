@@ -171,7 +171,7 @@ struct GeneralSettingsView: View {
             Section {
                 Toggle("Show calendar widget in sidebar", isOn: $settings.showCalendarWidget)
                     .highlightable(id: "general.showCalendarWidget", highlightedItemId: highlightedItemId)
-                    .onChange(of: settings.showCalendarWidget) { _, enabled in
+                    .compatOnChange(of: settings.showCalendarWidget) { _, enabled in
                         if enabled, calendarManager.authorizationStatus == .notDetermined {
                             Task {
                                 await calendarManager.requestAccess()

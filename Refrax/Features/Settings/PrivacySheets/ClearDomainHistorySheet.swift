@@ -46,7 +46,7 @@ struct ClearDomainHistorySheet: View {
             domains = await historyManager.allDomains()
             isLoading = false
         }
-        .onChange(of: selectedDomains) { _, newSelection in
+        .compatOnChange(of: selectedDomains) { _, newSelection in
             countFetchTask?.cancel()
             countFetchTask = Task {
                 for domain in newSelection where domainCounts[domain] == nil {

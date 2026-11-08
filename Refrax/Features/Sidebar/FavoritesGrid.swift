@@ -56,7 +56,7 @@ struct FavoritesGrid: View {
         // Reset frame and layout info when favorites become empty.
         // The onGeometryChange inside the conditional view never fires when
         // favorites become empty (the view disappears), leaving stale values.
-        .onChange(of: layoutManager.favoritesLayout.isEmpty) { _, isEmpty in
+        .compatOnChange(of: layoutManager.favoritesLayout.isEmpty) { _, isEmpty in
             if isEmpty {
                 dragCoordinator.updateFavoritesGridFrame(.zero)
                 dragCoordinator.clearFavoritesGridLayout()
@@ -65,7 +65,7 @@ struct FavoritesGrid: View {
         // Update layout when favorites count changes (affects column count and tile width).
         // The onGeometryChange only fires when the frame changes, but adding/removing
         // items can change the column layout without changing the frame dimensions.
-        .onChange(of: layoutManager.favoritesLayout.count) { _, count in
+        .compatOnChange(of: layoutManager.favoritesLayout.count) { _, count in
             guard count > 0, measuredWidth > 0 else { return }
             let params = computeLayoutParams(for: measuredWidth)
             dragCoordinator.updateFavoritesGridLayout(

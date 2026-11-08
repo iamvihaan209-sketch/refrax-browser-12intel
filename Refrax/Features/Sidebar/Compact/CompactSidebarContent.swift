@@ -463,7 +463,7 @@ private struct CompactNavigationControls: View {
                 addressBarDismissTask?.cancel()
             }
         }
-        .onChange(of: isLoading) { oldValue, newValue in
+        .compatOnChange(of: isLoading) { oldValue, newValue in
             if newValue {
                 addressBarDismissTask?.cancel()
                 withAnimation(.snappy(duration: 0.25)) {

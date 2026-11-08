@@ -140,7 +140,7 @@ struct UnifiedContentView: View {
                 guard frameUpdateGeneration > 0 else { return }
                 updateCachedFrames()
             }
-            .onChange(of: windowState.isInLayoutMode) { _, newValue in
+            .compatOnChange(of: windowState.isInLayoutMode) { _, newValue in
                 if newValue {
                     loadLayoutState()
                 } else {
@@ -148,7 +148,7 @@ struct UnifiedContentView: View {
                 }
                 frameUpdateGeneration += 1
             }
-            .onChange(of: tab.layoutConfigurationData) { _, _ in
+            .compatOnChange(of: tab.layoutConfigurationData) { _, _ in
                 // layoutConfiguration is computed, so observe the backing data.
                 // This handles same-tab layout changes (divider drag, page add/remove).
                 // Tab switches are handled by reinitializeForNewTab() via onChange(of: tab.id).
@@ -159,14 +159,14 @@ struct UnifiedContentView: View {
                 // This prevents redundant frame recalculation during tab switches.
                 syncNewPagesToLayoutGrid()
             }
-            .onChange(of: horizontalDivider) { _, _ in
+            .compatOnChange(of: horizontalDivider) { _, _ in
                 // Divider changed - update frames for multi-pane layouts.
                 // Single-pane tabs don't use dividers so this only fires for multi-pane.
                 if !windowState.isInLayoutMode, tab.isMultiPage {
                     frameUpdateGeneration += 1
                 }
             }
-            .onChange(of: verticalDivider) { _, _ in
+            .compatOnChange(of: verticalDivider) { _, _ in
                 // Divider changed - update frames for multi-pane layouts.
                 if !windowState.isInLayoutMode, tab.isMultiPage {
                     frameUpdateGeneration += 1
@@ -176,7 +176,7 @@ struct UnifiedContentView: View {
         .onAppear {
             initializeState()
         }
-        .onChange(of: tab.id) { _, _ in
+        .compatOnChange(of: tab.id) { _, _ in
             // Tab changed - reinitialize state to match new tab's configuration.
             // This syncs workingConfig and frames for the new tab.
             reinitializeForNewTab()

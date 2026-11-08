@@ -49,7 +49,7 @@ struct GraphContentView: View {
             .onAppear {
                 onScrollToInitialPosition(proxy)
             }
-            .onChange(of: layout) { _, newLayout in
+            .compatOnChange(of: layout) { _, newLayout in
                 if let direction = navigationDirection.wrappedValue {
                     onScrollAfterNavigation(proxy, newLayout, direction)
                     navigationDirection.wrappedValue = nil

@@ -147,7 +147,7 @@ struct RemindMeSheet: View {
         )
         .datePickerStyle(.compact)
         .labelsHidden()
-        .onChange(of: customDate) { _, _ in
+        .compatOnChange(of: customDate) { _, _ in
             if selectedDuration != .custom {
                 selectedDuration = .custom
             }

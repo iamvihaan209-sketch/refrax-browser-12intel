@@ -75,7 +75,7 @@ struct AddressLensOverlay: View {
         }
 
         Color.clear
-            .onChange(of: windowState.showsAddressLens) { wasShowing, isShowing in
+            .compatOnChange(of: windowState.showsAddressLens) { wasShowing, isShowing in
                 if isShowing, !wasShowing {
                     openLens()
                 } else if !isShowing, wasShowing {

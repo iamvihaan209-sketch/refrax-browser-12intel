@@ -36,7 +36,7 @@ private struct ArrowlessPopoverModifier<PopoverContent: View>: ViewModifier {
     func body(content: Content) -> some View {
         content
             .popover(isPresented: $actuallyPresented, arrowEdge: arrowEdge, content: self.content)
-            .onChange(of: isPresented) { _, newValue in
+            .compatOnChange(of: isPresented) { _, newValue in
                 if newValue {
                     // Register before setting local state - this ensures the flag is set
                     // before SwiftUI creates the popover in the next render pass
@@ -46,7 +46,7 @@ private struct ArrowlessPopoverModifier<PopoverContent: View>: ViewModifier {
                     actuallyPresented = false
                 }
             }
-            .onChange(of: actuallyPresented) { _, newValue in
+            .compatOnChange(of: actuallyPresented) { _, newValue in
                 // Sync dismissal back to the external binding
                 if !newValue, isPresented {
                     isPresented = false

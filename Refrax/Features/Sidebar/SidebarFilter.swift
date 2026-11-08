@@ -110,14 +110,14 @@ struct SidebarFilter: View {
                 collapsedFilterButton
             }
         }
-        .onChange(of: shouldPreventCollapse) { _, shouldPrevent in
+        .compatOnChange(of: shouldPreventCollapse) { _, shouldPrevent in
             if shouldPrevent {
                 cancelCollapseTimer()
             } else if isExpanded {
                 startCollapseTimer()
             }
         }
-        .onChange(of: isExpanded) { _, expanded in
+        .compatOnChange(of: isExpanded) { _, expanded in
             if expanded {
                 if !shouldPreventCollapse {
                     startCollapseTimer()
@@ -340,7 +340,7 @@ struct SidebarFilter: View {
             .textFieldStyle(.plain)
             .font(.system(size: 13))
             .focused($isTextFieldFocused)
-            .onChange(of: filterManager.searchText) { _, newValue in
+            .compatOnChange(of: filterManager.searchText) { _, newValue in
                 // Note: Actual filtering is debounced in FilterManager. Here we only
                 // handle immediate feedback (autocomplete) and edge case (clearing).
                 if newValue.isEmpty, filterManager.quickFilter == nil, filterManager.appliedSavedFilter == nil {

@@ -48,7 +48,7 @@ struct CalendarWidgetButton: View {
                     isExpanded = true
                 }
             }
-            .onChange(of: calendarManager.hasImminentEvent) { _, hasImminent in
+            .compatOnChange(of: calendarManager.hasImminentEvent) { _, hasImminent in
                 if settings.calendarAutoExpandOnImminent, hasImminent, !isExpanded {
                     withAnimation {
                         isExpanded = true

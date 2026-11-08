@@ -84,7 +84,7 @@ struct HistoryView: View {
         } message: {
             Text("This will permanently delete all browsing history. This action cannot be undone.")
         }
-        .onChange(of: selection) { _, newSelection in
+        .compatOnChange(of: selection) { _, newSelection in
             // Update selected entry for inspector when single selection
             if newSelection.count == 1, let id = newSelection.first {
                 selectedEntry = filteredEntries.first { $0.id == id }
@@ -92,7 +92,7 @@ struct HistoryView: View {
                 selectedEntry = nil
             }
         }
-        .onChange(of: selectedEntry) { _, entry in
+        .compatOnChange(of: selectedEntry) { _, entry in
             timeSpentTask?.cancel()
             guard let entry else {
                 domainTimeToday = nil
@@ -107,16 +107,16 @@ struct HistoryView: View {
         .task {
             recomputeFilteredEntries()
         }
-        .onChange(of: allEntries) { _, _ in
+        .compatOnChange(of: allEntries) { _, _ in
             recomputeFilteredEntries()
         }
-        .onChange(of: selectedCategories) { _, _ in
+        .compatOnChange(of: selectedCategories) { _, _ in
             recomputeFilteredEntries()
         }
-        .onChange(of: searchText) { _, _ in
+        .compatOnChange(of: searchText) { _, _ in
             recomputeFilteredEntries()
         }
-        .onChange(of: sortOrder) { _, _ in
+        .compatOnChange(of: sortOrder) { _, _ in
             recomputeFilteredEntries()
         }
     }

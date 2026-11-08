@@ -41,7 +41,7 @@ struct HoverFillActionModifier<ClipShape: Shape>: ViewModifier {
             .onHover { hovering in
                 handleHover(hovering)
             }
-            .onChange(of: isActive) { _, active in
+            .compatOnChange(of: isActive) { _, active in
                 if !active, !isHovering {
                     // Popover dismissed and not hovering - reset fill
                     withAnimation(.easeOut(duration: 0.15)) {

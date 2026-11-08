@@ -126,7 +126,7 @@ private struct CustomSymbolInput: View {
                 TextField("SF Symbol name", text: $symbolName)
                     .textFieldStyle(.roundedBorder)
                     .focused($isTextFieldFocused)
-                    .onChange(of: symbolName) { _, newValue in
+                    .compatOnChange(of: symbolName) { _, newValue in
                         scheduleDebounce(for: newValue)
                     }
 

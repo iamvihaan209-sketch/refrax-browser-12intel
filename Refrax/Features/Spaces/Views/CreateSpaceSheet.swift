@@ -51,7 +51,7 @@ struct CreateSpaceSheet: View {
                 }
                 .padding(.horizontal, SpaceSheetLayout.horizontalPadding)
                 .padding(.vertical, SpaceSheetLayout.verticalPadding)
-                .onChange(of: dataStoreMode) { _, newValue in
+                .compatOnChange(of: dataStoreMode) { _, newValue in
                     if case .private = newValue {
                         isLockEnabled = true
                         lockTimeout = .onLoseFocus

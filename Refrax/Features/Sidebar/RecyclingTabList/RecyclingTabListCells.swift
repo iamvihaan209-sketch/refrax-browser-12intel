@@ -292,7 +292,7 @@ struct CompactCommandLensCell: View {
         .arrowlessPopover(isPresented: $showingFilterPopover, arrowEdge: .trailing) {
             CompactFilterPopover(filterManager: env.filterManager)
         }
-        .onChange(of: showingFilterPopover) { _, isShowing in
+        .compatOnChange(of: showingFilterPopover) { _, isShowing in
             if !isShowing {
                 env.filterManager.searchText = ""
             }

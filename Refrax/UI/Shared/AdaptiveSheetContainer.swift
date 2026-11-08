@@ -130,7 +130,7 @@ private struct SizeReader: View {
                 .onAppear {
                     updateSize(from: geometry)
                 }
-                .onChange(of: geometry.size) { _, _ in
+                .compatOnChange(of: geometry.size) { _, _ in
                     updateSize(from: geometry)
                 }
         }

@@ -120,18 +120,18 @@ struct BookmarksView: View {
         } content: {
             ImportWizardView()
         }
-        .onChange(of: rootFolders) { _, _ in
+        .compatOnChange(of: rootFolders) { _, _ in
             validateSelectedFolder()
         }
-        .onChange(of: selectedFolder) { _, newFolder in
+        .compatOnChange(of: selectedFolder) { _, newFolder in
             if newFolder != nil {
                 showFavoritesOnly = false
             }
         }
-        .onChange(of: searchText) { _, _ in
+        .compatOnChange(of: searchText) { _, _ in
             selectionManager.clearSelection()
         }
-        .onChange(of: selectionManager.selectedIDs) { _, newSelection in
+        .compatOnChange(of: selectionManager.selectedIDs) { _, newSelection in
             // Update inspector when single selection
             if newSelection.count == 1, let id = newSelection.first {
                 selectedBookmark = sortedBookmarks.first { $0.id == id }

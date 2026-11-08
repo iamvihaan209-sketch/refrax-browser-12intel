@@ -35,7 +35,7 @@ struct AddressBarSavePasswordButton: View {
                 }
             }
         }
-        .onChange(of: autoFillState.pendingSaveRequest != nil) { _, hasPendingRequest in
+        .compatOnChange(of: autoFillState.pendingSaveRequest != nil) { _, hasPendingRequest in
             if hasPendingRequest {
                 showPopover()
             } else {

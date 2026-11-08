@@ -140,7 +140,7 @@ struct Sidebar: View {
         rebuildLayoutAnimated()
       }
     }
-    .onChange(of: transitionCoordinator.isTransitioning) { _, isTransitioning in
+    .compatOnChange(of: transitionCoordinator.isTransitioning) { _, isTransitioning in
       // When transition completes, perform any deferred layout rebuild
       if !isTransitioning, pendingLayoutRebuild {
         pendingLayoutRebuild = false

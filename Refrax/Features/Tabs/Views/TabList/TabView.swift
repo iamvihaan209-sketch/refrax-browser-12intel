@@ -202,11 +202,11 @@ struct TabView: View {
         .accessibilityAddTraits(.isButton)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
         .onAppear { updateCachedDisplayValues() }
-        .onChange(of: tab.displayInfo) { _, _ in updateCachedDisplayValues() }
+        .compatOnChange(of: tab.displayInfo) { _, _ in updateCachedDisplayValues() }
         // Explicit observation of layoutConfigurationData for multi-page tabs.
         // displayInfo depends on activePage which is computed from this data,
         // but SwiftUI doesn't track through the computed property chain reliably.
-        .onChange(of: tab.layoutConfigurationData) { _, _ in updateCachedDisplayValues() }
+        .compatOnChange(of: tab.layoutConfigurationData) { _, _ in updateCachedDisplayValues() }
     }
     
     // MARK: - Computed Properties
@@ -648,7 +648,7 @@ private struct TabRenameField: View {
                     selectAllText()
                 }
             }
-            .onChange(of: isTextFieldFocused) { _, focused in
+            .compatOnChange(of: isTextFieldFocused) { _, focused in
                 if !focused { onCancel() }
             }
             .accessibilityIdentifier("tab-title-edit-\(tab.id)")

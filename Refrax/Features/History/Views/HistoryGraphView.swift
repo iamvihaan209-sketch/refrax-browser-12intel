@@ -151,7 +151,7 @@ struct HistoryGraphView: View {
                 .onAppear {
                     viewportSize = geometry.size
                 }
-                .onChange(of: geometry.size) { _, newSize in
+                .compatOnChange(of: geometry.size) { _, newSize in
                     viewportSize = newSize
                 }
             }
@@ -164,7 +164,7 @@ struct HistoryGraphView: View {
         .task {
             await loadHistoryGraph()
         }
-        .onChange(of: selectedDate) { _, _ in
+        .compatOnChange(of: selectedDate) { _, _ in
             Task {
                 await loadHistoryGraph()
             }

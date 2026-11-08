@@ -91,7 +91,7 @@ struct SpaceSettingsPopover: View {
                     .textFieldStyle(.plain)
                     .font(.system(size: 14, weight: .medium))
                     .focused($isNameFieldFocused)
-                    .onChange(of: editingName) { _, _ in
+                    .compatOnChange(of: editingName) { _, _ in
                         commitNameIfChanged()
                     }
             }
@@ -398,7 +398,7 @@ private struct CustomSymbolInput: View {
                 TextField("SF Symbol name", text: $symbolName)
                     .textFieldStyle(.roundedBorder)
                     .focused($isTextFieldFocused)
-                    .onChange(of: symbolName) { _, newValue in
+                    .compatOnChange(of: symbolName) { _, newValue in
                         scheduleDebounce(for: newValue)
                     }
 

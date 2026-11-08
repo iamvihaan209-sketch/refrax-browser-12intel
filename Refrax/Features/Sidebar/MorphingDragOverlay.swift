@@ -446,11 +446,11 @@ private struct MorphableOverlayContent: View {
         .task { await preloadLargeFaviconIfNeeded() }
         // Use onChange with initial:true to handle both first appearance and changes.
         // This avoids race conditions between onAppear and onChange handlers.
-        .onChange(of: mode, initial: true) { _, _ in
+        .compatOnChange(of: mode, initial: true) { _, _ in
             // Only animate after first initialization
             updateAnimatedValues(animated: isInitialized)
         }
-        .onChange(of: tabRowWidth) { _, _ in
+        .compatOnChange(of: tabRowWidth) { _, _ in
             if isInitialized {
                 updateAnimatedValues(animated: true)
             }

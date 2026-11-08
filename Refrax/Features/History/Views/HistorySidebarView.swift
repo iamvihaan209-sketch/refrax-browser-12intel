@@ -48,7 +48,7 @@ struct HistorySidebarView: View {
         }
         .listStyle(.sidebar)
         .frame(minWidth: 180)
-        .onChange(of: allEntries) { _, entries in
+        .compatOnChange(of: allEntries) { _, entries in
             updateDerivedState(from: entries)
         }
         .task {

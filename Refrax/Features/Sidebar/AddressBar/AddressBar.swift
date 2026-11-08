@@ -157,14 +157,14 @@ struct AddressBar: View {
         .task {
             await PublicSuffixList.shared.loadIfNeeded()
         }
-        .onChange(of: url) { _, _ in
+        .compatOnChange(of: url) { _, _ in
             // Deactivate reader mode when URL changes (guard to avoid redundant mutations)
             if let tabID, readerModeManager.isReaderActive(for: tabID) {
                 readerModeManager.deactivateReader(for: tabID)
             }
             checkReaderAvailability()
         }
-        .onChange(of: isLoading) { wasLoading, nowLoading in
+        .compatOnChange(of: isLoading) { wasLoading, nowLoading in
             // Check reader availability when page finishes loading
             if wasLoading, !nowLoading {
                 checkReaderAvailability()
@@ -180,7 +180,7 @@ struct AddressBar: View {
             updateCachedWebPage()
             checkReaderAvailability()
         }
-        .onChange(of: addressBarContext?.tabPage?.id) { _, _ in
+        .compatOnChange(of: addressBarContext?.tabPage?.id) { _, _ in
             updateCachedWebPage()
         }
     }
@@ -657,7 +657,7 @@ struct AddressBar: View {
                 .onAppear {
                     windowState.addressBarFrame = geo.frame(in: .global)
                 }
-                .onChange(of: geo.frame(in: .global)) { _, newFrame in
+                .compatOnChange(of: geo.frame(in: .global)) { _, newFrame in
                     windowState.addressBarFrame = newFrame
                 }
         }

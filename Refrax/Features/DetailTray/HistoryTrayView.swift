@@ -76,7 +76,7 @@ struct HistoryTrayView: View {
         } message: {
             Text("This will remove all browsing history. This action cannot be undone.")
         }
-        .onChange(of: searchText) { _, newText in
+        .compatOnChange(of: searchText) { _, newText in
             guard isSearching else {
                 searchDebouncer.cancel()
                 searchResults = []

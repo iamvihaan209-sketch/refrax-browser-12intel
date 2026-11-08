@@ -272,7 +272,7 @@ struct TranslationPopoverContent: View {
             loadSitePreferences()
             await checkAvailability()
         }
-        .onChange(of: selectedLanguageIndex) { _, _ in
+        .compatOnChange(of: selectedLanguageIndex) { _, _ in
             Task { await checkAvailability() }
         }
     }
@@ -345,14 +345,14 @@ struct TranslationPopoverContent: View {
             if let source = detectedLanguage {
                 Toggle("Always translate \(TranslationManager.displayName(for: source))", isOn: $alwaysTranslateLanguage)
                     .font(.subheadline)
-                    .onChange(of: alwaysTranslateLanguage) { _, newValue in
+                    .compatOnChange(of: alwaysTranslateLanguage) { _, newValue in
                         updateAlwaysTranslatePreference(newValue, for: source)
                     }
             }
 
             Toggle("Never translate this website", isOn: $neverTranslateSite)
                 .font(.subheadline)
-                .onChange(of: neverTranslateSite) { _, newValue in
+                .compatOnChange(of: neverTranslateSite) { _, newValue in
                     updateNeverTranslatePreference(newValue)
                 }
         }

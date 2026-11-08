@@ -106,13 +106,13 @@ struct WebViewContainer: View {
                         cachedTrayTrailingEdge = windowState.detailTrayTrailingEdge
                         updateLinkPreviewOffset(containerMinX: geo.frame(in: .global).minX, animated: false)
                     }
-                    .onChange(of: windowState.detailTrayTrailingEdge) { _, newValue in
+                    .compatOnChange(of: windowState.detailTrayTrailingEdge) { _, newValue in
                         // Only update when change is significant (> 1px) to avoid per-frame updates during animation
                         guard abs(cachedTrayTrailingEdge - newValue) > 1 else { return }
                         cachedTrayTrailingEdge = newValue
                         updateLinkPreviewOffset(containerMinX: geo.frame(in: .global).minX)
                     }
-                    .onChange(of: windowState.sidebarOverlayTrailingEdge) { _, _ in
+                    .compatOnChange(of: windowState.sidebarOverlayTrailingEdge) { _, _ in
                         updateLinkPreviewOffset(containerMinX: geo.frame(in: .global).minX)
                     }
             }

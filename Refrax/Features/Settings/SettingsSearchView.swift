@@ -186,7 +186,7 @@ private struct CustomSearchEngineEditSheet: View {
                     TextField("Name", text: $name, prompt: Text("YouTube"))
                     TextField("Alias", text: $alias, prompt: Text("yt"))
                         .textCase(.lowercase)
-                        .onChange(of: alias) { _, newValue in
+                        .compatOnChange(of: alias) { _, newValue in
                             alias = newValue.lowercased()
                         }
 

@@ -26,23 +26,23 @@ struct GuidedTourOverlay: View {
             .allowsHitTesting(true)
             .transition(.move(edge: .bottom).combined(with: .opacity))
             .animation(.spring(duration: 0.4), value: tourManager.currentStep)
-            .onChange(of: windowState.showsCommandLens) { _, isOpen in
+            .compatOnChange(of: windowState.showsCommandLens) { _, isOpen in
                 handleCommandLensChange(isOpen: isOpen)
             }
-            .onChange(of: browserState.tabListVersion) { _, _ in
+            .compatOnChange(of: browserState.tabListVersion) { _, _ in
                 handleTabListChange()
             }
-            .onChange(of: windowState.isInLayoutMode) { _, isInLayout in
+            .compatOnChange(of: windowState.isInLayoutMode) { _, isInLayout in
                 if isInLayout, tourManager.currentStep == .enterLayoutMode {
                     tourManager.advance()
                 }
             }
-            .onChange(of: windowState.isInspectorCollapsed) { _, isCollapsed in
+            .compatOnChange(of: windowState.isInspectorCollapsed) { _, isCollapsed in
                 if !isCollapsed, tourManager.currentStep == .openReferencePane {
                     tourManager.advance()
                 }
             }
-            .onChange(of: tourManager.currentStep) { _, newStep in
+            .compatOnChange(of: tourManager.currentStep) { _, newStep in
                 if let newStep, newStep != .completed {
                     recordTabCount()
                 }

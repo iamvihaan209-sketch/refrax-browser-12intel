@@ -402,7 +402,7 @@ private struct HighlightModifier: ViewModifier {
                     .fill(isHighlighted ? Color.appAccentColor.opacity(0.15) : Color.clear)
                     .animation(.easeInOut(duration: 0.3), value: isHighlighted),
             )
-            .onChange(of: highlightedItemId) { _, newValue in
+            .compatOnChange(of: highlightedItemId) { _, newValue in
                 if newValue == itemId {
                     withAnimation(.easeInOut(duration: 0.3).repeatCount(3, autoreverses: true)) {
                         isAnimating = true

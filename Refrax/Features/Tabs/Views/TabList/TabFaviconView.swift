@@ -96,9 +96,9 @@ struct TabFaviconView: View {
         }
         .accessibilityHidden(true)
         .onAppear { updateDecodedFavicon() }
-        .onChange(of: currentFaviconData) { _, _ in updateDecodedFavicon() }
-        .onChange(of: targetPage?.url) { _, _ in updateDecodedFavicon() }
-        .onChange(of: isLoading) { _, isNowLoading in
+        .compatOnChange(of: currentFaviconData) { _, _ in updateDecodedFavicon() }
+        .compatOnChange(of: targetPage?.url) { _, _ in updateDecodedFavicon() }
+        .compatOnChange(of: isLoading) { _, isNowLoading in
             if isNowLoading {
                 // Loading started - set flag now so it's ready when loading finishes
                 delayFallback = true

@@ -66,10 +66,10 @@ struct DownloadsButton: View {
             .accessibilityIdentifier("sidebar-downloads")
             .accessibilityLabel(accessibilityLabel)
             .help("Downloads")
-            .onChange(of: downloadManager.activeDownloadCount) { oldValue, newValue in
+            .compatOnChange(of: downloadManager.activeDownloadCount) { oldValue, newValue in
                 handleDownloadCountChange(from: oldValue, to: newValue)
             }
-            .onChange(of: downloadManager.latestCompletionDate) { _, _ in
+            .compatOnChange(of: downloadManager.latestCompletionDate) { _, _ in
                 if !downloadManager.hasActiveDownloads {
                     scheduleHide(after: Layout.completionVisibilitySeconds)
                 }

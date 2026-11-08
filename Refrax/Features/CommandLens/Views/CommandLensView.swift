@@ -59,7 +59,7 @@ struct CommandLensView: View {
         .animation(reduceMotion ? nil : .spring(duration: 0.3), value: windowState.isCreatingReferenceTab)
         .animation(reduceMotion ? nil : .spring(duration: 0.3), value: windowState.layoutModeTargetPosition)
         .task { onAppear() }
-        .onChange(of: manager.inputText) { _, newValue in
+        .compatOnChange(of: manager.inputText) { _, newValue in
             if !newValue.isEmpty { cancelAutoShowButtonsTimer() }
         }
         .onDisappear {

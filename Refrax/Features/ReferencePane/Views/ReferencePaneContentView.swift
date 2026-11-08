@@ -84,7 +84,7 @@ struct ReferencePaneContentView: View {
             }
         }
         .webViewForcedInactive(shouldForceInactive)
-        .onChange(of: isInspectorCollapsed) { wasCollapsed, isCollapsed in
+        .compatOnChange(of: isInspectorCollapsed) { wasCollapsed, isCollapsed in
             // Refresh when inspector expands (was collapsed, now not)
             if wasCollapsed, !isCollapsed {
                 refreshToken += 1

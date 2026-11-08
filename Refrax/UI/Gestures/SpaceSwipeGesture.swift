@@ -499,7 +499,7 @@ struct SidebarSpaceSwipeGestureModifier: ViewModifier {
                     layoutManager: layoutManager,
                 )
             }
-            .onChange(of: windowState.activeSpaceID) { _, _ in
+            .compatOnChange(of: windowState.activeSpaceID) { _, _ in
                 // Reset gesture state when space changes externally
                 handler.cancelGesture()
             }

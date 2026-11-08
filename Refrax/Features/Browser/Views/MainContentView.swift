@@ -59,10 +59,10 @@ struct MainContentView: View {
         .overlay(alignment: .top) {
             HumanInterventionBanner()
         }
-        .onChange(of: clipboardMonitor.detectedURL) { _, url in
+        .compatOnChange(of: clipboardMonitor.detectedURL) { _, url in
             showClipboardToast = url != nil
         }
-        .onChange(of: settings.clipboardLinkMonitoring) { _, _ in
+        .compatOnChange(of: settings.clipboardLinkMonitoring) { _, _ in
             clipboardMonitor.syncWithSettings()
         }
     }
