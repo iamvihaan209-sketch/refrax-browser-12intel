@@ -34,16 +34,16 @@ final class TabSwitcherManager : ObservableObject {
     // MARK: - Public State
 
     /// Whether the tab switcher overlay is currently visible.
-    private(set) @Published var isActive: Bool = false
+    @Published private(set) var isActive: Bool = false
 
     /// The currently selected index in the switcher (0-based).
-    private(set) @Published var selectedIndex: Int = 0
+    @Published private(set) var selectedIndex: Int = 0
 
     // MARK: - Private State
 
     /// IDs of recently used tabs, ordered by most recently used first.
     /// Maximum of 5 entries.
-    private @Published var recentlyUsedTabIDs: [Tab.ID] = []
+    @Published private var recentlyUsedTabIDs: [Tab.ID] = []
 
     /// Task for observing tab activation changes.
     private var observationTask: Task<Void, Never>?

@@ -31,7 +31,7 @@ final class TabFilterState : ObservableObject {
     }
     
     /// Debounced search text used for actual filtering
-    private(set) @Published var debouncedSearchText: String = ""
+    @Published private(set) var debouncedSearchText: String = ""
     
     /// Whether to search in tab titles (includes customName and title)
     @Published var searchInTitle: Bool = false
@@ -66,7 +66,7 @@ final class TabFilterState : ObservableObject {
     
     // MARK: - Private State
     
-    private @Published var debounceTask: Task<Void, any Error>?
+    @Published private var debounceTask: Task<Void, any Error>?
     private let debounceDelay: Duration = .milliseconds(300)
     
     // MARK: - Computed Properties

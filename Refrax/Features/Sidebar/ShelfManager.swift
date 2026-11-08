@@ -48,7 +48,7 @@ final class ShelfManager : ObservableObject {
     // MARK: - Properties
 
     /// All shelf items, sorted by creation date (newest first).
-    private(set) @Published var items: [ShelfItem] = []
+    @Published private(set) var items: [ShelfItem] = []
 
     /// Whether the shelf panel is expanded.
     @Published var isExpanded: Bool = false
@@ -231,7 +231,7 @@ final class ShelfManager : ObservableObject {
     private weak var dataStore: WKWebsiteDataStore?
 
     /// Continuation for waiting on a specific download completion.
-    private @Published var downloadContinuations: [UUID: CheckedContinuation<Void, Never>] = [:]
+    @Published private var downloadContinuations: [UUID: CheckedContinuation<Void, Never>] = [:]
 
     /// Configures dependencies for URL downloads.
     ///

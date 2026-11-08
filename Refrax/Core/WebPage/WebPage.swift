@@ -430,7 +430,7 @@ final class WebPage: Identifiable {
     ///
     /// Updated after page load via `updateStickyHeaderDetection()`.
     /// This is observable to trigger SwiftUI updates when detection completes.
-    private @Published var _detectedStickyHeaderViaJS: Bool = false
+    @Published private var _detectedStickyHeaderViaJS: Bool = false
 
     /// Whether the page has a sticky header (fixed-position content at the top).
     ///
@@ -717,7 +717,7 @@ final class WebPage: Identifiable {
     /// (e.g., after navigation), the cache automatically becomes invalid.
     ///
     /// Not marked `` so views are notified when async evaluation completes.
-    private @Published var cachedCertificateInfo: (trust: SecTrust, info: CertificateInfo)?
+    @Published private var cachedCertificateInfo: (trust: SecTrust, info: CertificateInfo)?
 
     /// Tracks in-flight certificate evaluation to prevent duplicate async work.
     private var pendingTrustEvaluation: SecTrust?
@@ -822,7 +822,7 @@ final class WebPage: Identifiable {
     /// Created at web view creation when the fullscreen mode is not `.system`;
     /// must live as long as the web view (its pointer is registered as the
     /// page's fullscreen client info).
-    private(set) @Published var inWindowFullscreenController: InWindowFullscreenController?
+    @Published private(set) var inWindowFullscreenController: InWindowFullscreenController?
 
     /// Whether the web view is currently hosted by the windowed-fullscreen
     /// video window instead of its tab.

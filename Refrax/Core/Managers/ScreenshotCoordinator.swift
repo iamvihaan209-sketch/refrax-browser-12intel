@@ -36,10 +36,10 @@ final class ScreenshotCoordinator : ObservableObject {
     ///
     /// Set after a successful capture. The preview auto-dismisses after a delay,
     /// or can be dismissed by user interaction.
-    private(set) @Published var currentPreview: ScreenshotPreview?
+    @Published private(set) var currentPreview: ScreenshotPreview?
 
     /// Whether element selection mode is currently active.
-    private(set) @Published var isSelectionModeActive = false
+    @Published private(set) var isSelectionModeActive = false
 
     /// Preview data shown after capture.
     struct ScreenshotPreview: Identifiable {

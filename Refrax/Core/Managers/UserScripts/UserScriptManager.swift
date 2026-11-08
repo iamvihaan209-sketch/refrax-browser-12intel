@@ -42,10 +42,10 @@ final class UserScriptManager : ObservableObject {
     // MARK: - State
 
     /// All loaded user scripts.
-    private(set) @Published var scripts: [UserScript] = []
+    @Published private(set) var scripts: [UserScript] = []
 
     /// Script IDs registered with ScriptRegistry.
-    private @Published var registeredScriptIDs: [UUID] = []
+    @Published private var registeredScriptIDs: [UUID] = []
 
     /// Reference to script registry for injection.
     private weak var scriptRegistry: ScriptRegistry?
@@ -57,10 +57,10 @@ final class UserScriptManager : ObservableObject {
     private weak var scriptChannels: ScriptChannelRouter?
 
     /// Performs GM_* API calls.
-    private @Published var messageHandler: UserScriptMessageHandler?
+    @Published private var messageHandler: UserScriptMessageHandler?
 
     /// Worlds with an open `userscript` channel.
-    private @Published var channelWorlds: [ScriptRequest.World] = []
+    @Published private var channelWorlds: [ScriptRequest.World] = []
 
     // MARK: - Initialization
 

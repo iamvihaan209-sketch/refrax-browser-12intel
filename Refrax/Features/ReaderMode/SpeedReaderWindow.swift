@@ -238,7 +238,7 @@ final class SpeedReaderState : ObservableObject {
 
     // MARK: - Playback State
 
-    private(set) @Published var currentIndex: Int
+    @Published private(set) var currentIndex: Int
     @Published var isPlaying: Bool = false {
         didSet {
             if isPlaying {

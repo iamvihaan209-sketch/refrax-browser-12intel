@@ -22,10 +22,10 @@ final class TabHealthProvider : ObservableObject {
     // MARK: - Observable Properties
 
     /// Current snapshots for all tab pages.
-    private(set) @Published var snapshots: [TabHealthSnapshot] = []
+    @Published private(set) var snapshots: [TabHealthSnapshot] = []
 
     /// Filtered and sorted snapshots for display.
-    private(set) @Published var displaySnapshots: [TabHealthSnapshot] = []
+    @Published private(set) var displaySnapshots: [TabHealthSnapshot] = []
 
     /// Current filter mode.
     @Published var filter: TabHealthFilter = .all {

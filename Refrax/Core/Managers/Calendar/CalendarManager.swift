@@ -180,24 +180,24 @@ final class CalendarManager : ObservableObject {
     // MARK: - State
 
     /// Current authorization status for calendar access.
-    private(set) @Published var authorizationStatus: CalendarAuthorizationStatus = .notDetermined
+    @Published private(set) var authorizationStatus: CalendarAuthorizationStatus = .notDetermined
 
     /// Available calendars for selection.
-    private(set) @Published var availableCalendars: [CalendarInfo] = []
+    @Published private(set) var availableCalendars: [CalendarInfo] = []
 
     /// Upcoming events within the look-ahead window.
-    private(set) @Published var upcomingEvents: [CalendarEvent] = []
+    @Published private(set) var upcomingEvents: [CalendarEvent] = []
 
     /// Whether a refresh is in progress.
-    private(set) @Published var isRefreshing: Bool = false
+    @Published private(set) var isRefreshing: Bool = false
 
     /// Error message from the last failed operation.
-    private(set) @Published var lastError: String?
+    @Published private(set) var lastError: String?
 
     // MARK: - Private State
 
-    private @Published var notificationObserver: (any NSObjectProtocol)?
-    private @Published var refreshTask: Task<Void, Never>?
+    @Published private var notificationObserver: (any NSObjectProtocol)?
+    @Published private var refreshTask: Task<Void, Never>?
 
     // MARK: - Initialization
 

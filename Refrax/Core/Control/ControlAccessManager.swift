@@ -137,7 +137,7 @@ nonisolated enum ClientIdentityResolver {
 final class ControlAccessManager : ObservableObject {
     private static let logger = OSLog(subsystem: "website.refrax.browser", category: "control-access")
 
-    private(set) @Published var allowedClients: [AllowedClient] = []
+    @Published private(set) var allowedClients: [AllowedClient] = []
     private unowned let settings: BrowserSettings
 
     /// Callback invoked when an unknown client needs authorization in prompt mode.

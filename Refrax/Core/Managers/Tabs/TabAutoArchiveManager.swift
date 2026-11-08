@@ -54,7 +54,7 @@ final class TabAutoArchiveManager : ObservableObject {
     unowned var windowManager: WindowManager!
 
     /// Task that observes settings changes.
-    private @Published var settingsObservationTask: Task<Void, Never>?
+    @Published private var settingsObservationTask: Task<Void, Never>?
 
     // MARK: - Archive Threshold Tracking
 
@@ -62,7 +62,7 @@ final class TabAutoArchiveManager : ObservableObject {
     ///
     /// Updated when rules execute or when a tab is activated.
     /// Use ``isAtArchiveThreshold(_:)`` for O(1) lookup.
-    private(set) @Published var tabsAtArchiveThreshold: Set<Tab.ID> = []
+    @Published private(set) var tabsAtArchiveThreshold: Set<Tab.ID> = []
 
     // MARK: - Initialization
 

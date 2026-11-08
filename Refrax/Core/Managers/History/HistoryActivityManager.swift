@@ -43,23 +43,23 @@ final class HistoryActivityManager : ObservableObject {
     // MARK: - Activity State
 
     /// Whether the application is currently active (frontmost).
-    private(set) @Published var isAppActive: Bool = true
+    @Published private(set) var isAppActive: Bool = true
 
     /// Whether the system is sleeping.
-    private(set) @Published var isSystemSleeping: Bool = false
+    @Published private(set) var isSystemSleeping: Bool = false
 
     // MARK: - Page Registration
 
     /// Tracks which pages are currently visible and in which windows.
     /// Key: PageID, Value: Set of WindowIDs displaying this page.
     /// A page can be visible in multiple windows simultaneously.
-    private @Published var visiblePages: [UUID: Set<ObjectIdentifier>] = [:]
+    @Published private var visiblePages: [UUID: Set<ObjectIdentifier>] = [:]
 
     /// Tracks which windows are currently key.
-    private @Published var keyWindows: Set<ObjectIdentifier> = []
+    @Published private var keyWindows: Set<ObjectIdentifier> = []
 
     /// Tracks the last known activity state for each page to detect transitions.
-    private @Published var pageActivityStates: [UUID: Bool] = [:]
+    @Published private var pageActivityStates: [UUID: Bool] = [:]
 
     /// Callback invoked when a page's activity state changes.
     ///

@@ -23,10 +23,10 @@ import AppKit
 /// If no window is available, the sharing request is silently ignored.
 final class SharingCoordinator : ObservableObject {
     /// Items currently being shared.
-    private(set) @Published var sharingItems: [Any]?
+    @Published private(set) var sharingItems: [Any]?
 
     /// Position where the share sheet should appear (relative to window).
-    private(set) @Published var sharePosition: CGPoint?
+    @Published private(set) var sharePosition: CGPoint?
 
     /// Presents the system share sheet with the specified items.
     ///

@@ -83,7 +83,7 @@ final class WindowState : ObservableObject {
     /// Debounced website color to prevent rapid flashing during navigation.
     ///
     /// Updated via `updateWebsiteColor()` with a 200ms debounce.
-    private(set) @Published var debouncedWebsiteColor: Color.Components?
+    @Published private(set) var debouncedWebsiteColor: Color.Components?
 
     /// Task for debouncing website color updates.
     private var websiteColorDebounceTask: Task<Void, Never>?
@@ -254,7 +254,7 @@ final class WindowState : ObservableObject {
     /// Active tab IDs per space (allows remembering position when switching spaces).
     ///
     /// When switching back to a space, the previously active tab is restored.
-    private @Published var _activeTabIDs: [Space.ID: Tab.ID] = [:]
+    @Published private var _activeTabIDs: [Space.ID: Tab.ID] = [:]
 
     /// Previous active tab IDs per space (for "go back" when closing tabs).
     ///
@@ -266,7 +266,7 @@ final class WindowState : ObservableObject {
     ///
     /// When set, a live favorite tab takes priority over the space's active tab.
     /// Managed internally via `setActiveTab(_:)`.
-    private @Published var _activeLiveFavoriteTabID: Tab.ID?
+    @Published private var _activeLiveFavoriteTabID: Tab.ID?
 
     /// Active tab ID for this window.
     ///
@@ -441,7 +441,7 @@ final class WindowState : ObservableObject {
     ///
     /// When set, darkens the background and presents the lens interface for
     /// quick actions or address entry.
-    private(set) @Published var focusedLens: FocusedLens?
+    @Published private(set) var focusedLens: FocusedLens?
     
     /// Frame of the address bar in global coordinates (root of view hierarchy).
     ///
@@ -523,7 +523,7 @@ final class WindowState : ObservableObject {
     ///
     /// Set when hovering a compact tab button after the delay expires.
     /// Cleared when hover ends.
-    private(set) @Published var compactTabTooltipTitle: String?
+    @Published private(set) var compactTabTooltipTitle: String?
 
     /// Centralized task for compact tab tooltip delay.
     ///
@@ -760,7 +760,7 @@ final class WindowState : ObservableObject {
     // MARK: - Page Search Bar State
 
     /// Per-tab page find navigator presentation state
-    private @Published var findNavigatorIsPresented: [TabPage.ID: Bool] = [:]
+    @Published private var findNavigatorIsPresented: [TabPage.ID: Bool] = [:]
 
     /// Binding for find navigator presentation for a specific tab page
     ///

@@ -14,20 +14,20 @@ final class CookieInspectorManager : ObservableObject {
     // MARK: - State
 
     /// All loaded cookies grouped by their source data store.
-    private(set) @Published var cookiesByStore: [DataStoreInfo: [HTTPCookie]] = [:] {
+    @Published private(set) var cookiesByStore: [DataStoreInfo: [HTTPCookie]] = [:] {
         didSet { invalidateCaches() }
     }
 
     // MARK: - Cached Properties
 
     /// Cached flattened and sorted cookies. Invalidated when `cookiesByStore` changes.
-    private @Published var _allCookiesCache: [CookieEntry]?
+    @Published private var _allCookiesCache: [CookieEntry]?
 
     /// Cached sorted data stores. Invalidated when `cookiesByStore` changes.
-    private @Published var _allStoresCache: [DataStoreInfo]?
+    @Published private var _allStoresCache: [DataStoreInfo]?
 
     /// Cached unique domains. Invalidated when `cookiesByStore` changes.
-    private @Published var _allDomainsCache: [String]?
+    @Published private var _allDomainsCache: [String]?
 
     private func invalidateCaches() {
         _allCookiesCache = nil

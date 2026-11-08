@@ -31,11 +31,11 @@ final class EngineDistribution : ObservableObject {
         }
     }
 
-    private(set) @Published var catalogState: CatalogState = .unchecked
-    private(set) @Published var catalog: EngineCatalog?
-    private(set) @Published var installs: [EngineID: InstallState] = [:]
+    @Published private(set) var catalogState: CatalogState = .unchecked
+    @Published private(set) var catalog: EngineCatalog?
+    @Published private(set) var installs: [EngineID: InstallState] = [:]
     /// The engines installed this session, and whether each replaced an older release.
-    private(set) @Published var completed: [Completion] = []
+    @Published private(set) var completed: [Completion] = []
 
     struct Completion: Equatable {
         let displayName: String

@@ -97,13 +97,13 @@ final class WebPagePool : ObservableObject {
     ///
     /// Incremented when pages are added or removed. Use this to observe page
     /// pool changes without triggering re-renders on every dictionary access.
-    private(set) @Published var pagesVersion: Int = 0
+    @Published private(set) var pagesVersion: Int = 0
 
     /// How many times each tab page's page was replaced while the tab stayed open.
     ///
     /// ``page(for:)`` reads its entry, so a view that got a page from it shows the
     /// replacement: a tab crossing into or out of an extension's pages gets a new web view.
-    private @Published var pageReplacements: [TabPage.ID: Int] = [:]
+    @Published private var pageReplacements: [TabPage.ID: Int] = [:]
 
     /// Read-only access to active pages.
     ///
@@ -116,7 +116,7 @@ final class WebPagePool : ObservableObject {
     ///
     /// Stored separately to allow SSL bypass approval without exposing
     /// the decider through the page.
-    private @Published var navigationDeciders: [TabPage.ID: BrowserNavigationDecider] = [:]
+    @Published private var navigationDeciders: [TabPage.ID: BrowserNavigationDecider] = [:]
 
     // MARK: - Configuration
 
@@ -142,7 +142,7 @@ final class WebPagePool : ObservableObject {
     ///
     /// Manages automatic reload after crashes, tracks crash frequency to detect
     /// problematic sites, and coordinates user notifications via toast.
-    private(set) @Published var terminationHandler = WebProcessTerminationHandler()
+    @Published private(set) var terminationHandler = WebProcessTerminationHandler()
 
     // MARK: - Background Tasks
 

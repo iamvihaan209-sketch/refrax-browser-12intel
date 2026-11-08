@@ -148,16 +148,16 @@ final class PageReminderManager : ObservableObject {
     // MARK: - State
 
     /// Current authorization status for Reminders.app access.
-    private(set) @Published var remindersAuthStatus: EKAuthorizationStatus = .notDetermined
+    @Published private(set) var remindersAuthStatus: EKAuthorizationStatus = .notDetermined
 
     /// Current authorization status for notifications.
-    private(set) @Published var notificationAuthStatus: UNAuthorizationStatus = .notDetermined
+    @Published private(set) var notificationAuthStatus: UNAuthorizationStatus = .notDetermined
 
     /// Error from the last operation.
-    private(set) @Published var lastError: String?
+    @Published private(set) var lastError: String?
 
     /// All pending page reminders, sorted by fire date.
-    private(set) @Published var pendingItems: [PendingReminderItem] = []
+    @Published private(set) var pendingItems: [PendingReminderItem] = []
 
     /// Whether there are any pending reminders.
     @Published var hasPendingReminders: Bool { !pendingItems.isEmpty }

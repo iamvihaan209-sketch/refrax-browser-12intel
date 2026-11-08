@@ -23,10 +23,10 @@ final class FocusModeManager : ObservableObject {
     // MARK: - State
 
     /// Whether any Focus Mode is currently active.
-    private(set) @Published var isFocusActive: Bool = false
+    @Published private(set) var isFocusActive: Bool = false
 
     /// Display name of the current Focus Mode (if detectable).
-    private(set) @Published var currentFocusName: String?
+    @Published private(set) var currentFocusName: String?
 
     // MARK: - Dependencies
 

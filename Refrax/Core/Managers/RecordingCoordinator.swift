@@ -55,19 +55,19 @@ final class RecordingCoordinator : ObservableObject {
     ///
     /// Set after a successful recording. The preview auto-dismisses after a delay,
     /// or can be dismissed by user interaction.
-    private(set) @Published var currentPreview: RecordingPreview?
+    @Published private(set) var currentPreview: RecordingPreview?
 
     /// Whether recording is currently in progress.
-    private(set) @Published var isRecording = false
+    @Published private(set) var isRecording = false
 
     /// The start time of the current recording, for duration display.
-    private(set) @Published var recordingStartTime: Date?
+    @Published private(set) var recordingStartTime: Date?
 
     /// The web page being recorded, if any.
     private(set) weak var recordingWebPage: WebPage?
 
     /// Error message to display to the user, if any.
-    private(set) @Published var errorMessage: String?
+    @Published private(set) var errorMessage: String?
 
     /// Duration of the current recording in seconds.
     var recordingDuration: TimeInterval {
@@ -78,13 +78,13 @@ final class RecordingCoordinator : ObservableObject {
     // MARK: - Private State
 
     /// The active recording session.
-    private @Published var activeRecording: RecordingService.ActiveRecording?
+    @Published private var activeRecording: RecordingService.ActiveRecording?
 
     /// Task for the recording startup process.
-    private @Published var startupTask: Task<Void, Never>?
+    @Published private var startupTask: Task<Void, Never>?
 
     /// Task for monitoring recording duration and lifecycle.
-    private @Published var durationLimitTask: Task<Void, Never>?
+    @Published private var durationLimitTask: Task<Void, Never>?
 
     /// Preview data shown after recording.
     struct RecordingPreview: Identifiable {

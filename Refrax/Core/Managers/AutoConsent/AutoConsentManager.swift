@@ -36,19 +36,19 @@ final class AutoConsentManager : ObservableObject {
     /// Whether auto-consent is globally enabled.
     ///
     /// Controlled by `BrowserSettings.enableAutoConsent`.
-    private(set) @Published var isEnabled: Bool = true
+    @Published private(set) var isEnabled: Bool = true
 
     /// Currently loaded ruleset.
-    private(set) @Published var ruleset: AutoConsentRuleset = .empty
+    @Published private(set) var ruleset: AutoConsentRuleset = .empty
 
     /// Last time the ruleset was updated from remote.
-    private(set) @Published var lastUpdateCheck: Date?
+    @Published private(set) var lastUpdateCheck: Date?
 
     // MARK: - Private State
 
-    private @Published var isSetUp = false
-    private @Published var scriptID: UUID?
-    private @Published var settingsObservationTask: Task<Void, Never>?
+    @Published private var isSetUp = false
+    @Published private var scriptID: UUID?
+    @Published private var settingsObservationTask: Task<Void, Never>?
 
     /// Content world for scripts (isolated from page scripts).
     private static let scriptWorldName = "RefraxScripts"

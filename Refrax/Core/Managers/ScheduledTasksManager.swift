@@ -38,7 +38,7 @@ final class ScheduledTasksManager : ObservableObject {
     /// Timestamp of the last successful task run.
     ///
     /// Used to determine if tasks should run immediately on app activation.
-    private(set) @Published var lastTaskRun: Date?
+    @Published private(set) var lastTaskRun: Date?
 
     // MARK: - Configuration
 

@@ -83,7 +83,7 @@ final class ExtensionManager : ObservableObject {
     /// Spaces with `usesSeparateDataStore = true` get their own controller with:
     /// - Unique persistent storage via `WKWebExtensionController.Configuration(identifier:)`
     /// - Linked data store from `SpaceDataStoreManager`
-    private @Published var isolatedControllers: [UUID: WKWebExtensionController] = [:]
+    @Published private var isolatedControllers: [UUID: WKWebExtensionController] = [:]
 
     /// Extension controllers for private spaces, keyed by space ID.
     ///
@@ -91,10 +91,10 @@ final class ExtensionManager : ObservableObject {
     /// - No persistent storage (default configuration without identifier)
     /// - Non-persistent data store from `SpaceDataStoreManager`
     /// - Only extensions with `allowedInPrivateMode = true` are loaded
-    private @Published var privateControllers: [UUID: WKWebExtensionController] = [:]
+    @Published private var privateControllers: [UUID: WKWebExtensionController] = [:]
 
     /// All installed extensions (persisted metadata).
-    private(set) @Published var installedExtensions: [InstalledExtension] = [] {
+    @Published private(set) var installedExtensions: [InstalledExtension] = [] {
         didSet { onPackagesChanged?(enginePackages) }
     }
 
@@ -117,19 +117,19 @@ final class ExtensionManager : ObservableObject {
     }
 
     /// Global extension settings.
-    private(set) @Published var globalSettings = ExtensionGlobalSettings()
+    @Published private(set) var globalSettings = ExtensionGlobalSettings()
 
     /// Currently loaded extension contexts in the default controller, keyed by unique identifier.
-    private @Published var loadedContexts: [String: WKWebExtensionContext] = [:]
+    @Published private var loadedContexts: [String: WKWebExtensionContext] = [:]
 
     /// Extension contexts loaded into isolated controllers, keyed by (spaceID, extensionIdentifier).
-    private @Published var isolatedContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
+    @Published private var isolatedContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
 
     /// Extension tab adapters, keyed by TabPage ID.
-    private @Published var tabAdapters: [TabPage.ID: RefraxExtensionTab] = [:]
+    @Published private var tabAdapters: [TabPage.ID: RefraxExtensionTab] = [:]
 
     /// Extension window adapters, keyed by WindowState object identity.
-    private @Published var windowAdapters: [ObjectIdentifier: RefraxExtensionWindow] = [:]
+    @Published private var windowAdapters: [ObjectIdentifier: RefraxExtensionWindow] = [:]
 
     // MARK: - Dependencies
 
@@ -161,16 +161,16 @@ final class ExtensionManager : ObservableObject {
     let shimInjector: ShimInjector
 
     /// The controller delegate handling extension callbacks (for default controller).
-    private @Published var controllerDelegate: ExtensionControllerDelegate?
+    @Published private var controllerDelegate: ExtensionControllerDelegate?
 
     /// Delegates for isolated controllers, keyed by space ID.
-    private @Published var isolatedDelegates: [UUID: ExtensionControllerDelegate] = [:]
+    @Published private var isolatedDelegates: [UUID: ExtensionControllerDelegate] = [:]
 
     /// Delegates for private controllers, keyed by space ID.
-    private @Published var privateDelegates: [UUID: ExtensionControllerDelegate] = [:]
+    @Published private var privateDelegates: [UUID: ExtensionControllerDelegate] = [:]
 
     /// Extension contexts loaded into private controllers, keyed by (spaceID, extensionIdentifier).
-    private @Published var privateContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
+    @Published private var privateContexts: [SpaceExtensionKey: WKWebExtensionContext] = [:]
 
     /// Data store manager for per-space data stores.
     ///
@@ -190,7 +190,7 @@ final class ExtensionManager : ObservableObject {
     }
 
     /// Task for observing app activation state changes.
-    private @Published var activationObservationTask: Task<Void, Never>?
+    @Published private var activationObservationTask: Task<Void, Never>?
 
     isolated deinit {
         activationObservationTask?.cancel()

@@ -71,13 +71,13 @@ final class DomainTimeTracker : ObservableObject {
     // MARK: - Cached UI State
 
     /// The domain of the currently visible tab.
-    private(set) @Published var currentDomain: String?
+    @Published private(set) var currentDomain: String?
 
     /// Cached limit for the current domain.
-    private(set) @Published var currentDomainLimit: DomainTimeLimitData?
+    @Published private(set) var currentDomainLimit: DomainTimeLimitData?
 
     /// Cached time spent on current domain today.
-    private(set) @Published var currentDomainTimeToday: TimeInterval = 0
+    @Published private(set) var currentDomainTimeToday: TimeInterval = 0
 
     /// Whether the current domain's limit has been exceeded.
     ///
@@ -86,7 +86,7 @@ final class DomainTimeTracker : ObservableObject {
     /// when the exceeded state actually changes, not on every time update.
     /// The TimeLimitOverlayContainer (which shows when exceeded) separately
     /// observes `currentDomainTimeToday` for display.
-    private(set) @Published var isCurrentDomainLimitExceeded: Bool = false
+    @Published private(set) var isCurrentDomainLimitExceeded: Bool = false
 
     // MARK: - Initialization
 

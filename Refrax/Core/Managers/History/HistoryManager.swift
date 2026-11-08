@@ -44,10 +44,10 @@ final class HistoryManager : ObservableObject {
     /// Background actor for heavy maintenance operations.
     ///
     /// Initialized lazily when deferred maintenance is performed.
-    private @Published var maintenanceActor: HistoryMaintenanceActor?
+    @Published private var maintenanceActor: HistoryMaintenanceActor?
 
     /// Whether deferred maintenance has completed.
-    private(set) @Published var maintenanceComplete = false
+    @Published private(set) var maintenanceComplete = false
 
     // MARK: - Background Query Actor
 

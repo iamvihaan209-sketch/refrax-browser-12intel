@@ -37,9 +37,9 @@ import UniformTypeIdentifiers
 final class WindowManager : ObservableObject {
     // MARK: - Properties
 
-    private(set) @Published var windowControllers: [RefraxWindowController] = []
+    @Published private(set) var windowControllers: [RefraxWindowController] = []
     private var windowObservers: [ObjectIdentifier: any NSObjectProtocol] = [:]
-    private @Published var didBecomeKeyObserver: (any NSObjectProtocol)?
+    @Published private var didBecomeKeyObserver: (any NSObjectProtocol)?
 
     /// Active reference pane window controllers, keyed by parent WindowState.
     ///
@@ -55,7 +55,7 @@ final class WindowManager : ObservableObject {
     ///
     /// Glimpse windows are lightweight ephemeral windows for quick browsing tasks.
     /// They are not persisted across app restarts.
-    private(set) @Published var glimpseWindowControllers: [GlimpseController] = []
+    @Published private(set) var glimpseWindowControllers: [GlimpseController] = []
 
     /// The most recently active browser window controller.
     ///

@@ -8,16 +8,16 @@ final class GiphyManager : ObservableObject {
     // MARK: - State
 
     /// Current search results.
-    private(set) @Published var searchResults: [GiphyGIF] = []
+    @Published private(set) var searchResults: [GiphyGIF] = []
 
     /// Trending GIFs for initial display.
-    private(set) @Published var trendingGIFs: [GiphyGIF] = []
+    @Published private(set) var trendingGIFs: [GiphyGIF] = []
 
     /// Whether a search is in progress.
-    private(set) @Published var isSearching = false
+    @Published private(set) var isSearching = false
 
     /// Error message if the last operation failed.
-    private(set) @Published var errorMessage: String?
+    @Published private(set) var errorMessage: String?
 
     // MARK: - Configuration
 
@@ -36,8 +36,8 @@ final class GiphyManager : ObservableObject {
 
     // MARK: - Caching
 
-    private @Published var trendingCache: [GiphyGIF]?
-    private @Published var trendingCacheDate: Date?
+    @Published private var trendingCache: [GiphyGIF]?
+    @Published private var trendingCacheDate: Date?
     private let trendingCacheDuration: TimeInterval = 300 // 5 minutes
 
     // MARK: - Search

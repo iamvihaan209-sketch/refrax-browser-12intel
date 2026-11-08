@@ -112,17 +112,17 @@ final class VisualFeedbackManager : ObservableObject {
     // MARK: - Observable State
 
     /// Whether the visual feedback system is active (cursor visible, etc.).
-    private(set) @Published var isActive: Bool = false
+    @Published private(set) var isActive: Bool = false
 
     /// Current cursor state for rendering.
-    private(set) @Published var cursorState: AgentCursorState = .idle
+    @Published private(set) var cursorState: AgentCursorState = .idle
 
     /// Target cursor position in overlay coordinate space.
     /// Views should animate to this position using explicit `.animation()` modifiers.
-    private(set) @Published var cursorPosition: CGPoint = .zero
+    @Published private(set) var cursorPosition: CGPoint = .zero
 
     /// Active element highlights.
-    private(set) @Published var highlights: [ElementHighlightInfo] = []
+    @Published private(set) var highlights: [ElementHighlightInfo] = []
 
     /// Animation speed preset.
     @Published var speed: FeedbackSpeed = .natural

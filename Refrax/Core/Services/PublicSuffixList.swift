@@ -29,8 +29,8 @@ final class PublicSuffixList : ObservableObject {
     static let shared = PublicSuffixList()
     
     /// The set of known public suffixes (e.g., "com", "co.uk", "github.io")
-    private(set) @Published var suffixes: Set<String> = []
-    private @Published var hasLoaded = false
+    @Published private(set) var suffixes: Set<String> = []
+    @Published private var hasLoaded = false
     
     /// Common multi-part TLDs used as fallback when network is unavailable
     private let fallbackSuffixes: Set<String> = [

@@ -81,38 +81,38 @@ final class ProcessMemoryMonitor : ObservableObject {
     // MARK: - Observable Properties
 
     /// Total memory used by WebContent processes (in bytes).
-    private(set) @Published var totalWebContentMemory: UInt64 = 0
+    @Published private(set) var totalWebContentMemory: UInt64 = 0
 
     /// Memory used by the GPU process (in bytes).
-    private(set) @Published var gpuProcessMemory: UInt64 = 0
+    @Published private(set) var gpuProcessMemory: UInt64 = 0
 
     /// Memory used by the Refrax app process (in bytes).
-    private(set) @Published var appProcessMemory: UInt64 = 0
+    @Published private(set) var appProcessMemory: UInt64 = 0
 
     /// Number of active WebContent processes.
-    private(set) @Published var activeWebProcessCount: Int = 0
+    @Published private(set) var activeWebProcessCount: Int = 0
 
     /// Per-process snapshots with tab mapping.
-    private(set) @Published var processSnapshots: [WebProcessSnapshot] = []
+    @Published private(set) var processSnapshots: [WebProcessSnapshot] = []
 
     /// Memory from web processes that couldn't be mapped to any tab (prewarmed/orphan).
-    private(set) @Published var unmappedProcessMemory: UInt64 = 0
+    @Published private(set) var unmappedProcessMemory: UInt64 = 0
 
     /// CPU usage of all web content processes combined since the previous poll,
     /// as a percentage of one core. Nil until two polls have completed.
-    private(set) @Published var totalWebContentCPUPercent: Double?
+    @Published private(set) var totalWebContentCPUPercent: Double?
 
     /// CPU usage of the GPU process since the previous poll (% of one core).
-    private(set) @Published var gpuProcessCPUPercent: Double?
+    @Published private(set) var gpuProcessCPUPercent: Double?
 
     /// CPU usage of the Refrax app process since the previous poll (% of one core).
-    private(set) @Published var appProcessCPUPercent: Double?
+    @Published private(set) var appProcessCPUPercent: Double?
 
     /// Last update timestamp.
-    private(set) @Published var lastUpdated: Date?
+    @Published private(set) var lastUpdated: Date?
 
     /// Version counter for memory history updates (triggers view rebuilds).
-    private(set) @Published var memoryHistoryVersion: Int = 0
+    @Published private(set) var memoryHistoryVersion: Int = 0
 
     // MARK: - Deprecated compatibility
 

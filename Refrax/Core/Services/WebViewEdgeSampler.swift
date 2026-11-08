@@ -38,38 +38,38 @@ final class WebViewEdgeSampler: ObservableObject {
     ///
     /// Array of colors from top to bottom of the visible viewport.
     /// Empty if no sampling has occurred.
-    private(set) @Published var fullWidthColors: [NSColor] = []
+    @Published private(set) var fullWidthColors: [NSColor] = []
 
     /// Colors sampled from the ultra-narrow edge strip (first 2px from the left).
     ///
     /// These colors are less likely to contain icons/text and are used for the
     /// mirrored edge strip that sits adjacent to the webview.
-    private(set) @Published var edgeStripColors: [NSColor] = []
+    @Published private(set) var edgeStripColors: [NSColor] = []
 
     /// Colors sampled from the near-edge region (first ~8px from the left).
     ///
     /// Used for progressive blending between the narrow edge and wider samples.
-    private(set) @Published var nearEdgeColors: [NSColor] = []
+    @Published private(set) var nearEdgeColors: [NSColor] = []
 
     /// Colors sampled from the mid-edge region (first ~20px from the left).
     ///
     /// Used for progressive blending between the narrow edge and wider samples.
-    private(set) @Published var midEdgeColors: [NSColor] = []
+    @Published private(set) var midEdgeColors: [NSColor] = []
 
     /// Color sampled specifically from the top corner (top 8px of viewport).
     ///
     /// Uses precise averaging (not histogram binning) for pixel-perfect accuracy
     /// in the exposed corner area where there's no glass blur.
-    private(set) @Published var topCornerColor: NSColor?
+    @Published private(set) var topCornerColor: NSColor?
 
     /// Color sampled specifically from the bottom corner (bottom 8px of viewport).
     ///
     /// Uses precise averaging (not histogram binning) for pixel-perfect accuracy
     /// in the exposed corner area where there's no glass blur.
-    private(set) @Published var bottomCornerColor: NSColor?
+    @Published private(set) var bottomCornerColor: NSColor?
 
     /// Whether a sampling operation is currently in progress.
-    private(set) @Published var isSampling: Bool = false
+    @Published private(set) var isSampling: Bool = false
 
     // MARK: - Private State
 

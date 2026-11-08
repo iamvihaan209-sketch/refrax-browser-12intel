@@ -36,14 +36,14 @@ final class SpaceLockManager : ObservableObject {
     ///
     /// This is global across all windows. Authentication in one window
     /// unlocks the space everywhere.
-    private(set) @Published var unlockedSpaceIDs: Set<UUID> = []
+    @Published private(set) var unlockedSpaceIDs: Set<UUID> = []
 
     /// Tracks when each space was unlocked and its effective timeout.
     /// Used for per-space auto-lock timing.
     private var spaceUnlockInfo: [UUID: SpaceUnlockInfo] = [:]
 
     /// Last user activity timestamp for timeout calculation.
-    private @Published var lastActivityTime: Date = .init()
+    @Published private var lastActivityTime: Date = .init()
 
     // MARK: - Dependencies
 

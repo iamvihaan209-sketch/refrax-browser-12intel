@@ -112,7 +112,7 @@ final class BrowserState : ObservableObject {
     /// ```swift
     /// .onChange(of: tabManager.state.tabListVersion) { rebuildLayout() }
     /// ```
-    private(set) @Published var tabListVersion: UInt64 = 0
+    @Published private(set) var tabListVersion: UInt64 = 0
     
     /// Version counter for tab content/metadata changes.
     ///
@@ -126,7 +126,7 @@ final class BrowserState : ObservableObject {
     /// ```swift
     /// .onChange(of: tabManager.state.tabContentVersion) { updateDisplay() }
     /// ```
-    private(set) @Published var tabContentVersion: UInt64 = 0
+    @Published private(set) var tabContentVersion: UInt64 = 0
 
     // MARK: - Incremental Layout Update Callbacks
 

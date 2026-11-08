@@ -44,10 +44,10 @@ final class UserStyleManager : ObservableObject {
     /// All loaded user styles.
     ///
     /// Kept in memory for fast URL matching. Updated when styles change.
-    private(set) @Published var styles: [UserStyle] = []
+    @Published private(set) var styles: [UserStyle] = []
 
     /// Script ID for the combined user styles injection.
-    private @Published var styleScriptID: UUID?
+    @Published private var styleScriptID: UUID?
 
     /// Reference to script registry for injection.
     private weak var scriptRegistry: ScriptRegistry?

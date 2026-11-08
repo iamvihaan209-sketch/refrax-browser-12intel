@@ -19,7 +19,7 @@ import SwiftData
 /// re-prompting for sites the user has already declined or added.
 final class CustomSearchEngineManager : ObservableObject {
     /// Cached search engines for fast access by providers.
-    private(set) @Published var cachedEngines: [SearchEngine] = []
+    @Published private(set) var cachedEngines: [SearchEngine] = []
 
     /// The underlying SwiftData model context.
     private let modelContext: ModelContext

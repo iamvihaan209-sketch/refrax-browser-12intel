@@ -37,13 +37,13 @@ final class AppActivationObserver : ObservableObject {
     ///
     /// Updated on both activation and deactivation events. Initialized to false
     /// until the first activation event is observed.
-    private(set) @Published var isAppActive: Bool = false
+    @Published private(set) var isAppActive: Bool = false
 
     /// The timestamp of the most recent app activation.
     ///
     /// `nil` until the app is activated for the first time after this observer is created.
     /// Use this to determine if archived tabs have been "seen" by the user.
-    private(set) @Published var lastActivationTime: Date?
+    @Published private(set) var lastActivationTime: Date?
 
     // MARK: - Async Sequence
 

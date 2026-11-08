@@ -53,7 +53,7 @@ final class PagePrompts : ObservableObject {
     }
 
     /// The question on screen for this page.
-    private(set) @Published var current: Pending?
+    @Published private(set) var current: Pending?
     private var waiting: [Pending] = []
 
     /// Queues `question` and suspends until the user answers it or it's dismissed.

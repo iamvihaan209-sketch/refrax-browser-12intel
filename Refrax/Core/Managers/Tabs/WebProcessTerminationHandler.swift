@@ -55,10 +55,10 @@ final class WebProcessTerminationHandler : ObservableObject {
     // MARK: - State
 
     /// Termination history per tab page, keyed by page ID.
-    private(set) @Published var terminationHistory: [UUID: [TerminationEvent]] = [:]
+    @Published private(set) var terminationHistory: [UUID: [TerminationEvent]] = [:]
 
     /// Pages currently in "problematic" state (exceeded crash threshold).
-    private(set) @Published var problematicPages: Set<UUID> = []
+    @Published private(set) var problematicPages: Set<UUID> = []
 
     // MARK: - Callbacks
 

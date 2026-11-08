@@ -70,12 +70,12 @@ final class UndoRedoManager : ObservableObject {
     ///
     /// Ordered by close time (most recent first). Limited to `maxRecentlyClosedTabs`.
     /// Includes both main tabs and reference tabs.
-    private(set) @Published var recentlyClosedTabs: [ClosedTabInfo] = []
+    @Published private(set) var recentlyClosedTabs: [ClosedTabInfo] = []
 
     /// Recently deleted groups available for restoration.
     ///
     /// Ordered by deletion time (most recent first). Limited to `maxRecentlyDeletedGroups`.
-    private(set) @Published var recentlyDeletedGroups: [ClosedGroupInfo] = []
+    @Published private(set) var recentlyDeletedGroups: [ClosedGroupInfo] = []
 
     // MARK: - Configuration
 
@@ -103,10 +103,10 @@ final class UndoRedoManager : ObservableObject {
     unowned var spaceManager: SpaceManager!
 
     /// Recently converted spaces (for potential undo).
-    private(set) @Published var recentSpaceToGroupConversions: [ConvertedSpaceInfo] = []
+    @Published private(set) var recentSpaceToGroupConversions: [ConvertedSpaceInfo] = []
 
     /// Recently converted groups (for potential undo).
-    private(set) @Published var recentGroupToSpaceConversions: [ConvertedGroupToSpaceInfo] = []
+    @Published private(set) var recentGroupToSpaceConversions: [ConvertedGroupToSpaceInfo] = []
 
     /// Maximum number of conversions to track.
     let maxConversions = 10

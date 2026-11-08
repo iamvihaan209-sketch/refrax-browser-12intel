@@ -23,10 +23,10 @@ final class EngineRegistry : ObservableObject {
     )
 
     /// Every usable engine, system WebKit first.
-    private(set) @Published var descriptors: [EngineDescriptor] = [EngineRegistry.systemWebKit]
+    @Published private(set) var descriptors: [EngineDescriptor] = [EngineRegistry.systemWebKit]
 
     /// Engines whose code is loaded and running in this session.
-    private(set) @Published var runningEngines: Set<EngineID> = [.systemWebKit]
+    @Published private(set) var runningEngines: Set<EngineID> = [.systemWebKit]
 
     private var bundles: [EngineID: EngineBundle] = [:]
     /// The latest policy per category, replayed to each engine as it starts.
@@ -44,7 +44,7 @@ final class EngineRegistry : ObservableObject {
     let dataDirectory: URL
 
     /// Each engine's security floor, from the last verified engine catalog.
-    private(set) @Published var securityFloors: [EngineID: EngineReleaseVersion] = [:]
+    @Published private(set) var securityFloors: [EngineID: EngineReleaseVersion] = [:]
 
     /// Where the last verified engine catalog is kept, hidden from the engine scan.
     var catalogCacheDirectory: URL {

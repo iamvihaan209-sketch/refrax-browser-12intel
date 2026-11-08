@@ -42,10 +42,10 @@ final class ClipboardMonitor : ObservableObject {
     ///
     /// Set when a new HTTP/HTTPS URL is detected. UI should observe this
     /// to show the clipboard URL toast. Cleared after cooldown period.
-    private(set) @Published var detectedURL: URL?
+    @Published private(set) var detectedURL: URL?
 
     /// Whether monitoring is currently active.
-    private(set) @Published var isMonitoring: Bool = false
+    @Published private(set) var isMonitoring: Bool = false
 
     // MARK: - Dependencies
 

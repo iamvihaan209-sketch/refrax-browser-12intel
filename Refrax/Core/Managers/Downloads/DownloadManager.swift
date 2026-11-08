@@ -85,30 +85,30 @@ final class DownloadManager : ObservableObject {
     // MARK: - State
 
     /// Active download tasks by ID.
-    private @Published var activeTasks: [UUID: DownloadTask] = [:]
+    @Published private var activeTasks: [UUID: DownloadTask] = [:]
 
     /// Downloads performed by WebKit's own `WKDownload` (blob: URLs), by ID.
-    private @Published var webKitTasks: [UUID: WebKitDownloadTask] = [:]
+    @Published private var webKitTasks: [UUID: WebKitDownloadTask] = [:]
 
     /// Downloads plug-in engines are writing, by download ID.
-    private @Published var engineTransfers: [UUID: EngineTransfer] = [:]
+    @Published private var engineTransfers: [UUID: EngineTransfer] = [:]
 
     /// Downloads pending Photos import on completion.
     /// Maps download ID to whether the file should be deleted after import.
-    private @Published var photosImportPending: [UUID: Bool] = [:]
+    @Published private var photosImportPending: [UUID: Bool] = [:]
 
     /// All downloads (active and historical).
-    private(set) @Published var downloads: [Download] = []
+    @Published private(set) var downloads: [Download] = []
 
     /// Total progress for Dock icon (0.0-1.0).
-    private(set) @Published var aggregateProgress: Double = 0
+    @Published private(set) var aggregateProgress: Double = 0
 
     /// When the most recent download entered the completed list.
     ///
     /// Drives the sidebar downloads indicator for instantly completed
     /// downloads (e.g. PDF HUD saves), which never pass through the
     /// active state that normally makes the indicator appear.
-    private(set) @Published var latestCompletionDate: Date?
+    @Published private(set) var latestCompletionDate: Date?
 
     /// Number of active downloads.
     var activeDownloadCount: Int {
@@ -203,7 +203,7 @@ final class DownloadManager : ObservableObject {
     /// Each downloading file gets an `NSProgress` published with its file URL.
     /// Finder automatically shows progress bars on these files in the Downloads
     /// stack and folder, with pause/resume buttons (like Safari).
-    private @Published var fileProgressObjects: [UUID: Progress] = [:]
+    @Published private var fileProgressObjects: [UUID: Progress] = [:]
 
     // MARK: - Persistence
 
@@ -1233,7 +1233,7 @@ final class DownloadManager : ObservableObject {
     // MARK: - yt-dlp Downloads
 
     /// Active yt-dlp download tasks by download ID.
-    private @Published var ytdlpTasks: [UUID: YTDLPDownloadTask] = [:]
+    @Published private var ytdlpTasks: [UUID: YTDLPDownloadTask] = [:]
 
     /// Starts a download using yt-dlp for video/audio extraction.
     ///

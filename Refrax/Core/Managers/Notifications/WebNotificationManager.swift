@@ -41,10 +41,10 @@ final class WebNotificationManager : ObservableObject {
     // MARK: Observed State
 
     /// Every origin that asked, ordered by host.
-    private(set) @Published var permissions: [WebNotificationPermission] = []
+    @Published private(set) var permissions: [WebNotificationPermission] = []
 
     /// Whether macOS lets Refrax show notifications.
-    private(set) @Published var systemAuthorization: UNAuthorizationStatus = .notDetermined
+    @Published private(set) var systemAuthorization: UNAuthorizationStatus = .notDetermined
 
     // MARK: Dependencies
 

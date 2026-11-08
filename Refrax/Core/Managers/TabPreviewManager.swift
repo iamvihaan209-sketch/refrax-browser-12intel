@@ -39,12 +39,12 @@ final class TabPreviewManager : ObservableObject {
     /// Whether the preview should be visible.
     ///
     /// Becomes `true` after the display delay if still hovering.
-    private(set) @Published var isPreviewVisible: Bool = false
+    @Published private(set) var isPreviewVisible: Bool = false
 
     /// The frame of the hovered tab in global (window) coordinates.
     ///
     /// Used by OverlayContainer to position the preview correctly.
-    private(set) @Published var hoveredTabFrame: CGRect = .zero
+    @Published private(set) var hoveredTabFrame: CGRect = .zero
 
     /// The currently hovered tab, if any.
     private(set) var hoveredTab: Tab?

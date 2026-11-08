@@ -27,13 +27,13 @@ final class FavoritePreviewManager : ObservableObject {
     // MARK: - State
 
     /// The currently active preview panel, if any.
-    private @Published var previewPanel: LinkPreviewPanel?
+    @Published private var previewPanel: LinkPreviewPanel?
 
     /// The tab being previewed (for live favorites).
-    private(set) @Published var previewingTab: Tab?
+    @Published private(set) var previewingTab: Tab?
 
     /// The URL being previewed.
-    private(set) @Published var previewingURL: URL?
+    @Published private(set) var previewingURL: URL?
 
     /// Whether a preview is currently visible.
     var isPreviewVisible: Bool {

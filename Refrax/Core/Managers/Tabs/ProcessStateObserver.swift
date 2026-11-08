@@ -54,34 +54,34 @@ final class ProcessStateObserver : ObservableObject {
     ///
     /// Debounces transitions TO `notRunning` to prevent UI flicker during
     /// process startup. Transitions to running states are immediate.
-    private(set) @Published var processState: _WKWebProcessState = .notRunning
+    @Published private(set) var processState: _WKWebProcessState = .notRunning
 
     /// Whether the web process is currently unresponsive.
     ///
     /// Set via delegate callbacks from `WKNavigationDelegatePrivate`.
     /// Reset when the process becomes responsive or terminates.
-    private(set) @Published var isUnresponsive: Bool = false
+    @Published private(set) var isUnresponsive: Bool = false
 
     /// Whether the tab recently crashed and was auto-recovered.
     ///
     /// Used to show a visual indicator that recovery occurred.
     /// Automatically cleared after a brief display period.
-    private(set) @Published var recentlyCrashed: Bool = false
+    @Published private(set) var recentlyCrashed: Bool = false
 
     /// Whether the process has ever been in a running state.
     ///
     /// Used to distinguish between:
     /// - A page that crashed/terminated (was running, now not) → show unloaded indicator
     /// - A new page that hasn't loaded yet → don't show indicator
-    private(set) @Published var hasEverBeenRunning: Bool = false
+    @Published private(set) var hasEverBeenRunning: Bool = false
 
     /// The reason for the most recent process termination.
     ///
     /// `nil` if no termination has occurred during this observer's lifetime.
-    private(set) @Published var lastTerminationReason: RendererTerminationReason?
+    @Published private(set) var lastTerminationReason: RendererTerminationReason?
 
     /// Timestamp of the most recent termination.
-    private(set) @Published var lastTerminationTime: Date?
+    @Published private(set) var lastTerminationTime: Date?
 
     // MARK: - Computed Properties
 

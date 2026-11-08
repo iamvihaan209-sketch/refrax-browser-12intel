@@ -35,7 +35,7 @@ final class HandoffManager : ObservableObject {
     private var currentActivity: NSUserActivity?
 
     /// Whether Handoff is currently enabled.
-    private(set) @Published var isEnabled = true
+    @Published private(set) var isEnabled = true
 
     // MARK: - Activity Management
 

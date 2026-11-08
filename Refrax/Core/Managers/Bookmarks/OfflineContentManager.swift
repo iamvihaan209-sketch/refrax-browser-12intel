@@ -47,7 +47,7 @@ final class OfflineContentManager : ObservableObject {
     // MARK: - Properties
 
     /// Total bytes used by offline content.
-    private(set) @Published var totalStorageUsed: Int64 = 0
+    @Published private(set) var totalStorageUsed: Int64 = 0
 
     /// Maximum allowed storage in bytes.
     var maxStorageBytes: Int64 {

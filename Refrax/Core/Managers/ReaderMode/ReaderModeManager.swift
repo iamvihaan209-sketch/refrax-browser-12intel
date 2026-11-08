@@ -58,7 +58,7 @@ final class ReaderModeManager : ObservableObject {
     ///
     /// When a tab enters reader mode, its extracted article is stored here.
     /// WebViewContainer observes this to show/hide the reader overlay.
-    private(set) @Published var activeReaderStates: [UUID: ExtractedArticle] = [:]
+    @Published private(set) var activeReaderStates: [UUID: ExtractedArticle] = [:]
 
     /// Checks if reader mode is active for a specific tab page.
     ///
@@ -132,24 +132,24 @@ final class ReaderModeManager : ObservableObject {
     // MARK: - Per-Page State
 
     /// Cached availability status per URL.
-    private @Published var availabilityCache: [URL: Bool] = [:]
+    @Published private var availabilityCache: [URL: Bool] = [:]
 
     /// Cached extracted articles per URL.
-    private @Published var articleCache: [URL: ExtractedArticle] = [:]
+    @Published private var articleCache: [URL: ExtractedArticle] = [:]
 
     /// Running availability checks, shared by every caller asking about the same URL.
-    private @Published var availabilityChecks: [URL: Task<Bool, Never>] = [:]
+    @Published private var availabilityChecks: [URL: Task<Bool, Never>] = [:]
 
     /// Running extractions, shared by every caller asking about the same URL.
-    private @Published var extractions: [URL: Task<ReaderExtraction, Never>] = [:]
+    @Published private var extractions: [URL: Task<ReaderExtraction, Never>] = [:]
 
     // MARK: - Private State
 
-    private @Published var isSetUp = false
-    private @Published var availabilityScriptID: UUID?
+    @Published private var isSetUp = false
+    @Published private var availabilityScriptID: UUID?
 
     /// The extraction script, built once from the bundled Readability.js.
-    private @Published var extractionScript: String?
+    @Published private var extractionScript: String?
 
     /// Content world for scripts (isolated from page scripts).
     private static let scriptWorldName = "RefraxScripts"
@@ -484,7 +484,7 @@ final class ReaderModeManager : ObservableObject {
 
 /// Resumes a continuation with the first of several racing results and drops the rest.
 private final class FirstFinisher<Value: Sendable> {
-    private @Published var continuation: CheckedContinuation<Value, Never>?
+    @Published private var continuation: CheckedContinuation<Value, Never>?
 
     /// The timeout task, cancelled once a result arrives.
     @Published var timer: Task<Void, Never>?

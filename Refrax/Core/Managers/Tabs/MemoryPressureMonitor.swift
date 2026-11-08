@@ -41,19 +41,19 @@ final class MemoryPressureMonitor : ObservableObject {
     // MARK: - Pressure State
     
     /// Current memory pressure level from the system.
-    private(set) @Published var pressureLevel: PressureLevel = .normal
+    @Published private(set) var pressureLevel: PressureLevel = .normal
     
     /// Whether low power mode is enabled by the user.
-    private(set) @Published var isLowPowerModeEnabled: Bool = false
+    @Published private(set) var isLowPowerModeEnabled: Bool = false
     
     /// Current thermal state of the system.
-    private(set) @Published var thermalState: ProcessInfo.ThermalState = .nominal
+    @Published private(set) var thermalState: ProcessInfo.ThermalState = .nominal
     
     /// Timestamp of the last pressure event (for cooldown tracking).
-    private(set) @Published var lastPressureEventTime: Date?
+    @Published private(set) var lastPressureEventTime: Date?
     
     /// Timestamp of the last eviction we triggered.
-    private(set) @Published var lastEvictionTime: Date?
+    @Published private(set) var lastEvictionTime: Date?
     
     // MARK: - Computed Properties
     

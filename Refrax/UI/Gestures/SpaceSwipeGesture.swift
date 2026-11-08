@@ -33,18 +33,18 @@ final class SpaceSwipeGestureHandler : ObservableObject {
         case right // Swipe right → previous space (index decreases)
     }
 
-    private(set) @Published var state: GestureState = .idle
+    @Published private(set) var state: GestureState = .idle
 
     // MARK: - Adjacent Space Data
 
     /// The ID of the space being previewed during a swipe gesture.
-    private(set) @Published var adjacentSpaceID: UUID?
+    @Published private(set) var adjacentSpaceID: UUID?
 
     /// Cached pinned items for the adjacent space preview.
-    private(set) @Published var adjacentPinnedItems: [TabListItem] = []
+    @Published private(set) var adjacentPinnedItems: [TabListItem] = []
 
     /// Cached normal items for the adjacent space preview.
-    private(set) @Published var adjacentNormalItems: [TabListItem] = []
+    @Published private(set) var adjacentNormalItems: [TabListItem] = []
 
     // MARK: - Dependencies
 
@@ -284,15 +284,15 @@ final class SpaceSwipeGestureHandler : ObservableObject {
 /// (c) it conflicted with ScrollView's own two-finger scroll handling
 private final class SpaceSwipeScrollMonitorView: NSView {
     @Published var handler: SpaceSwipeGestureHandler?
-    private @Published var eventMonitor: Any?
+    @Published private var eventMonitor: Any?
 
     // Scroll wheel tracking state
-    private @Published var accumulatedDeltaX: CGFloat = 0
-    private @Published var accumulatedDeltaY: CGFloat = 0
-    private @Published var isTracking = false
-    private @Published var directionDecided = false
-    private @Published var isHorizontalGesture = false
-    private @Published var lastEventTimestamp: TimeInterval = 0
+    @Published private var accumulatedDeltaX: CGFloat = 0
+    @Published private var accumulatedDeltaY: CGFloat = 0
+    @Published private var isTracking = false
+    @Published private var directionDecided = false
+    @Published private var isHorizontalGesture = false
+    @Published private var lastEventTimestamp: TimeInterval = 0
 
     /// Minimum total delta to accumulate before deciding gesture direction.
     private let directionDecisionThreshold: CGFloat = 8

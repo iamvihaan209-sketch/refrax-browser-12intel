@@ -75,16 +75,16 @@ final class ExtensionRecoveryManager : ObservableObject {
     // MARK: - State
 
     /// Error log entries for UI display.
-    private(set) @Published var errorLog: [ErrorLogEntry] = []
+    @Published private(set) var errorLog: [ErrorLogEntry] = []
 
     /// Maximum error log entries to retain.
     let maxErrorLogEntries = 100
 
     /// Recovery state per extension.
-    private @Published var recoveryStates: [String: RecoveryState] = [:]
+    @Published private var recoveryStates: [String: RecoveryState] = [:]
 
     /// Pending restart tasks.
-    private @Published var pendingRestarts: [String: Task<Void, Never>] = [:]
+    @Published private var pendingRestarts: [String: Task<Void, Never>] = [:]
 
     /// Reference to extension manager for restart operations.
     weak var extensionManager: ExtensionManager?
