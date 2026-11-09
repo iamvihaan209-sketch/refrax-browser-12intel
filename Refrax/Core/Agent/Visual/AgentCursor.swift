@@ -144,6 +144,7 @@ struct AgentCursor: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Cursor States") {
     VStack(spacing: 40) {
         ForEach(
@@ -172,3 +173,4 @@ struct AgentCursor: View {
     }
     .padding()
 }
+#endif // !REFRAX_MONTEREY

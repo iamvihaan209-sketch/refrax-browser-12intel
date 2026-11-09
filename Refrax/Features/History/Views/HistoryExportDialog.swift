@@ -236,6 +236,8 @@ private struct HistoryExportDialogPreview: View {
     }
 }
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     HistoryExportDialogPreview()
 }
+#endif // !REFRAX_MONTEREY

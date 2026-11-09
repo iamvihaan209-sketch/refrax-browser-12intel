@@ -118,6 +118,7 @@ struct TimeLimitOverlayView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Time Limit Overlay", traits: .modifier(RefraxPreviewModifier())) {
     ZStack {
         Text("Web page content behind the overlay")
@@ -135,7 +136,9 @@ struct TimeLimitOverlayView: View {
     }
     .frame(width: 600, height: 400)
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("No Snoozes Left", traits: .modifier(RefraxPreviewModifier())) {
     ZStack {
         Text("Web page content behind the overlay")
@@ -153,3 +156,4 @@ struct TimeLimitOverlayView: View {
     }
     .frame(width: 600, height: 400)
 }
+#endif // !REFRAX_MONTEREY

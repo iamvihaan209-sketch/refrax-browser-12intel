@@ -337,6 +337,7 @@ private struct WarningRow: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Low Risk") {
     SecurityWarningSheet(
         report: SecurityReport(
@@ -352,7 +353,9 @@ private struct WarningRow: View {
         onInstall: {},
     )
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("High Risk") {
     SecurityWarningSheet(
         report: SecurityReport(
@@ -389,5 +392,6 @@ private struct WarningRow: View {
         onInstall: {},
     )
 }
+#endif // !REFRAX_MONTEREY
 
 #endif // !REFRAX_NO_EXTENSIONS

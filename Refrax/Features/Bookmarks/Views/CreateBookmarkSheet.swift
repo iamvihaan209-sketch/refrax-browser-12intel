@@ -391,6 +391,8 @@ private struct TagChip: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     CreateBookmarkSheet(selectedFolder: nil)
 }
+#endif // !REFRAX_MONTEREY

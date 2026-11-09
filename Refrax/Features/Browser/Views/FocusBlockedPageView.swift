@@ -155,16 +155,20 @@ struct FocusBlockedPageView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Focus Blocked - Reddit", traits: .modifier(RefraxPreviewModifier())) {
     FocusBlockedPageView(
         blockedURL: URL.staticRequired("https://www.reddit.com/r/programming"),
         focusName: "Work",
     )
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Focus Blocked - Twitter", traits: .modifier(RefraxPreviewModifier())) {
     FocusBlockedPageView(
         blockedURL: URL.staticRequired("https://twitter.com/user/status/123"),
         focusName: "Deep Work",
     )
 }
+#endif // !REFRAX_MONTEREY

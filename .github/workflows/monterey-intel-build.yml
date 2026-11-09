@@ -59,7 +59,7 @@ jobs:
             ARCHS=x86_64 \
             ONLY_ACTIVE_ARCH=YES \
             CODE_SIGNING_ALLOWED=NO \
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS=\$(inherited) REFRAX_NO_EXTENSIONS" \
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS=\$(inherited) REFRAX_NO_EXTENSIONS REFRAX_MONTEREY" \
             build 2>&1 | tee "$RUNNER_TEMP/refrax-build.log"
 
       - name: Upload build log on failure

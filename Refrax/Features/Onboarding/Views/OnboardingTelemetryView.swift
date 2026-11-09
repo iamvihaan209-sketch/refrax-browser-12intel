@@ -68,8 +68,10 @@ struct OnboardingTelemetryView: View {
     }
 }
 
+#if !REFRAX_MONTEREY
 #Preview {
     OnboardingTelemetryView {}
         .environment(BrowserSettings())
         .frame(width: 520, height: 720)
 }
+#endif // !REFRAX_MONTEREY

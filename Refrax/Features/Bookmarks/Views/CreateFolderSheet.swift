@@ -338,6 +338,8 @@ private struct FolderPickerNode: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     CreateFolderSheet(parentFolder: nil)
 }
+#endif // !REFRAX_MONTEREY

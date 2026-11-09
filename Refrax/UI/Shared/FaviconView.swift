@@ -402,6 +402,7 @@ nonisolated struct DecodedFavicon: Sendable {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("FaviconView") {
     VStack(spacing: 20) {
         Text("Without background")
@@ -427,3 +428,4 @@ nonisolated struct DecodedFavicon: Sendable {
     }
     .padding()
 }
+#endif // !REFRAX_MONTEREY

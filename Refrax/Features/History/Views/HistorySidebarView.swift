@@ -104,9 +104,11 @@ struct HistorySidebarView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     @Previewable @State var selection: Set<HistoryDateCategory> = [.today]
 
     HistorySidebarView(selectedCategories: $selection)
         .frame(width: 220, height: 400)
 }
+#endif // !REFRAX_MONTEREY

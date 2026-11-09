@@ -424,6 +424,7 @@ private struct InfoRow: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     TabInfoPopover(
         tab: Tab(space: nil, url: URL.staticRequired("https://apple.com"), title: "Apple"),
@@ -431,3 +432,4 @@ private struct InfoRow: View {
     )
     .padding()
 }
+#endif // !REFRAX_MONTEREY

@@ -127,6 +127,7 @@ struct ModifierKeyHints: View {
     }
 }
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     ZStack {
         Color.gray.opacity(0.3)
@@ -134,3 +135,4 @@ struct ModifierKeyHints: View {
     }
     .frame(width: 600, height: 400)
 }
+#endif // !REFRAX_MONTEREY

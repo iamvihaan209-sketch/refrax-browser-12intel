@@ -302,6 +302,7 @@ struct HistoryInspectorView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("With Entry") {
     HistoryInspectorView(
         entry: HistoryEntry(
@@ -316,7 +317,9 @@ struct HistoryInspectorView: View {
     )
     .frame(width: 280, height: 500)
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Empty") {
     HistoryInspectorView(
         entry: nil,
@@ -325,3 +328,4 @@ struct HistoryInspectorView: View {
     )
     .frame(width: 280, height: 500)
 }
+#endif // !REFRAX_MONTEREY

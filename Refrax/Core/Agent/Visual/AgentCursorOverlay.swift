@@ -48,6 +48,7 @@ struct AgentCursorOverlay: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Agent Cursor Overlay") {
     let manager = VisualFeedbackManager()
 
@@ -75,3 +76,4 @@ struct AgentCursorOverlay: View {
         )
     }
 }
+#endif // !REFRAX_MONTEREY

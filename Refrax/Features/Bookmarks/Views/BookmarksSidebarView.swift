@@ -153,6 +153,7 @@ struct BookmarksSidebarView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     @Previewable @State var selectedFolder: BookmarkFolder?
     @Previewable @State var showFavoritesOnly = false
@@ -164,3 +165,4 @@ struct BookmarksSidebarView: View {
     )
     .frame(width: 220, height: 400)
 }
+#endif // !REFRAX_MONTEREY

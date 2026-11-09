@@ -111,6 +111,7 @@ struct ElementHighlightLayer: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Highlight Styles") {
     ZStack {
         Color.white
@@ -135,3 +136,4 @@ struct ElementHighlightLayer: View {
     }
     .frame(width: 300, height: 300)
 }
+#endif // !REFRAX_MONTEREY

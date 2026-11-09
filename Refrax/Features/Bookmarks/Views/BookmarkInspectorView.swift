@@ -323,6 +323,7 @@ struct BookmarkInspectorView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("With Bookmark") {
     BookmarkInspectorView(
         bookmark: Bookmark(
@@ -339,7 +340,9 @@ struct BookmarkInspectorView: View {
     )
     .frame(width: 280, height: 600)
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Empty") {
     BookmarkInspectorView(
         bookmark: nil,
@@ -352,3 +355,4 @@ struct BookmarkInspectorView: View {
     )
     .frame(width: 280, height: 600)
 }
+#endif // !REFRAX_MONTEREY

@@ -184,6 +184,7 @@ private struct FolderRow: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     BookmarkImportPreview(
         folders: [
@@ -225,3 +226,4 @@ private struct FolderRow: View {
         onCancel: {},
     )
 }
+#endif // !REFRAX_MONTEREY

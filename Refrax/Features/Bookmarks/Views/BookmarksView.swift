@@ -686,7 +686,9 @@ struct BookmarksView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     BookmarksView()
         .frame(width: 1_000, height: 600)
 }
+#endif // !REFRAX_MONTEREY

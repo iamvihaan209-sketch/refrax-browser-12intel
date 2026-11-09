@@ -263,6 +263,7 @@ private extension RemindMeSheet {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     RemindMeSheet(
         pageURL: URL.staticRequired("https://example.com/article/interesting-topic"),
@@ -270,3 +271,4 @@ private extension RemindMeSheet {
         isPresented: .constant(true),
     )
 }
+#endif // !REFRAX_MONTEREY

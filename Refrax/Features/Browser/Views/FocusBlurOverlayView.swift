@@ -64,6 +64,7 @@ struct FocusBlurOverlayView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Focus Blur Overlay", traits: .modifier(RefraxPreviewModifier())) {
     ZStack {
         Text("Web page content behind the overlay")
@@ -76,3 +77,4 @@ struct FocusBlurOverlayView: View {
     }
     .frame(width: 600, height: 400)
 }
+#endif // !REFRAX_MONTEREY

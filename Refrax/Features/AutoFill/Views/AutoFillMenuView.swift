@@ -652,6 +652,7 @@ private struct AutoFillGeneratedPasswordItemView: View {
 
 // MARK: - Previews
 
+#if !REFRAX_MONTEREY
 #Preview("Credentials with list", traits: .modifier(RefraxPreviewModifier())) {
     let credentials = [
         PasswordsManager.StoredCredential(
@@ -679,7 +680,9 @@ private struct AutoFillGeneratedPasswordItemView: View {
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Many credentials (shows 'Other Passwords')", traits: .modifier(RefraxPreviewModifier())) {
     let credentials = [
         PasswordsManager.StoredCredential(domain: "github.com", username: "user1@icloud.com", password: "pass1"),
@@ -701,7 +704,9 @@ private struct AutoFillGeneratedPasswordItemView: View {
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Registration form (no saved credentials shown)", traits: .modifier(RefraxPreviewModifier())) {
     let context = AutoFillContext(
         fieldType: .credential,
@@ -718,7 +723,9 @@ private struct AutoFillGeneratedPasswordItemView: View {
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Password field with recent password", traits: .modifier(RefraxPreviewModifier())) {
     let context = AutoFillContext(
         fieldType: .credential,
@@ -735,7 +742,9 @@ private struct AutoFillGeneratedPasswordItemView: View {
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Credentials - System only", traits: .modifier(RefraxPreviewModifier())) {
     let context = AutoFillContext(
         fieldType: .credential,
@@ -750,7 +759,9 @@ private struct AutoFillGeneratedPasswordItemView: View {
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Credit Card", traits: .modifier(RefraxPreviewModifier())) {
     let context = AutoFillContext(
         fieldType: .creditCard,
@@ -764,7 +775,9 @@ private struct AutoFillGeneratedPasswordItemView: View {
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Contact", traits: .modifier(RefraxPreviewModifier())) {
     let context = AutoFillContext(
         fieldType: .contact,
@@ -778,3 +791,4 @@ private struct AutoFillGeneratedPasswordItemView: View {
         .padding(40)
         .background(Color.gray.opacity(0.3))
 }
+#endif // !REFRAX_MONTEREY

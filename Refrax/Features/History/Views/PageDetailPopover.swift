@@ -239,6 +239,7 @@ private struct DetailRow<Content: View>: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     PageDetailPopover(
         node: GraphNode(
@@ -254,3 +255,4 @@ private struct DetailRow<Content: View>: View {
         onDismiss: {},
     )
 }
+#endif // !REFRAX_MONTEREY

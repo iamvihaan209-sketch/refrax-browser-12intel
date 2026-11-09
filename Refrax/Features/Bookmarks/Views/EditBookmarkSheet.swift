@@ -409,7 +409,9 @@ private struct TagChip: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     // Preview requires a real bookmark
     Text("Edit Bookmark Sheet")
 }
+#endif // !REFRAX_MONTEREY

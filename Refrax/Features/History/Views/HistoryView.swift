@@ -448,7 +448,9 @@ struct HistoryView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     HistoryView()
         .frame(width: 1_200, height: 800)
 }
+#endif // !REFRAX_MONTEREY

@@ -101,6 +101,7 @@ nonisolated struct InsetSquircleShape: InsettableShape {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Squircle Shapes") {
     HStack(spacing: 20) {
         // Standard squircle
@@ -129,3 +130,4 @@ nonisolated struct InsetSquircleShape: InsettableShape {
     }
     .padding()
 }
+#endif // !REFRAX_MONTEREY

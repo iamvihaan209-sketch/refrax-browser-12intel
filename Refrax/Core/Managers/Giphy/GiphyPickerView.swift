@@ -183,8 +183,10 @@ private struct GiphyGridItem: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview(traits: .modifier(RefraxPreviewModifier())) {
     GiphyPickerView { gif in
         print("Selected: \(gif.title)")
     }
 }
+#endif // !REFRAX_MONTEREY

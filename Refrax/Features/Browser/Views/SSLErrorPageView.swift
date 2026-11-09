@@ -329,23 +329,29 @@ struct SSLErrorPageView: View {
 
 // MARK: - Preview
 
+#if !REFRAX_MONTEREY
 #Preview("Expired Certificate", traits: .modifier(RefraxPreviewModifier())) {
     SSLErrorPageView(
         errorType: .expired,
         failedURL: URL.staticRequired("https://expired.badssl.com/"),
     )
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Self-Signed Certificate", traits: .modifier(RefraxPreviewModifier())) {
     SSLErrorPageView(
         errorType: .selfSigned,
         failedURL: URL.staticRequired("https://self-signed.badssl.com/"),
     )
 }
+#endif // !REFRAX_MONTEREY
 
+#if !REFRAX_MONTEREY
 #Preview("Revoked Certificate", traits: .modifier(RefraxPreviewModifier())) {
     SSLErrorPageView(
         errorType: .revoked,
         failedURL: URL.staticRequired("https://revoked.badssl.com/"),
     )
 }
+#endif // !REFRAX_MONTEREY
