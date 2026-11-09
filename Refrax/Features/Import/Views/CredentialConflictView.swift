@@ -6,7 +6,7 @@ import SwiftUI
 /// already exists with a different password, the user must choose how to resolve
 /// the conflict before continuing.
 struct CredentialConflictView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.sectionSpacing) {

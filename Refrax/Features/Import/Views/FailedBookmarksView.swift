@@ -6,7 +6,7 @@ import SwiftUI
 /// for the failure. Users can copy URLs to manually add bookmarks
 /// that couldn't be imported automatically.
 struct FailedBookmarksView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.sectionSpacing) {

@@ -6,7 +6,7 @@ import SwiftUI
 /// from the selected browser. The import is started by the parent view
 /// and this view just displays the progress.
 struct ImportProgressView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         VStack(spacing: Constants.verticalSpacing) {

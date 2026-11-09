@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 /// Displays a list of installed browsers with their icons and names.
 /// Users can also choose to import from an HTML file.
 struct BrowserSelectionView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.sectionSpacing) {

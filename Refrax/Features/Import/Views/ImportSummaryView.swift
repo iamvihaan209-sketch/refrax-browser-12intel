@@ -5,7 +5,7 @@ import SwiftUI
 /// Shows comprehensive statistics about all imported data types:
 /// bookmarks, history, passwords, and extensions scanned.
 struct ImportSummaryView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         ScrollView {

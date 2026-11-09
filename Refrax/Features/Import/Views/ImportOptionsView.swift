@@ -8,7 +8,7 @@ import UniformTypeIdentifiers
 /// - Passwords: CSV file selection
 /// - Extensions: Information about what will be scanned
 struct ImportOptionsView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         ScrollView {

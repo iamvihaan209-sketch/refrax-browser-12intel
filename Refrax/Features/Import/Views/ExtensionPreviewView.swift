@@ -5,7 +5,7 @@ import SwiftUI
 /// Since Refrax doesn't yet support extensions, this view shows what
 /// extensions were detected for informational purposes only.
 struct ExtensionPreviewView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.sectionSpacing) {

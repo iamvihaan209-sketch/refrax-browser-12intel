@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 /// Displays checkboxes for each available data type (bookmarks, history, passwords,
 /// extensions) with descriptions of what will be imported.
 struct DataTypeSelectionView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.sectionSpacing) {

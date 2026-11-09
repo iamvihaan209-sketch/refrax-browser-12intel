@@ -6,7 +6,7 @@ import SwiftUI
 /// each with their own set of data. This view allows the user to
 /// choose which profile to import from.
 struct ProfileSelectionView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.sectionSpacing) {

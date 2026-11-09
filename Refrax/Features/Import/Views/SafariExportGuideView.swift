@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 /// Explains how to use Safari's File > Export Browsing Data feature
 /// and provides a button to select the exported zip file.
 struct SafariExportGuideView: View {
-    @Bindable var viewModel: ImportWizardViewModel
+    @ObservedObject var viewModel: ImportWizardViewModel
 
     @State private var isLoading = false
     @State private var errorMessage: String?
